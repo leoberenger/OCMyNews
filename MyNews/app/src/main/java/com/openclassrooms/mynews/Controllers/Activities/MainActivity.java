@@ -1,5 +1,6 @@
 package com.openclassrooms.mynews.Controllers.Activities;
 
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -8,6 +9,7 @@ import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.openclassrooms.mynews.R;
+import com.openclassrooms.mynews.Views.PagerAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -16,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.configureToolbar();
+        this.configureViewPager();
     }
 
     @Override
@@ -45,5 +48,10 @@ public class MainActivity extends AppCompatActivity {
         android.support.v7.widget.Toolbar toolbar
                 = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+    }
+
+    private void configureViewPager(){
+        ViewPager pager = (ViewPager)findViewById(R.id.activity_main_viewPager);
+        pager.setAdapter(new PagerAdapter(getSupportFragmentManager()){});
     }
 }
