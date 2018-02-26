@@ -6,20 +6,19 @@
         android:id="@+id/menu_navMenu"
         android:icon="@drawable/ic_menu_white_24dp"
         app:showAsAction="ifRoom"
-        android:title="Menu"/>
-
+        android:title="@string/menu_menu"/>
 
     <item
         android:id="@+id/menu_search"
         android:icon="@drawable/ic_search_white_24dp"
         app:showAsAction="ifRoom"
-        android:title="Search"/>
+        android:title="@string/menu_search"/>
 
     <item
         android:id="@+id/menu_more"
         android:icon="@drawable/ic_more_vert_white_24dp"
         app:showAsAction="ifRoom"
-        android:title="More"/>
+        android:title="@string/menu_more"/>
 
 
 </menu>

@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">MyNews</string>
+
+    <string name="menu_menu">Menu</string>
+    <string name="menu_search">Search</string>
+    <string name="menu_more">More</string>
 </resources>
