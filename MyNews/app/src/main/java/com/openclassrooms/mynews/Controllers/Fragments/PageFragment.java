@@ -45,7 +45,6 @@ public class PageFragment extends Fragment {
         View result = inflater.inflate(R.layout.fragment_page, container, false);
         int position = getArguments().getInt(KEY_POSITION, -1);
 
-        mTextView.setText("Page numéro" + position);
         Log.e(getClass().getSimpleName(), "onCreateView called fragment n°" + position);
 
         return result;
