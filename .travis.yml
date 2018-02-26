@@ -1,23 +1,69 @@
-language: android
-sudo: false
+language : android
+
+# Global Reference Values for the file
+env:
+  global:
+  #Android API Version for the code
+   - ANDROID_API_LEVEL=26
+   
+  #Android API Version for the emulator 
+   - EMULATOR_API_LEVEL=19
+   
+  #Android Build Tools Version
+   - ANDROID_BUILD_TOOLS_VERSION=26.0.2
+   
+  #Install Timeout (by default 2min is not enough for slow computers)
+   - ADB_INSTALL_TIMEOUT=20 
 
 android:
-  components:
-    - platform-tools
+ components:
+
+    # Android SDK Tools
     - tools
-    - build-tools-26.0.2
-    - android-22
-    - android-26
-    - sys-img-armeabi-v7a-android-22
-    - extra-android-m2repository
+    - platform-tools
+
+    #repeat tools to get newer Android SDK Tools
     - tools 
 
-before_script:
-  # Create and start emulator
-  - echo no | android create avd --force -n test -t android-22 --abi armeabi-v7a
-  - emulator -avd test -no-skin -no-audio -no-window &
-  - android-wait-for-emulator
-  - adb shell input keyevent 82 &
-  - cd MyNews
+    # The SDK version used to compile your project
+    - android-$ANDROID_API_LEVEL
 
-script: ./gradlew connectedAndroidTest
+     # The SDK version used by emulator
+    - android-$EMULATOR_API_LEVEL
+
+     # The BuildTools version used by your project
+    - build-tools-$ANDROID_BUILD_TOOLS_VERSION
+
+    # Specify at least one system image for emulator
+    - sys-img-armeabi-v7a-android-$EMULATOR_API_LEVEL
+
+    # Additional components
+    - extra-android-m2repository
+
+before_script:
+
+- echo no | android create avd --force -n test -t android-$EMULATOR_API_LEVEL --abi armeabi-v7a
+- emulator -avd test -no-skin -no-audio -no-window &
+- android-wait-for-emulator
+- adb shell input keyevent 82 & 
+
+- cd MyNews
+
+script: 
+  ./gradlew connectedAndroidTest
+
+before_cache:
+
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+
+cache:
+
+  directories:
+
+    - $HOME/.gradle/caches/
+
+    - $HOME/.gradle/wrapper/
+
+    - $HOME/.android/build-cache
