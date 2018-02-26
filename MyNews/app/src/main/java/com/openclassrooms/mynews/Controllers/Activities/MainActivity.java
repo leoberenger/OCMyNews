@@ -1,5 +1,6 @@
 package com.openclassrooms.mynews.Controllers.Activities;
 
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -53,5 +54,11 @@ public class MainActivity extends AppCompatActivity {
     private void configureViewPager(){
         ViewPager pager = (ViewPager)findViewById(R.id.activity_main_viewPager);
         pager.setAdapter(new PagerAdapter(getSupportFragmentManager()){});
+
+
+        TabLayout tabs = (TabLayout)findViewById(R.id.activity_main_tabs);
+        tabs.setupWithViewPager(pager);
+        tabs.setTabMode(TabLayout.MODE_FIXED);
+
     }
 }
