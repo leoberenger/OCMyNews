@@ -1,4 +1,4 @@
-package com.openclassrooms.mynews;
+package com.openclassrooms.mynews.Controllers.Activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -6,6 +6,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 import android.widget.Toolbar;
+
+import com.openclassrooms.mynews.R;
 
 public class MainActivity extends AppCompatActivity {
 
