@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void configureToolbar(){
         android.support.v7.widget.Toolbar toolbar
-                = (android.support.v7.widget.Toolbar) findViewById(R.id.activity_main_toolbar);
+                = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
     }
 }

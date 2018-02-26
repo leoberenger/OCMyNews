@@ -20,5 +20,4 @@
         app:showAsAction="ifRoom"
         android:title="@string/menu_more"/>
 
-
 </menu>
