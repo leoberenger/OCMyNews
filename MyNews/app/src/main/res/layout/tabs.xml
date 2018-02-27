@@ -9,8 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
-        app:tabIndicatorColor="@color/colorPrimaryDark"
-        app:tabTextColor="@color/colorAccent"
-        app:tabSelectedTextColor="#111"
+        app:tabIndicatorColor="#F1E621"
+        app:tabTextColor="@color/colorPrimaryDark"
+        app:tabSelectedTextColor="@color/colorAccent"
     />
 
