@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         pager.setAdapter(new PagerAdapter(getSupportFragmentManager()){});
 
         //Tabs
-        TabLayout tabs = (TabLayout)findViewById(R.id.activity_main_tabs);
+        TabLayout tabs = (TabLayout)findViewById(R.id.tabs);
         tabs.setupWithViewPager(pager);
         tabs.setTabMode(TabLayout.MODE_FIXED);
     }
