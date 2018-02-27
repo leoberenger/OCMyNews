@@ -28,6 +28,14 @@ public class PagerAdapter extends FragmentPagerAdapter{
 
     @Override
     public CharSequence getPageTitle(int position){
-        return "Page"+position;
+        String pageTitle = "";
+        switch (position){
+            case 0: pageTitle = "Top Stories"; break;
+            case 1: pageTitle = "Most Popular"; break;
+            case 2: pageTitle = "Business"; break;
+            case 3: pageTitle = "Sports"; break;
+            case 4: pageTitle = "Arts"; break;
+        }
+        return pageTitle;
     }
 }

@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.configureToolbar();
-        this.configureViewPager();
+        this.configureViewPagerAndTabs();
     }
 
     @Override
@@ -51,14 +51,14 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
     }
 
-    private void configureViewPager(){
+    private void configureViewPagerAndTabs(){
+        //ViewPager
         ViewPager pager = (ViewPager)findViewById(R.id.activity_main_viewPager);
         pager.setAdapter(new PagerAdapter(getSupportFragmentManager()){});
 
-
+        //Tabs
         TabLayout tabs = (TabLayout)findViewById(R.id.activity_main_tabs);
         tabs.setupWithViewPager(pager);
         tabs.setTabMode(TabLayout.MODE_FIXED);
-
     }
 }
