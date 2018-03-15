@@ -50,6 +50,10 @@ public class TopStoriesFragment extends Fragment{
 
     public TopStoriesFragment() { }
 
+    public static TopStoriesFragment newInstance(){
+        return(new TopStoriesFragment());
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);

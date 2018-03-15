@@ -57,6 +57,10 @@ public class SearchArticleFragment extends Fragment {
 
     public SearchArticleFragment() { }
 
+    public static SearchArticleFragment newInstance(){
+        return(new SearchArticleFragment());
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);

@@ -50,6 +50,10 @@ public class MostPopularFragment extends Fragment {
 
     public MostPopularFragment() { }
 
+    public static MostPopularFragment newInstance(){
+        return(new MostPopularFragment());
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
