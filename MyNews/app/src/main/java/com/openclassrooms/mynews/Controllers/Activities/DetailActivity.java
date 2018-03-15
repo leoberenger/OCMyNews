@@ -4,8 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.openclassrooms.netapp.Controllers.Fragments.DetailFragment;
-import com.openclassrooms.netapp.R;
+import com.openclassrooms.mynews.Controllers.Fragments.DetailFragment;
+import com.openclassrooms.mynews.R;
+
 
 public class DetailActivity extends AppCompatActivity {
 

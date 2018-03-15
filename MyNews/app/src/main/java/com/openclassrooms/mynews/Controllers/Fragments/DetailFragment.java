@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 
-import com.openclassrooms.netapp.R;
+import com.openclassrooms.mynews.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
