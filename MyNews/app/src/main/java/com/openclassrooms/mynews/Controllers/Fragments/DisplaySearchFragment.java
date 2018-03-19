@@ -34,7 +34,7 @@ import io.reactivex.observers.DisposableObserver;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SearchArticleFragment extends Fragment {
+public class DisplaySearchFragment extends Fragment {
 
     // FOR DESIGN
     @BindView(R.id.fragment_main_recycler_view)
@@ -56,7 +56,7 @@ public class SearchArticleFragment extends Fragment {
 
     String EXTRA_ARTICLE_URL = "EXTRA_ARTICLE_URL";
 
-    public SearchArticleFragment() { }
+    public DisplaySearchFragment() { }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -65,7 +65,7 @@ public class SearchArticleFragment extends Fragment {
 
         Bundle args = getArguments();
         mQuery = args.getString("query", "");
-        mNewsDesk = "news_desk:(%22" + args.getString("newsDesk", "") + "%22)";
+        mNewsDesk = args.getString("newsDesk", "");
         mBeginDate = args.getInt("beginDate", 0);
         mEndDate = args.getInt("endDate", 0);
 

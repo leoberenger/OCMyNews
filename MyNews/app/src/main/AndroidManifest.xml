@@ -27,7 +27,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.openclassrooms.mynews.Controllers.Activities.MainActivity" />
         </activity>
-        <activity android:name=".Controllers.Activities.SearchActivity"></activity>
+        <activity android:name=".Controllers.Activities.SearchActivity" />
     </application>
 
 </manifest>

@@ -4,13 +4,13 @@ language : android
 env:
   global:
   #Android API Version for the code
-   - ANDROID_API_LEVEL=26
+   - ANDROID_API_LEVEL=27
    
   #Android API Version for the emulator 
    - EMULATOR_API_LEVEL=19
    
   #Android Build Tools Version
-   - ANDROID_BUILD_TOOLS_VERSION=26.0.2
+   - ANDROID_BUILD_TOOLS_VERSION=27.1.0
    
   #Install Timeout (by default 2min is not enough for slow computers)
    - ADB_INSTALL_TIMEOUT=20 
