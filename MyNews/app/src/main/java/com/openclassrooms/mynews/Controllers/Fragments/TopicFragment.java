@@ -47,11 +47,7 @@ public class TopicFragment extends Fragment {
     private SearchArticleAdapter mAdapter;
     private io.reactivex.Observable<com.openclassrooms.mynews.Models.NYTimesAPI> stream;
 
-    //SEARCH ARTICLE QUERIES
-    String mQuery = "france";
     String mNewsDesk; //"news_desk:(%22Travel%22)";
-    int mBeginDate = 20170910;
-    int mEndDate = 20171001;
 
     String EXTRA_ARTICLE_URL = "EXTRA_ARTICLE_URL";
 
@@ -75,7 +71,7 @@ public class TopicFragment extends Fragment {
         Bundle args = getArguments();
         mNewsDesk = "news_desk:(%22" + args.getString("newsDesk", "") + "%22)";
 
-        stream = NYTStreams.streamFetchSearchArticles(mQuery, mNewsDesk, mBeginDate, mEndDate);
+        stream = NYTStreams.streamFetchTopic(mNewsDesk);
         this.executeHttpRequestWithRetrofit();
         this.configureSwipeRefreshLayout();
         this.configureRecyclerView();

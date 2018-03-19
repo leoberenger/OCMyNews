@@ -26,13 +26,19 @@ public interface NYTService {
     @GET("mostpopular/v2/mostviewed/all-sections/1.json?" + apiKeyQuery)
     Observable<NYTimesAPI> getMostPopular();
 
+    //TOPIC
+    @GET("search/v2/articlesearch.json?" + apiKeyQuery)
+    Observable<NYTimesAPI> getTopic(
+            @Query("fq") String desk                //&fq=news_desk:(%22Travel%22)"
+    );
+
     //SEARCH ARTICLE
     @GET("search/v2/articlesearch.json?" + apiKeyQuery)
     Observable<NYTimesAPI> getSearchArticles(
             @Query("query") String query,
             @Query("fq") String desk,               //&fq=news_desk:(%22Travel%22)" +
-            @Query("begin_date") int beginDate,    //"&begin_date=20170910" +
-            @Query("end_date") int endDate         //"&end_date=20171001"
+            @Query("begin_date") int beginDate,     //"&begin_date=20170910" +
+            @Query("end_date") int endDate          //"&end_date=20171001"
     );
 
 

@@ -32,6 +32,15 @@ public class NYTStreams {
                 .timeout(10, TimeUnit.SECONDS);
     }
 
+    //TOPIC
+    public static Observable<NYTimesAPI> streamFetchTopic(String desk){
+        NYTService nYTService = NYTService.retrofit.create(NYTService.class);
+        return nYTService.getTopic(desk)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .timeout(10, TimeUnit.SECONDS);
+    }
+
     //SEARCH ARTICLE
     public static Observable<NYTimesAPI> streamFetchSearchArticles(String query, String desk, int startDate, int endDate){
         NYTService nYTService = NYTService.retrofit.create(NYTService.class);
