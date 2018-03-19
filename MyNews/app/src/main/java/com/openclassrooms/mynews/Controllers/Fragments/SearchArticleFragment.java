@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.openclassrooms.mynews.Controllers.Activities.DetailActivity;
@@ -34,7 +36,6 @@ import io.reactivex.observers.DisposableObserver;
  */
 public class SearchArticleFragment extends Fragment {
 
-
     // FOR DESIGN
     @BindView(R.id.fragment_main_recycler_view)
     RecyclerView mRecyclerView;
@@ -48,24 +49,14 @@ public class SearchArticleFragment extends Fragment {
     private io.reactivex.Observable<NYTimesAPI> stream;
 
     //SEARCH ARTICLE QUERIES
-    String mQuery = "france";
-    String mNewsDesk; //"news_desk:(%22Travel%22)";
-    int mBeginDate = 20170910;
-    int mEndDate = 20171001;
+    String mQuery;      // "france"
+    String mNewsDesk;   //"news_desk:(%22Travel%22)"
+    int mBeginDate;     //20170910
+    int mEndDate;       //20171001
 
     String EXTRA_ARTICLE_URL = "EXTRA_ARTICLE_URL";
 
     public SearchArticleFragment() { }
-
-    public static SearchArticleFragment newInstance(String newsDesk){
-        SearchArticleFragment topicFragment = new SearchArticleFragment();
-
-        Bundle args = new Bundle();
-        args.putString("newsDesk", newsDesk);
-        topicFragment.setArguments(args);
-
-        return topicFragment;
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -73,7 +64,10 @@ public class SearchArticleFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         Bundle args = getArguments();
+        mQuery = args.getString("query", "");
         mNewsDesk = "news_desk:(%22" + args.getString("newsDesk", "") + "%22)";
+        mBeginDate = args.getInt("beginDate", 0);
+        mEndDate = args.getInt("endDate", 0);
 
         stream = NYTStreams.streamFetchSearchArticles(mQuery, mNewsDesk, mBeginDate, mEndDate);
         this.executeHttpRequestWithRetrofit();

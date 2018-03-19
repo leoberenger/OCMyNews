@@ -1,5 +1,6 @@
 package com.openclassrooms.mynews.Controllers.Activities;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -34,7 +35,8 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Menu de Navigation indisponible", Toast.LENGTH_LONG).show();
                 return true;
             case R.id.menu_search:
-                Toast.makeText(this, "Recherche indisponible", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(this, SearchActivity.class);
+                startActivity(intent);
                 return true;
             case R.id.menu_more:
                 Toast.makeText(this, "En savoir plus indisponible", Toast.LENGTH_LONG).show();
