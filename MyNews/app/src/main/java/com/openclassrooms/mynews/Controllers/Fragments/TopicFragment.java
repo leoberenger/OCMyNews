@@ -32,7 +32,7 @@ import io.reactivex.observers.DisposableObserver;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SearchArticleFragment extends Fragment {
+public class TopicFragment extends Fragment {
 
 
     // FOR DESIGN
@@ -49,22 +49,32 @@ public class SearchArticleFragment extends Fragment {
 
     //SEARCH ARTICLE QUERIES
     String mQuery = "france";
-    String mNewsDesk = "news_desk:(%22Travel%22)";
+    String mNewsDesk; //"news_desk:(%22Travel%22)";
     int mBeginDate = 20170910;
     int mEndDate = 20171001;
 
     String EXTRA_ARTICLE_URL = "EXTRA_ARTICLE_URL";
 
-    public SearchArticleFragment() { }
+    public TopicFragment() { }
 
-    public static SearchArticleFragment newInstance(){
-        return(new SearchArticleFragment());
+    public static TopicFragment newInstance(String newsDesk){
+        TopicFragment topicFragment = new TopicFragment();
+
+        Bundle args = new Bundle();
+        args.putString("newsDesk", newsDesk);
+        topicFragment.setArguments(args);
+
+        return topicFragment;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, view);
+
+        Bundle args = getArguments();
+        mNewsDesk = "news_desk:(%22" + args.getString("newsDesk", "") + "%22)";
+
         stream = NYTStreams.streamFetchSearchArticles(mQuery, mNewsDesk, mBeginDate, mEndDate);
         this.executeHttpRequestWithRetrofit();
         this.configureSwipeRefreshLayout();
