@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.openclassrooms.mynews.R;
 import com.openclassrooms.mynews.Views.PagerAdapter;
@@ -46,17 +45,17 @@ public class MainActivity extends AppCompatActivity {
 
     private void configureToolbar(){
         android.support.v7.widget.Toolbar toolbar
-                = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
+                = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
     }
 
     private void configureViewPagerAndTabs(){
         //ViewPager
-        ViewPager pager = (ViewPager)findViewById(R.id.activity_main_viewPager);
+        ViewPager pager = findViewById(R.id.activity_main_viewPager);
         pager.setAdapter(new PagerAdapter(getSupportFragmentManager()){});
 
         //Tabs
-        TabLayout tabs = (TabLayout)findViewById(R.id.tabs);
+        TabLayout tabs = findViewById(R.id.tabs);
         tabs.setupWithViewPager(pager);
         tabs.setTabMode(TabLayout.MODE_FIXED);
     }

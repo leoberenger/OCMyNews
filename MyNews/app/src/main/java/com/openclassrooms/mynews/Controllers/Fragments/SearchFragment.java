@@ -2,15 +2,9 @@ package com.openclassrooms.mynews.Controllers.Fragments;
 
 
 import android.app.DatePickerDialog;
-import android.text.format.DateFormat;
-import android.widget.DatePicker;
-import java.util.Calendar;
-import java.util.Date;
-import android.app.Dialog;
+
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

@@ -10,7 +10,6 @@ import com.openclassrooms.mynews.R;
 
 public class DetailActivity extends AppCompatActivity {
 
-    private DetailFragment detailFragment;
     public String articleUrl;
 
     @Override
@@ -27,7 +26,7 @@ public class DetailActivity extends AppCompatActivity {
 
     private void configureAndShowMainFragment(){
 
-        detailFragment = (DetailFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_detail_frame_layout);
+        DetailFragment detailFragment = (DetailFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_detail_frame_layout);
 
         if (detailFragment == null) {
             detailFragment = new DetailFragment();

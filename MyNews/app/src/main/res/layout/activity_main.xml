@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:orientation="vertical">
 
-    <!-- Impmain_toolbarlbar -->
+    <!-- Import main_toolbar -->
     <include layout="@layout/main_toolbar"/>
 
     <!-- Tabs Navigation -->
