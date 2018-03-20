@@ -4,9 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.openclassrooms.mynews.Controllers.Fragments.MostPopularFragment;
-import com.openclassrooms.mynews.Controllers.Fragments.TopicFragment;
-import com.openclassrooms.mynews.Controllers.Fragments.TopStoriesFragment;
+import com.openclassrooms.mynews.Controllers.Fragments.ArticleViews.MostPopularFragment;
+import com.openclassrooms.mynews.Controllers.Fragments.ArticleViews.TopicFragment;
+import com.openclassrooms.mynews.Controllers.Fragments.ArticleViews.TopStoriesFragment;
 
 /**
  * Created by berenger on 26/02/2018.

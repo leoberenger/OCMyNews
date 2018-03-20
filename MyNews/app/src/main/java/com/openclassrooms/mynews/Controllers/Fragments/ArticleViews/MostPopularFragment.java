@@ -1,4 +1,4 @@
-package com.openclassrooms.mynews.Controllers.Fragments;
+package com.openclassrooms.mynews.Controllers.Fragments.ArticleViews;
 
 
 import android.content.Intent;
@@ -15,11 +15,11 @@ import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 import com.openclassrooms.mynews.Controllers.Activities.DetailActivity;
 import com.openclassrooms.mynews.Models.NYTimesAPI;
-import com.openclassrooms.mynews.Models.Response;
+import com.openclassrooms.mynews.Models.Result;
 import com.openclassrooms.mynews.R;
 import com.openclassrooms.mynews.Utils.ItemClickSupport;
 import com.openclassrooms.mynews.Utils.NYTStreams;
-import com.openclassrooms.mynews.Views.SearchArticleAdapter;
+import com.openclassrooms.mynews.Views.MostPopularAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +32,7 @@ import io.reactivex.observers.DisposableObserver;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TopicFragment extends Fragment {
-
+public class MostPopularFragment extends Fragment {
 
     // FOR DESIGN
     @BindView(R.id.fragment_main_recycler_view)
@@ -43,35 +42,23 @@ public class TopicFragment extends Fragment {
 
     //FOR DATA
     private Disposable mDisposable;
-    private List<Response.Doc> articles;
-    private SearchArticleAdapter mAdapter;
+    private List<Result> articles;
+    private MostPopularAdapter mAdapter;
     private io.reactivex.Observable<com.openclassrooms.mynews.Models.NYTimesAPI> stream;
-
-    String mNewsDesk; //"news_desk:(%22Travel%22)";
 
     String EXTRA_ARTICLE_URL = "EXTRA_ARTICLE_URL";
 
-    public TopicFragment() { }
+    public MostPopularFragment() { }
 
-    public static TopicFragment newInstance(String newsDesk){
-        TopicFragment topicFragment = new TopicFragment();
-
-        Bundle args = new Bundle();
-        args.putString("newsDesk", newsDesk);
-        topicFragment.setArguments(args);
-
-        return topicFragment;
+    public static MostPopularFragment newInstance(){
+        return(new MostPopularFragment());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, view);
-
-        Bundle args = getArguments();
-        mNewsDesk = "news_desk:(%22" + args.getString("newsDesk", "") + "%22)";
-
-        stream = NYTStreams.streamFetchTopic(mNewsDesk);
+        stream = NYTStreams.streamFetchMostPopular();
         this.executeHttpRequestWithRetrofit();
         this.configureSwipeRefreshLayout();
         this.configureRecyclerView();
@@ -100,7 +87,7 @@ public class TopicFragment extends Fragment {
 
     private void configureRecyclerView(){
         this.articles = new ArrayList<>();
-        this.mAdapter = new SearchArticleAdapter(this.articles, Glide.with(this));
+        this.mAdapter = new MostPopularAdapter(this.articles, Glide.with(this));
         this.mRecyclerView.setAdapter(this.mAdapter);
         this.mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
@@ -110,7 +97,7 @@ public class TopicFragment extends Fragment {
                 .setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
                     @Override
                     public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                        String articleUrl = mAdapter.getResponse(position).getWebUrl();
+                        String articleUrl = mAdapter.getResult(position).getUrl();
                         Intent intent = new Intent(getActivity(), DetailActivity.class);
                         intent.putExtra(EXTRA_ARTICLE_URL, articleUrl);
                         startActivity(intent);
@@ -152,11 +139,10 @@ public class TopicFragment extends Fragment {
     // UPDATE UI
     // -----------------
 
-    private void updateUI(NYTimesAPI responses){
+    private void updateUI(NYTimesAPI results){
         mSwipeRefreshLayout.setRefreshing(false);
         articles.clear();
-        articles.addAll(responses.getResponse().getDocs());
+        articles.addAll(results.getResults());
         mAdapter.notifyDataSetChanged();
     }
 }
-

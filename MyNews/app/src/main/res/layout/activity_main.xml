@@ -4,11 +4,11 @@
     android:layout_width="match_parent"
     android:orientation="vertical">
 
-    <!-- Import toolbar -->
-    <include layout="@layout/toolbar"/>
+    <!-- Impmain_toolbarlbar -->
+    <include layout="@layout/main_toolbar"/>
 
     <!-- Tabs Navigation -->
-    <include layout="@layout/tabs"/>
+    <include layout="@layout/main_tabs"/>
 
 
     <!-- ViewPager -->

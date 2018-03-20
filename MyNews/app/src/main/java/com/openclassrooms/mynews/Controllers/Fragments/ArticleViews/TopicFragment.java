@@ -1,4 +1,4 @@
-package com.openclassrooms.mynews.Controllers.Fragments;
+package com.openclassrooms.mynews.Controllers.Fragments.ArticleViews;
 
 
 import android.content.Intent;
@@ -15,11 +15,11 @@ import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 import com.openclassrooms.mynews.Controllers.Activities.DetailActivity;
 import com.openclassrooms.mynews.Models.NYTimesAPI;
-import com.openclassrooms.mynews.Models.Result;
+import com.openclassrooms.mynews.Models.Response;
 import com.openclassrooms.mynews.R;
 import com.openclassrooms.mynews.Utils.ItemClickSupport;
 import com.openclassrooms.mynews.Utils.NYTStreams;
-import com.openclassrooms.mynews.Views.TopStoriesAdapter;
+import com.openclassrooms.mynews.Views.SearchArticleAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,8 @@ import io.reactivex.observers.DisposableObserver;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TopStoriesFragment extends Fragment{
+public class TopicFragment extends Fragment {
+
 
     // FOR DESIGN
     @BindView(R.id.fragment_main_recycler_view)
@@ -42,23 +43,35 @@ public class TopStoriesFragment extends Fragment{
 
     //FOR DATA
     private Disposable mDisposable;
-    private List<Result> articles;
-    private TopStoriesAdapter mAdapter;
+    private List<Response.Doc> articles;
+    private SearchArticleAdapter mAdapter;
     private io.reactivex.Observable<com.openclassrooms.mynews.Models.NYTimesAPI> stream;
+
+    String mNewsDesk; //"news_desk:(%22Travel%22)";
 
     String EXTRA_ARTICLE_URL = "EXTRA_ARTICLE_URL";
 
-    public TopStoriesFragment() { }
+    public TopicFragment() { }
 
-    public static TopStoriesFragment newInstance(){
-        return(new TopStoriesFragment());
+    public static TopicFragment newInstance(String newsDesk){
+        TopicFragment topicFragment = new TopicFragment();
+
+        Bundle args = new Bundle();
+        args.putString("newsDesk", newsDesk);
+        topicFragment.setArguments(args);
+
+        return topicFragment;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, view);
-        stream = NYTStreams.streamFetchTopStories();
+
+        Bundle args = getArguments();
+        mNewsDesk = "news_desk:(%22" + args.getString("newsDesk", "") + "%22)";
+
+        stream = NYTStreams.streamFetchTopic(mNewsDesk);
         this.executeHttpRequestWithRetrofit();
         this.configureSwipeRefreshLayout();
         this.configureRecyclerView();
@@ -87,7 +100,7 @@ public class TopStoriesFragment extends Fragment{
 
     private void configureRecyclerView(){
         this.articles = new ArrayList<>();
-        this.mAdapter = new TopStoriesAdapter(this.articles, Glide.with(this));
+        this.mAdapter = new SearchArticleAdapter(this.articles, Glide.with(this));
         this.mRecyclerView.setAdapter(this.mAdapter);
         this.mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
@@ -97,7 +110,7 @@ public class TopStoriesFragment extends Fragment{
                 .setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
                     @Override
                     public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                        String articleUrl = mAdapter.getResult(position).getUrl();
+                        String articleUrl = mAdapter.getResponse(position).getWebUrl();
                         Intent intent = new Intent(getActivity(), DetailActivity.class);
                         intent.putExtra(EXTRA_ARTICLE_URL, articleUrl);
                         startActivity(intent);
@@ -111,7 +124,7 @@ public class TopStoriesFragment extends Fragment{
 
     private void executeHttpRequestWithRetrofit(){
         this.mDisposable = stream
-                 .subscribeWith(new DisposableObserver<NYTimesAPI>(){
+                .subscribeWith(new DisposableObserver<NYTimesAPI>(){
                     @Override
                     public void onNext(NYTimesAPI articles) {
                         Log.e("TAG", "On Next");
@@ -139,10 +152,11 @@ public class TopStoriesFragment extends Fragment{
     // UPDATE UI
     // -----------------
 
-    private void updateUI(NYTimesAPI results){
+    private void updateUI(NYTimesAPI responses){
         mSwipeRefreshLayout.setRefreshing(false);
         articles.clear();
-        articles.addAll(results.getResults());
+        articles.addAll(responses.getResponse().getDocs());
         mAdapter.notifyDataSetChanged();
     }
 }
+

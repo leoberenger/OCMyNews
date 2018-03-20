@@ -1,4 +1,4 @@
-package com.openclassrooms.mynews.Controllers.Fragments;
+package com.openclassrooms.mynews.Controllers.Fragments.ArticleViews;
 
 
 import android.content.Intent;
@@ -19,7 +19,7 @@ import com.openclassrooms.mynews.Models.Result;
 import com.openclassrooms.mynews.R;
 import com.openclassrooms.mynews.Utils.ItemClickSupport;
 import com.openclassrooms.mynews.Utils.NYTStreams;
-import com.openclassrooms.mynews.Views.MostPopularAdapter;
+import com.openclassrooms.mynews.Views.TopStoriesAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,7 @@ import io.reactivex.observers.DisposableObserver;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MostPopularFragment extends Fragment {
+public class TopStoriesFragment extends Fragment{
 
     // FOR DESIGN
     @BindView(R.id.fragment_main_recycler_view)
@@ -43,22 +43,22 @@ public class MostPopularFragment extends Fragment {
     //FOR DATA
     private Disposable mDisposable;
     private List<Result> articles;
-    private MostPopularAdapter mAdapter;
+    private TopStoriesAdapter mAdapter;
     private io.reactivex.Observable<com.openclassrooms.mynews.Models.NYTimesAPI> stream;
 
     String EXTRA_ARTICLE_URL = "EXTRA_ARTICLE_URL";
 
-    public MostPopularFragment() { }
+    public TopStoriesFragment() { }
 
-    public static MostPopularFragment newInstance(){
-        return(new MostPopularFragment());
+    public static TopStoriesFragment newInstance(){
+        return(new TopStoriesFragment());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, view);
-        stream = NYTStreams.streamFetchMostPopular();
+        stream = NYTStreams.streamFetchTopStories();
         this.executeHttpRequestWithRetrofit();
         this.configureSwipeRefreshLayout();
         this.configureRecyclerView();
@@ -87,7 +87,7 @@ public class MostPopularFragment extends Fragment {
 
     private void configureRecyclerView(){
         this.articles = new ArrayList<>();
-        this.mAdapter = new MostPopularAdapter(this.articles, Glide.with(this));
+        this.mAdapter = new TopStoriesAdapter(this.articles, Glide.with(this));
         this.mRecyclerView.setAdapter(this.mAdapter);
         this.mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
@@ -111,7 +111,7 @@ public class MostPopularFragment extends Fragment {
 
     private void executeHttpRequestWithRetrofit(){
         this.mDisposable = stream
-                .subscribeWith(new DisposableObserver<NYTimesAPI>(){
+                 .subscribeWith(new DisposableObserver<NYTimesAPI>(){
                     @Override
                     public void onNext(NYTimesAPI articles) {
                         Log.e("TAG", "On Next");
