@@ -31,15 +31,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
-            case R.id.menu_navMenu:
-                Toast.makeText(this, "Menu de Navigation indisponible", Toast.LENGTH_LONG).show();
-                return true;
             case R.id.menu_search:
                 Intent intent = new Intent(this, SearchActivity.class);
                 startActivity(intent);
                 return true;
             case R.id.menu_more:
-                Toast.makeText(this, "En savoir plus indisponible", Toast.LENGTH_LONG).show();
+                Intent intent2 = new Intent(this, NotificationActivity.class);
+                startActivity(intent2);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

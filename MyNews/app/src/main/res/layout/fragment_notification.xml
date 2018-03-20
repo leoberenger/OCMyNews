@@ -2,7 +2,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/activity_search_root_layout">
+    android:id="@+id/fragment_notification_relative_layout">
 
     <!-- Import Search Query -->
     <include layout="@layout/search_query"
@@ -15,15 +15,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/activity_search_query_input"/>
 
-    <Button
-        android:id="@+id/activity_search_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:padding="15dip"
-        android:text="Search"
-        android:textColor="#FFF"
-        android:textStyle="bold"
-        android:layout_below="@id/fragment_search_desk"/>
+    
 
 </RelativeLayout>
