@@ -19,9 +19,6 @@ import butterknife.ButterKnife;
  */
 public class NotificationFragment extends Fragment {
 
-    @BindView(R.id.activity_search_query_input)
-    EditText queryInput;
-
     private String mQuery;
     private String mNewsDesk;   //"news_desk:(%22Travel%22)"
     private int mBeginDate;     //20170910;
@@ -33,7 +30,6 @@ public class NotificationFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_notification, container, false);
-        ButterKnife.bind(this, view);
 
         return view;
     }
