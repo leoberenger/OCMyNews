@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.openclassrooms.mynews.R;
 
@@ -28,11 +29,11 @@ public class SearchActivity extends AppCompatActivity {
     @BindView(R.id.activity_search_button)
     Button searchBtn;
 
-    private String mQuery;      //"france";
-    private int mBeginDate;     //20170910
-    private int mEndDate;       //20171001
+    private String mQuery = "";         //"france";
+    private int mBeginDate = 0;         //20170910
+    private int mEndDate = 0;           //20171001
     private String [] newsDesks = {"","","","","","",};
-    private String mNewsDesk;   //"news_desk:(%22Travel%22)";
+    private String mNewsDesk;           //"news_desk:(%22Travel%22)";
 
 
 
@@ -48,17 +49,23 @@ public class SearchActivity extends AppCompatActivity {
         searchBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 mQuery = queryInput.getText().toString();
-                Log.e("SearchFragment", "query = "+mQuery);
 
-                mBeginDate = transformDateFormat(beginDatePicker);
-                Log.e("SearchFragment", "begin date = "+mBeginDate);
+                if (!beginDatePicker.getText().toString().equals(""))
+                    mBeginDate = transformDateFormat(beginDatePicker);
 
-                mEndDate = transformDateFormat(endDatePicker);
-                Log.e("SearchFragment", "end date = "+mEndDate);
 
-                Log.e("Search Activity", "NewsDesk selected = " + newsDesks[0]+ ""+ newsDesks[1]+ ""+ newsDesks[2]+ ""+ newsDesks[3]+ ""+ newsDesks[4]+ ""+ newsDesks[5]);
-                mNewsDesk = "news_desk:("+newsDesks[0]+newsDesks[1]+newsDesks[2]+newsDesks[3]+newsDesks[4]+newsDesks[5]+")";
-                Log.e("Search Activity", "mNewsDesk= "+mNewsDesk);
+                if (!endDatePicker.getText().toString().equals(""))
+                    mEndDate = transformDateFormat(endDatePicker);
+
+                if(mQuery.equals(""))
+                    Toast.makeText(getApplicationContext(), "Query required", Toast.LENGTH_LONG).show();
+                else if ((newsDesks[0].equals(""))&&(newsDesks[1].equals(""))&&(newsDesks[2].equals(""))
+                            &&(newsDesks[3].equals(""))&&(newsDesks[4].equals(""))&&(newsDesks[5].equals(""))) {
+                    Toast.makeText(getApplicationContext(), "Pick at least one topic", Toast.LENGTH_LONG).show();
+                }else{
+                    mNewsDesk = "news_desk:(" + newsDesks[0] + newsDesks[1] + newsDesks[2] + newsDesks[3] + newsDesks[4] + newsDesks[5] + ")";
+                    Log.e("Search Activity", "mNewsDesk=" + mNewsDesk + " mQuery= " + mQuery + " begin date ="+mBeginDate + " end date =" + mEndDate);
+                }
             }
         });
     }
