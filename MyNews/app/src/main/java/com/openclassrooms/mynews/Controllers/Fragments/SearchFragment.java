@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +40,7 @@ public class SearchFragment extends Fragment{
     @BindView(R.id.activity_search_button)
     Button searchBtn;
 
-    private String mQuery = "france";
+    private String mQuery;      //"france";
     private String mNewsDesk = "news_desk:(%22Travel%22)";
     private int mBeginDate = 20170910;
     private int mEndDate = 20171001;
@@ -53,63 +54,19 @@ public class SearchFragment extends Fragment{
         View view = inflater.inflate(R.layout.fragment_search, container, false);
         ButterKnife.bind(this, view);
 
-        // perform click event on edit text
-        beginDatePicker.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // calender class's instance and get current date , month and year from calender
-                final Calendar c = Calendar.getInstance();
-                int mYear = c.get(Calendar.YEAR); // current year
-                int mMonth = c.get(Calendar.MONTH); // current month
-                int mDay = c.get(Calendar.DAY_OF_MONTH); // current day
-
-                // date picker dialog
-                beginDatePickerDialog = new DatePickerDialog(getActivity(), R.style.DialogTheme,
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int year,
-                                                  int monthOfYear, int dayOfMonth) {
-                                // set day of month , month and year value in the edit text
-                                String dateString = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
-                                beginDatePicker.setText(dateString);
-                            }
-                        }, mYear, mMonth, mDay);
-                beginDatePickerDialog.show();
-            }
-        });
-
-        // perform click event on edit text
-        endDatePicker.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // calender class's instance and get current date , month and year from calender
-                final Calendar c = Calendar.getInstance();
-                int mYear = c.get(Calendar.YEAR); // current year
-                int mMonth = c.get(Calendar.MONTH); // current month
-                int mDay = c.get(Calendar.DAY_OF_MONTH); // current day
-
-                // date picker dialog
-                endDatePickerDialog = new DatePickerDialog(getActivity(), R.style.DialogTheme,
-                        new DatePickerDialog.OnDateSetListener() {
-
-                            @Override
-                            public void onDateSet(DatePicker view, int year,
-                                                  int monthOfYear, int dayOfMonth) {
-                                // set day of month , month and year value in the edit text
-                                String dateString = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
-                                endDatePicker.setText(dateString);
-
-                            }
-                        }, mYear, mMonth, mDay);
-                endDatePickerDialog.show();
-            }
-        });
+        configureDatePicker(beginDatePicker);
+        configureDatePicker(endDatePicker);
 
         searchBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //mQuery = queryInput.getText().toString();
+                mQuery = queryInput.getText().toString();
+                mBeginDate = transformDate(beginDatePicker);
+                mEndDate = transformDate(endDatePicker);
+                Log.e("SearchFragment", "query = "+mQuery);
+                Log.e("SearchFragment", "begin date = "+mBeginDate);
+                Log.e("SearchFragment", "end date = "+mEndDate);
                 //deskCheckboxes(view);
-                configureAndShowDisplaySearchFragment();
+                //configureAndShowDisplaySearchFragment();
             }
         });
 
@@ -134,6 +91,43 @@ public class SearchFragment extends Fragment{
                     .addToBackStack(null)
                     .commit();
         }
+    }
+
+    private void configureDatePicker(final EditText datePicker){
+
+        // perform click event on edit text
+        datePicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // calender class's instance and get current date , month and year from calender
+                final Calendar c = Calendar.getInstance();
+                int mYear = c.get(Calendar.YEAR); // current year
+                int mMonth = c.get(Calendar.MONTH); // current month
+                int mDay = c.get(Calendar.DAY_OF_MONTH); // current day
+
+                // date picker dialog
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), R.style.DialogTheme,
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year,
+                                                  int monthOfYear, int dayOfMonth) {
+                                // set day of month , month and year value in the edit text
+                                String day, month;
+                                if(dayOfMonth<10) day = "0"+dayOfMonth;
+                                else day = ""+dayOfMonth;
+
+                                if(monthOfYear<9) month = "0"+(monthOfYear+1);
+                                else month = ""+(monthOfYear+1);
+
+                                String dateString = day + "/" + month + "/" + year;
+                                datePicker.setText(dateString);
+
+                            }
+                        }, mYear, mMonth, mDay);
+                datePickerDialog.show();
+            }
+        });
+
     }
 
     public void deskCheckboxes(View view) {
@@ -190,4 +184,11 @@ public class SearchFragment extends Fragment{
         }
     }
 
+    public int transformDate(EditText datePicker){ //transforms 10/01/2018 to 20180110
+        String date = datePicker.getText().toString();
+        String orderedDate = date.substring(6,10) + date.substring(3,5) + date.substring(0,2);
+        int intDate = Integer.valueOf(orderedDate);
+
+        return intDate;
+        }
 }
