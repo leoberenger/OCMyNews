@@ -67,11 +67,14 @@ public class DisplaySearchFragment extends Fragment {
         mBeginDate = args.getInt("beginDate", 0);
         mEndDate = args.getInt("endDate", 0);
 
-        stream = NYTStreams.streamFetchSearchArticles(mQuery, mNewsDesk, mBeginDate, mEndDate);
+        Log.e("DisplaySearchFragment", "mNewsDesk=" + mNewsDesk + " mQuery= " + mQuery + " begin date ="+mBeginDate + " end date =" + mEndDate);
+
+        /*stream = NYTStreams.streamFetchSearchArticles(mQuery, mNewsDesk, mBeginDate, mEndDate);
         this.executeHttpRequestWithRetrofit();
         this.configureSwipeRefreshLayout();
         this.configureRecyclerView();
         this.configureOnClickRecyclerView();
+        */
         return view;
     }
 

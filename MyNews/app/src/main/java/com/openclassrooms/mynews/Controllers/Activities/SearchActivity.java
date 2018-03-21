@@ -1,6 +1,7 @@
 package com.openclassrooms.mynews.Controllers.Activities;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,7 +36,10 @@ public class SearchActivity extends AppCompatActivity {
     private String [] newsDesks = {"","","","","","",};
     private String mNewsDesk;           //"news_desk:(%22Travel%22)";
 
-
+    private String EXTRA_QUERY = "EXTRA_QUERY";
+    private String EXTRA_NEWS_DESKS = "EXTRA_NEWS_DESKS";
+    private String EXTRA_BEGIN_DATE = "EXTRA_BEGIN_DATE";
+    private String EXTRA_END_DATE = "EXTRA_END_DATE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,21 +54,27 @@ public class SearchActivity extends AppCompatActivity {
             public void onClick(View v) {
                 mQuery = queryInput.getText().toString();
 
-                if (!beginDatePicker.getText().toString().equals(""))
+                if(!beginDatePicker.getText().toString().equals(""))
                     mBeginDate = transformDateFormat(beginDatePicker);
 
-
-                if (!endDatePicker.getText().toString().equals(""))
+                if(!endDatePicker.getText().toString().equals(""))
                     mEndDate = transformDateFormat(endDatePicker);
 
-                if(mQuery.equals(""))
+                if(mQuery.equals("")) {
                     Toast.makeText(getApplicationContext(), "Query required", Toast.LENGTH_LONG).show();
-                else if ((newsDesks[0].equals(""))&&(newsDesks[1].equals(""))&&(newsDesks[2].equals(""))
+                }else if((newsDesks[0].equals(""))&&(newsDesks[1].equals(""))&&(newsDesks[2].equals(""))
                             &&(newsDesks[3].equals(""))&&(newsDesks[4].equals(""))&&(newsDesks[5].equals(""))) {
                     Toast.makeText(getApplicationContext(), "Pick at least one topic", Toast.LENGTH_LONG).show();
                 }else{
                     mNewsDesk = "news_desk:(" + newsDesks[0] + newsDesks[1] + newsDesks[2] + newsDesks[3] + newsDesks[4] + newsDesks[5] + ")";
                     Log.e("Search Activity", "mNewsDesk=" + mNewsDesk + " mQuery= " + mQuery + " begin date ="+mBeginDate + " end date =" + mEndDate);
+
+                    Intent intent = new Intent(SearchActivity.this, DisplaySearchActivity.class);
+                    intent.putExtra(EXTRA_QUERY, mQuery);
+                    intent.putExtra(EXTRA_NEWS_DESKS, mNewsDesk);
+                    intent.putExtra(EXTRA_BEGIN_DATE, mBeginDate);
+                    intent.putExtra(EXTRA_END_DATE, mEndDate);
+                    startActivity(intent);
                 }
             }
         });
