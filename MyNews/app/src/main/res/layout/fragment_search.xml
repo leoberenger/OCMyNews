@@ -11,55 +11,13 @@
     <include layout="@layout/search_query"
         android:id="@+id/activity_search_query_input"/>
 
-    <LinearLayout
+    <!-- Import Search Date Pickers -->
+    <include layout="@layout/search_date_pickers"
         android:id="@+id/search_date_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@id/activity_search_query_input">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Begin Date"/>
-
-            <EditText
-                android:id="@+id/search_begin_date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:padding="15dp"
-                android:textColor="@android:color/black"/>
-        </LinearLayout>
-
-        <LinearLayout
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="End Date"/>
-
-        <EditText
-            android:id="@+id/search_end_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:padding="15dp"
-            android:textColor="@android:color/black"/>
-    </LinearLayout>
-
-
-    </LinearLayout>
+        android:layout_below="@id/activity_search_query_input"/>
 
     <!-- Import Search Desk -->
     <include layout="@layout/search_desk"
