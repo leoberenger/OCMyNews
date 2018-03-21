@@ -1,7 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="30dp"
     tools:context="com.openclassrooms.mynews.Controllers.Activities.SearchActivity"
-    android:id="@+id/activity_search_frame_layout"/>
+    android:id="@+id/activity_search_root_layout">
+
+    <!-- Import Search Query -->
+    <include layout="@layout/search_query"
+        android:id="@+id/activity_search_query_input"/>
+
+    <!-- Import Search Date Pickers -->
+    <include layout="@layout/search_date_pickers"
+        android:id="@+id/activity_search_date_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/activity_search_query_input" />
+
+    <!-- Import Search Desk -->
+    <include layout="@layout/search_desk"
+        android:id="@+id/activity_search_desk"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_below="@id/activity_search_date_layout"/>
+
+    <Button
+        android:id="@+id/activity_search_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:padding="15dip"
+        android:text="Search"
+        android:textColor="#FFF"
+        android:background="@color/colorPrimary"
+        android:textStyle="bold"
+        android:layout_below="@id/activity_search_desk"/>
+
+</RelativeLayout>

@@ -28,7 +28,8 @@
                 android:value="com.openclassrooms.mynews.Controllers.Activities.MainActivity" />
         </activity>
         <activity android:name=".Controllers.Activities.SearchActivity" />
-        <activity android:name=".Controllers.Activities.NotificationActivity"></activity>
+        <activity android:name=".Controllers.Activities.NotificationActivity" />
+        <activity android:name=".Controllers.Activities.DisplaySearchActivity"></activity>
     </application>
 
 </manifest>
