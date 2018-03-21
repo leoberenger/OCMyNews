@@ -29,10 +29,12 @@ public class SearchActivity extends AppCompatActivity {
     Button searchBtn;
 
     private String mQuery;      //"france";
-    private String mNewsDesk = "news_desk:(%22Travel%22)";
     private int mBeginDate;     //20170910
     private int mEndDate;       //20171001
     private String [] newsDesks = {"","","","","","",};
+    private String mNewsDesk;   //"news_desk:(%22Travel%22)";
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,13 +45,11 @@ public class SearchActivity extends AppCompatActivity {
         configureDatePicker(beginDatePicker);
         configureDatePicker(endDatePicker);
 
-
-
         searchBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 mQuery = queryInput.getText().toString();
                 Log.e("SearchFragment", "query = "+mQuery);
-                
+
                 mBeginDate = transformDateFormat(beginDatePicker);
                 Log.e("SearchFragment", "begin date = "+mBeginDate);
 
@@ -57,14 +57,7 @@ public class SearchActivity extends AppCompatActivity {
                 Log.e("SearchFragment", "end date = "+mEndDate);
 
                 Log.e("Search Activity", "NewsDesk selected = " + newsDesks[0]+ ""+ newsDesks[1]+ ""+ newsDesks[2]+ ""+ newsDesks[3]+ ""+ newsDesks[4]+ ""+ newsDesks[5]);
-                mNewsDesk = "news_desk:("
-                        +"%22"+newsDesks[0]+"%22"
-                        +"%22"+newsDesks[1]+"%22"
-                        +"%22"+newsDesks[2]+"%22"
-                        +"%22"+newsDesks[3]+"%22"
-                        +"%22"+newsDesks[4]+"%22"
-                        +"%22"+newsDesks[5]+"%22"
-                        +")";
+                mNewsDesk = "news_desk:("+newsDesks[0]+newsDesks[1]+newsDesks[2]+newsDesks[3]+newsDesks[4]+newsDesks[5]+")";
                 Log.e("Search Activity", "mNewsDesk= "+mNewsDesk);
             }
         });
@@ -77,27 +70,27 @@ public class SearchActivity extends AppCompatActivity {
         // Check which checkbox was clicked
         switch (view.getId()) {
             case R.id.checkbox_arts:
-                if (checked) newsDesks[0] = "Arts";
+                if (checked) newsDesks[0] = "%22Arts%22";
                 else newsDesks[0] = "";
                 break;
             case R.id.checkbox_business:
-                if (checked) newsDesks[1] = "Business";
+                if (checked) newsDesks[1] = "%22Business%22";
                 else newsDesks[1] = "";
                 break;
             case R.id.checkbox_entrepreneur:
-                if (checked)newsDesks[2] = "Entrepreneur";
+                if (checked)newsDesks[2] = "%22Entrepreneur%22";
                 else newsDesks[2] = "";
                 break;
             case R.id.checkbox_politics:
-                if (checked)newsDesks[3] = "Politics";
+                if (checked)newsDesks[3] = "%22Politics%22";
                 else newsDesks[3] = "";
                 break;
             case R.id.checkbox_sports:
-                if (checked)newsDesks[4] = "Sports";
+                if (checked)newsDesks[4] = "%22Sports%22";
                 else newsDesks[4] = "";
                 break;
             case R.id.checkbox_travel:
-                if (checked)newsDesks[5] = "Travel";
+                if (checked)newsDesks[5] = "%22Travel%22";
                 else newsDesks[5] = "";
                 break;
         }
