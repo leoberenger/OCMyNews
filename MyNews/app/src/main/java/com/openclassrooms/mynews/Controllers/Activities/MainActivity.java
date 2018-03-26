@@ -1,17 +1,27 @@
 package com.openclassrooms.mynews.Controllers.Activities;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.openclassrooms.mynews.R;
 import com.openclassrooms.mynews.Views.PagerAdapter;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    private DrawerLayout mDrawerLayout;
+    private NavigationView mNavigationView;
+    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,12 +29,24 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         this.configureToolbar();
         this.configureViewPagerAndTabs();
+        this.configureDrawerLayout();
+        this.configureNavigationView();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.menu_activity_main, menu);
         return true;
+    }
+
+    @Override
+    public void onBackPressed(){
+        //Handle back click to close menu
+        if (this.mDrawerLayout.isDrawerOpen(GravityCompat.START)){
+            this.mDrawerLayout.closeDrawer(GravityCompat.START);
+        }else{
+            super.onBackPressed();
+        }
     }
 
     @Override
@@ -43,10 +65,34 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        //Handle Navigation Item Click
+        int id = item.getItemId();
+
+        switch(id){
+            case R.id.activity_main_drawer_topstories: break;
+            case R.id.activity_main_drawer_mostpopular: break;
+            case R.id.activity_main_drawer_sports: break;
+            case R.id.activity_main_drawer_business: break;
+            case R.id.activity_main_drawer_arts: break;
+            case R.id.activity_main_drawer_travel: break;
+            case R.id.activity_main_drawer_politics: break;
+            case R.id.activity_main_drawer_entrepreneur: break;
+            default: break;
+        }
+
+        this.mDrawerLayout.closeDrawer(GravityCompat.START);
+
+        return true;
+    }
+
+    //----------------------------
+    // CONFIGURATION OF VIEWS
+    //----------------------------
     private void configureToolbar(){
-        android.support.v7.widget.Toolbar toolbar
-                = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        this.mToolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
     }
 
     private void configureViewPagerAndTabs(){
@@ -59,4 +105,17 @@ public class MainActivity extends AppCompatActivity {
         tabs.setupWithViewPager(pager);
         tabs.setTabMode(TabLayout.MODE_FIXED);
     }
-}
+
+    private void configureDrawerLayout(){
+        this.mDrawerLayout = (DrawerLayout)findViewById(R.id.activity_main_drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+    }
+
+    private void configureNavigationView(){
+        this.mNavigationView = (NavigationView)findViewById(R.id.activity_main_nav_view);
+        mNavigationView.setNavigationItemSelectedListener(this);
+    }
+
+   }
