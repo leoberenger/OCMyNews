@@ -21,36 +21,38 @@ import com.openclassrooms.mynews.Controllers.Fragments.ArticleViews.TopicFragmen
 import com.openclassrooms.mynews.R;
 import com.openclassrooms.mynews.Views.PagerAdapter;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private DrawerLayout mDrawerLayout;
-    private NavigationView mNavigationView;
-    private Toolbar mToolbar;
-
-    //FRAGMENTS
-    private TopStoriesFragment mTopStoriesFragment;
-    private MostPopularFragment mMostPopularFragment;
-    private TopicFragment mSportsFragment;
-    private TopicFragment mBusinessFragment;
-    private TopicFragment mArtsFragment;
-
-    private static final int FRAGMENT_TOPSTORIES = 0;
-    private static final int FRAGMENT_MOSTPOPULAR = 1;
-    private static final int FRAGMENT_SPORTS = 2;
-    private static final int FRAGMENT_BUSINESS = 3;
-    private static final int FRAGMENT_ARTS = 4;
+    @BindView(R.id.activity_main_viewPager)
+    ViewPager mViewPager;
+    @BindView(R.id.tabs)
+    TabLayout tabs;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.activity_main_drawer_layout)
+    DrawerLayout mDrawerLayout;
+    @BindView(R.id.activity_main_nav_view)
+    NavigationView mNavigationView;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+
         this.configureToolbar();
         this.configureViewPagerAndTabs();
         this.configureDrawerLayout();
         this.configureNavigationView();
     }
 
+    //---------------------------------
+    //CONFIGURATION OF NAVIGATION ITEMS
+    //---------------------------------
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.menu_activity_main, menu);
@@ -69,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
+        //Get to Search or Notification Activity
         switch (item.getItemId()){
             case R.id.menu_search:
                 Intent intent = new Intent(this, SearchActivity.class);
@@ -90,19 +93,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         switch(id){
             case R.id.activity_main_drawer_topstories:
-                this.showFragment(FRAGMENT_TOPSTORIES);
+                mViewPager.setCurrentItem(0);
                 break;
             case R.id.activity_main_drawer_mostpopular:
-                this.showFragment(FRAGMENT_MOSTPOPULAR);
-                break;
-            case R.id.activity_main_drawer_sports:
-                this.showFragment(FRAGMENT_SPORTS);
+                mViewPager.setCurrentItem(1);
                 break;
             case R.id.activity_main_drawer_business:
-                this.showFragment(FRAGMENT_BUSINESS);
+                mViewPager.setCurrentItem(2);
+                break;
+            case R.id.activity_main_drawer_sports:
+                mViewPager.setCurrentItem(3);
                 break;
             case R.id.activity_main_drawer_arts:
-                this.showFragment(FRAGMENT_ARTS);
+                mViewPager.setCurrentItem(4);
                 break;
             default: break;
         }
@@ -113,98 +116,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     //----------------------------
-    // FRAGMENTS
-    //----------------------------
-    private void showFragment(int fragmentIdentifier){
-        switch (fragmentIdentifier){
-            case FRAGMENT_TOPSTORIES:
-                this.showTopStoriesFragment();
-                break;
-            case FRAGMENT_MOSTPOPULAR:
-                this.showMostPopularFragment();
-                break;
-            case FRAGMENT_SPORTS:
-                this.showSportsFragment();
-                break;
-            case FRAGMENT_BUSINESS:
-                this.showBusinessFragment();
-                break;
-            case FRAGMENT_ARTS:
-                this.showArtsFragment();
-                break;
-            default:
-                break;
-        }
-    }
-
-    private void showTopStoriesFragment(){
-        if(this.mTopStoriesFragment == null)
-            this.mTopStoriesFragment = TopStoriesFragment.newInstance();
-        this.startTransactionFragment(this.mTopStoriesFragment);
-    }
-
-    private void showMostPopularFragment(){
-        if(this.mMostPopularFragment == null)
-            this.mMostPopularFragment = MostPopularFragment.newInstance();
-        this.startTransactionFragment(this.mMostPopularFragment);
-    }
-
-    private void showSportsFragment(){
-        if(this.mSportsFragment == null)
-            this.mSportsFragment = TopicFragment.newInstance("Sports");
-        this.startTransactionFragment(this.mSportsFragment);
-    }
-
-    private void showBusinessFragment(){
-        if(this.mBusinessFragment == null)
-            this.mBusinessFragment = TopicFragment.newInstance("Business");
-        this.startTransactionFragment(this.mBusinessFragment);
-    }
-
-    private void showArtsFragment(){
-        if(this.mArtsFragment == null)
-            this.mArtsFragment = TopicFragment.newInstance("Arts");
-        this.startTransactionFragment(this.mArtsFragment);
-    }
-
-    private void startTransactionFragment(Fragment fragment){
-        if (!fragment.isVisible()){
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.activity_main_drawer_layout, fragment)
-                    .addToBackStack(null)
-                    .commit();
-        }
-    }
-
-    //----------------------------
     // CONFIGURATION OF VIEWS
     //----------------------------
+
     private void configureToolbar(){
-        this.mToolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
     }
 
     private void configureViewPagerAndTabs(){
         //ViewPager
-        ViewPager pager = findViewById(R.id.activity_main_viewPager);
-        pager.setAdapter(new PagerAdapter(getSupportFragmentManager()){});
+        mViewPager.setAdapter(new PagerAdapter(getSupportFragmentManager()){});
 
         //Tabs
-        TabLayout tabs = findViewById(R.id.tabs);
-        tabs.setupWithViewPager(pager);
+        tabs.setupWithViewPager(mViewPager);
         tabs.setTabMode(TabLayout.MODE_FIXED);
     }
 
     private void configureDrawerLayout(){
-        this.mDrawerLayout = (DrawerLayout)findViewById(R.id.activity_main_drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
     }
 
     private void configureNavigationView(){
-        this.mNavigationView = (NavigationView)findViewById(R.id.activity_main_nav_view);
         mNavigationView.setNavigationItemSelectedListener(this);
     }
 
