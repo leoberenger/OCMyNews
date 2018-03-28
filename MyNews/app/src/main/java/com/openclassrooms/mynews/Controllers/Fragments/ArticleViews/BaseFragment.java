@@ -18,6 +18,7 @@ import com.openclassrooms.mynews.Models.Result;
 import com.openclassrooms.mynews.R;
 import com.openclassrooms.mynews.Utils.ItemClickSupport;
 import com.openclassrooms.mynews.Utils.NYTStreams;
+import com.openclassrooms.mynews.Views.ArticleViewHolder;
 import com.openclassrooms.mynews.Views.MostPopularAdapter;
 import com.openclassrooms.mynews.Views.SearchArticleAdapter;
 import com.openclassrooms.mynews.Views.TopStoriesAdapter;
@@ -27,10 +28,30 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 
 public abstract class BaseFragment extends Fragment {
+
+    //Force developer to implement those methods
+    protected abstract BaseFragment newInstance();
+    //protected abstract io.reactivex.Observable<com.openclassrooms.mynews.Models.NYTimesAPI> getStream();
+    //protected abstract RecyclerView.Adapter<ArticleViewHolder> getAdapter();
+
+    private io.reactivex.Observable<com.openclassrooms.mynews.Models.NYTimesAPI> getStream(){
+        return NYTStreams.streamFetchTopStories();
+        // stream = NYTStreams.streamFetchMostPopular();
+        // stream = NYTStreams.streamFetchSearchArticles();
+    }
+
+    private RecyclerView.Adapter<ArticleViewHolder> getAdapter(){
+        return new TopStoriesAdapter(this.articles, Glide.with(this));
+        //this.adapter = new TopStoriesAdapter(this.articles, Glide.with(this));
+        //this.mAdapter = new MostPopularAdapter(this.articles, Glide.with(this));
+        //this.mAdapter = new SearchArticleAdapter(this.articles, Glide.with(this));
+    }
+
 
     // FOR DESIGN
     @BindView(R.id.fragment_main_recycler_view)
@@ -42,26 +63,20 @@ public abstract class BaseFragment extends Fragment {
     private Disposable mDisposable;
     private List<Result> articles;
     //private List<Response.Doc> articles;
-    private TopStoriesAdapter mAdapter;
+    protected RecyclerView.Adapter<ArticleViewHolder> adapter;
     //private MostPopularAdapter mAdapter;
     //private SearchArticleAdapter mAdapter;
-    private io.reactivex.Observable<com.openclassrooms.mynews.Models.NYTimesAPI> stream;
+    protected io.reactivex.Observable<com.openclassrooms.mynews.Models.NYTimesAPI> stream;
 
     String EXTRA_ARTICLE_URL = "EXTRA_ARTICLE_URL";
 
-    public BaseFragment() { }
-/*
-    public static BaseFragment newInstance(){
-        return(new BaseFragment());
-    }
-*/
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, view);
-        stream = NYTStreams.streamFetchTopStories();
-        // stream = NYTStreams.streamFetchMostPopular();
-        // stream = NYTStreams.streamFetchSearchArticles();
+
+        stream = getStream();
+        adapter = getAdapter();
 
         this.executeHttpRequestWithRetrofit();
         this.configureSwipeRefreshLayout();
@@ -91,11 +106,7 @@ public abstract class BaseFragment extends Fragment {
 
     private void configureRecyclerView(){
         this.articles = new ArrayList<>();
-        this.mAdapter = new TopStoriesAdapter(this.articles, Glide.with(this));
-        //this.mAdapter = new MostPopularAdapter(this.articles, Glide.with(this));
-        //this.mAdapter = new SearchArticleAdapter(this.articles, Glide.with(this));
-
-        this.mRecyclerView.setAdapter(this.mAdapter);
+        this.mRecyclerView.setAdapter(this.adapter);
         this.mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
@@ -104,8 +115,13 @@ public abstract class BaseFragment extends Fragment {
                 .setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
                     @Override
                     public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                        String articleUrl = mAdapter.getResult(position).getUrl();
+
+//PROBLEME ICI
+                        String articleUrl = "url temporaire";
+                        //String articleUrl = adapter.getResult(position).getUrl();
+                        //String articleUrl = mAdapter.getResult(position).getUrl();
                         //String articleUrl = mAdapter.getResponse(position).getWebUrl();
+
                         Intent intent = new Intent(getActivity(), DetailActivity.class);
                         intent.putExtra(EXTRA_ARTICLE_URL, articleUrl);
                         startActivity(intent);
@@ -152,6 +168,6 @@ public abstract class BaseFragment extends Fragment {
         articles.clear();
         articles.addAll(results.getResults());
         //articles.addAll(results.getResponse().getDocs());
-        mAdapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
     }
 }
