@@ -19,13 +19,14 @@ import com.openclassrooms.mynews.Models.Result;
 import com.openclassrooms.mynews.R;
 import com.openclassrooms.mynews.Utils.ItemClickSupport;
 import com.openclassrooms.mynews.Utils.NYTStreams;
-import com.openclassrooms.mynews.Views.TopStoriesAdapter;
+import com.openclassrooms.mynews.Views.StoriesAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 
@@ -43,8 +44,8 @@ public class TopStoriesFragment extends Fragment{
     //FOR DATA
     private Disposable mDisposable;
     private List<Result> articles;
-    private TopStoriesAdapter mAdapter;
-    private io.reactivex.Observable<com.openclassrooms.mynews.Models.NYTimesAPI> stream;
+    private StoriesAdapter mAdapter;
+    private io.reactivex.Observable<com.openclassrooms.mynews.Models.NYTimesAPI> mStream;
 
     String EXTRA_ARTICLE_URL = "EXTRA_ARTICLE_URL";
 
@@ -58,7 +59,9 @@ public class TopStoriesFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, view);
-        stream = NYTStreams.streamFetchTopStories();
+
+        mStream = NYTStreams.streamFetchTopStories();
+
         this.executeHttpRequestWithRetrofit();
         this.configureSwipeRefreshLayout();
         this.configureRecyclerView();
@@ -87,7 +90,7 @@ public class TopStoriesFragment extends Fragment{
 
     private void configureRecyclerView(){
         this.articles = new ArrayList<>();
-        this.mAdapter = new TopStoriesAdapter(this.articles, Glide.with(this));
+        this.mAdapter = new StoriesAdapter(this.articles, Glide.with(this));
         this.mRecyclerView.setAdapter(this.mAdapter);
         this.mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
@@ -110,7 +113,7 @@ public class TopStoriesFragment extends Fragment{
     // -----------------
 
     private void executeHttpRequestWithRetrofit(){
-        this.mDisposable = stream
+        this.mDisposable = mStream
                  .subscribeWith(new DisposableObserver<NYTimesAPI>(){
                     @Override
                     public void onNext(NYTimesAPI articles) {

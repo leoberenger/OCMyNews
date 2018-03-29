@@ -14,22 +14,18 @@ import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 import com.openclassrooms.mynews.Controllers.Activities.DetailActivity;
 import com.openclassrooms.mynews.Models.NYTimesAPI;
-import com.openclassrooms.mynews.Models.Response;
 import com.openclassrooms.mynews.Models.Result;
 import com.openclassrooms.mynews.R;
 import com.openclassrooms.mynews.Utils.ItemClickSupport;
 import com.openclassrooms.mynews.Utils.NYTStreams;
 import com.openclassrooms.mynews.Views.ArticleViewHolder;
-import com.openclassrooms.mynews.Views.MostPopularAdapter;
-import com.openclassrooms.mynews.Views.SearchArticleAdapter;
-import com.openclassrooms.mynews.Views.TopStoriesAdapter;
+import com.openclassrooms.mynews.Views.StoriesAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 
@@ -49,9 +45,8 @@ public abstract class BaseFragment extends Fragment {
     }
 
     private RecyclerView.Adapter<ArticleViewHolder> getAdapter(){
-        return new TopStoriesAdapter(this.articles, Glide.with(this));
-        //this.adapter = new TopStoriesAdapter(this.articles, Glide.with(this));
-        //this.mAdapter = new MostPopularAdapter(this.articles, Glide.with(this));
+        return new StoriesAdapter(this.articles, Glide.with(this));
+        //this.adapter = new StoriesAdapter(this.articles, Glide.with(this));
         //this.mAdapter = new SearchArticleAdapter(this.articles, Glide.with(this));
     }
 
@@ -67,7 +62,6 @@ public abstract class BaseFragment extends Fragment {
     private List<Result> articles;
     //private List<Response.Doc> articles;
     protected RecyclerView.Adapter<ArticleViewHolder> adapter;
-    //private MostPopularAdapter mAdapter;
     //private SearchArticleAdapter mAdapter;
     protected io.reactivex.Observable<com.openclassrooms.mynews.Models.NYTimesAPI> stream;
 

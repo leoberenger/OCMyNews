@@ -19,7 +19,7 @@ import com.openclassrooms.mynews.Models.Result;
 import com.openclassrooms.mynews.R;
 import com.openclassrooms.mynews.Utils.ItemClickSupport;
 import com.openclassrooms.mynews.Utils.NYTStreams;
-import com.openclassrooms.mynews.Views.MostPopularAdapter;
+import com.openclassrooms.mynews.Views.StoriesAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +43,7 @@ public class MostPopularFragment extends Fragment {
     //FOR DATA
     private Disposable mDisposable;
     private List<Result> articles;
-    private MostPopularAdapter mAdapter;
+    private StoriesAdapter mAdapter;
     private io.reactivex.Observable<com.openclassrooms.mynews.Models.NYTimesAPI> stream;
 
     String EXTRA_ARTICLE_URL = "EXTRA_ARTICLE_URL";
@@ -87,7 +87,7 @@ public class MostPopularFragment extends Fragment {
 
     private void configureRecyclerView(){
         this.articles = new ArrayList<>();
-        this.mAdapter = new MostPopularAdapter(this.articles, Glide.with(this));
+        this.mAdapter = new StoriesAdapter(this.articles, Glide.with(this));
         this.mRecyclerView.setAdapter(this.mAdapter);
         this.mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }

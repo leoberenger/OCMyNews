@@ -27,8 +27,6 @@ public class ArticleViewHolder extends RecyclerView.ViewHolder{
     @BindView(R.id.fragment_main_item_img)
     ImageView mImage;
 
-    String imgUrl;
-
     public ArticleViewHolder(View itemView){
         super(itemView);
         ButterKnife.bind(this, itemView);
@@ -47,10 +45,10 @@ public class ArticleViewHolder extends RecyclerView.ViewHolder{
         //FOR MOST POPULAR
         else if((result.getMultimedia() != null) && (!result.getMultimedia().isEmpty()))
             glide.load(result.getMultimedia().get(0).getUrl()).into(mImage);
+
         else
             glide.load("http://www.nytimes.com/services/mobile/img/ios-newsreader-icon.png").into(mImage);
     }
-
 
     public void updateWithSearchArticle(Response.Doc response, RequestManager glide){
         this.mTitle.setText(response.getHeadline().getMain());

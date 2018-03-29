@@ -16,14 +16,14 @@ import java.util.List;
  * Created by berenger on 06/03/2018.
  */
 
-public class TopStoriesAdapter extends RecyclerView.Adapter<ArticleViewHolder>{
+public class StoriesAdapter extends RecyclerView.Adapter<ArticleViewHolder>{
 
     //FOR DATA
     private List<Result> mArticles;
     public RequestManager glide;
 
     //CONSTRUCTOR
-    public TopStoriesAdapter(List<Result> articles, RequestManager glide){
+    public StoriesAdapter(List<Result> articles, RequestManager glide){
         this.mArticles = articles;
         this.glide = glide;
     }

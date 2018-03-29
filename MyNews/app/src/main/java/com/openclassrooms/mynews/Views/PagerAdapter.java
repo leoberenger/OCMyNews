@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.openclassrooms.mynews.Controllers.Fragments.ArticleViews.MostPopularFragment;
 import com.openclassrooms.mynews.Controllers.Fragments.ArticleViews.TopicFragment;
 import com.openclassrooms.mynews.Controllers.Fragments.ArticleViews.TopStoriesFragment;
+import com.openclassrooms.mynews.Utils.NYTStreams;
 
 /**
  * Created by berenger on 26/02/2018.
