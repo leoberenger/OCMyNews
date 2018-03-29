@@ -43,7 +43,7 @@ public class MostPopularAdapter extends RecyclerView.Adapter<ArticleViewHolder>{
 
     @Override
     public void onBindViewHolder(ArticleViewHolder viewHolder, int position){
-        viewHolder.updateWithMostPopularArticle(this.mArticles.get(position), this.glide);
+        viewHolder.updateWithStoriesArticle(this.mArticles.get(position), this.glide);
     }
 
     @Override

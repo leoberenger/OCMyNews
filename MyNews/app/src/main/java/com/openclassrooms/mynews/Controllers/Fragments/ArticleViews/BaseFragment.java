@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 import com.openclassrooms.mynews.Controllers.Activities.DetailActivity;
 import com.openclassrooms.mynews.Models.NYTimesAPI;
+import com.openclassrooms.mynews.Models.Response;
 import com.openclassrooms.mynews.Models.Result;
 import com.openclassrooms.mynews.R;
 import com.openclassrooms.mynews.Utils.ItemClickSupport;
@@ -36,6 +37,8 @@ public abstract class BaseFragment extends Fragment {
 
     //Force developer to implement those methods
     protected abstract BaseFragment newInstance();
+    protected abstract BaseFragment newInstance(String newsDesk);
+
     //protected abstract io.reactivex.Observable<com.openclassrooms.mynews.Models.NYTimesAPI> getStream();
     //protected abstract RecyclerView.Adapter<ArticleViewHolder> getAdapter();
 

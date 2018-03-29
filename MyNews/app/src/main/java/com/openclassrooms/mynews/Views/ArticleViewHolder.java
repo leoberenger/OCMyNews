@@ -34,28 +34,23 @@ public class ArticleViewHolder extends RecyclerView.ViewHolder{
         ButterKnife.bind(this, itemView);
     }
 
-    public void updateWithTopStoriesArticle(Result result, RequestManager glide){
+    public void updateWithStoriesArticle(Result result, RequestManager glide){
         this.mTitle.setText(result.getTitle());
         this.mSection.setText(result.getSection());
         //SUBSECTION
         this.mDate.setText(transformPublishedDate(result.getPublishedDate()));
 
-        if(!result.getMultimedia().isEmpty())
+        //FOR TOP STORIES
+        if((result.getMedia() != null) && (!result.getMedia().isEmpty()) && (!result.getMedia().get(0).getMediaMetadata().isEmpty()))
+            glide.load(result.getMedia().get(0).getMediaMetadata().get(0).getUrl()).into(mImage);
+
+        //FOR MOST POPULAR
+        else if((result.getMultimedia() != null) && (!result.getMultimedia().isEmpty()))
             glide.load(result.getMultimedia().get(0).getUrl()).into(mImage);
         else
             glide.load("http://www.nytimes.com/services/mobile/img/ios-newsreader-icon.png").into(mImage);
     }
 
-    public void updateWithMostPopularArticle(Result result, RequestManager glide){
-        this.mTitle.setText(result.getTitle());
-        this.mSection.setText(result.getSection());
-        this.mDate.setText(transformPublishedDate(result.getPublishedDate()));
-
-        if((!result.getMedia().isEmpty()) && (!result.getMedia().get(0).getMediaMetadata().isEmpty()))
-            glide.load(result.getMedia().get(0).getMediaMetadata().get(0).getUrl()).into(mImage);
-        else
-            glide.load("http://www.nytimes.com/services/mobile/img/ios-newsreader-icon.png").into(mImage);
-    }
 
     public void updateWithSearchArticle(Response.Doc response, RequestManager glide){
         this.mTitle.setText(response.getHeadline().getMain());

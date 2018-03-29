@@ -40,8 +40,7 @@ public abstract class BaseAdapter extends RecyclerView.Adapter<ArticleViewHolder
 
         @Override
         public void onBindViewHolder(ArticleViewHolder viewHolder, int position){
-            viewHolder.updateWithTopStoriesArticle(this.mArticles.get(position), this.glide);
-            //viewHolder.updateWithMostPopularArticle(this.mArticles.get(position), this.glide);
+            viewHolder.updateWithStoriesArticle(this.mArticles.get(position), this.glide);
             //viewHolder.updateWithSearchArticle(this.mArticles.get(position), this.glide);
         }
 
