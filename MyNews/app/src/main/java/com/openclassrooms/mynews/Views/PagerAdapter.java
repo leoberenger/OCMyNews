@@ -4,7 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.openclassrooms.mynews.Controllers.Fragments.ArticleViews.BaseFragment;
 import com.openclassrooms.mynews.Controllers.Fragments.ArticleViews.MostPopularFragment;
+import com.openclassrooms.mynews.Controllers.Fragments.ArticleViews.StoriesFragment;
 import com.openclassrooms.mynews.Controllers.Fragments.ArticleViews.TopicFragment;
 import com.openclassrooms.mynews.Controllers.Fragments.ArticleViews.TopStoriesFragment;
 import com.openclassrooms.mynews.Utils.NYTStreams;
@@ -24,7 +26,9 @@ public class PagerAdapter extends FragmentPagerAdapter{
         Fragment fragment = new Fragment();
 
         switch (position){
-            case 0: fragment = TopStoriesFragment.newInstance(); break;
+            case 0:
+                fragment = TopStoriesFragment.newInstance();
+                break;
             case 1: fragment = MostPopularFragment.newInstance(); break;
             case 2: fragment = TopicFragment.newInstance("Business"); break;
             case 3: fragment = TopicFragment.newInstance("Sports"); break;

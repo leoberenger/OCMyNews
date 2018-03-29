@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
 import com.openclassrooms.mynews.Controllers.Activities.DetailActivity;
 import com.openclassrooms.mynews.Models.NYTimesAPI;
 import com.openclassrooms.mynews.Models.Result;
@@ -32,24 +33,7 @@ import io.reactivex.observers.DisposableObserver;
 public abstract class BaseFragment extends Fragment {
 
     //Force developer to implement those methods
-    protected abstract BaseFragment newInstance();
-    protected abstract BaseFragment newInstance(String newsDesk);
-
-    //protected abstract io.reactivex.Observable<com.openclassrooms.mynews.Models.NYTimesAPI> getStream();
-    //protected abstract RecyclerView.Adapter<ArticleViewHolder> getAdapter();
-
-    private io.reactivex.Observable<com.openclassrooms.mynews.Models.NYTimesAPI> getStream(){
-        return NYTStreams.streamFetchTopStories();
-        // stream = NYTStreams.streamFetchMostPopular();
-        // stream = NYTStreams.streamFetchSearchArticles();
-    }
-
-    private RecyclerView.Adapter<ArticleViewHolder> getAdapter(){
-        return new StoriesAdapter(this.articles, Glide.with(this));
-        //this.adapter = new StoriesAdapter(this.articles, Glide.with(this));
-        //this.mAdapter = new SearchArticleAdapter(this.articles, Glide.with(this));
-    }
-
+    protected abstract io.reactivex.Observable<com.openclassrooms.mynews.Models.NYTimesAPI> getStream();
 
     // FOR DESIGN
     @BindView(R.id.fragment_main_recycler_view)
@@ -58,13 +42,12 @@ public abstract class BaseFragment extends Fragment {
     SwipeRefreshLayout mSwipeRefreshLayout;
 
     //FOR DATA
-    private Disposable mDisposable;
-    private List<Result> articles;
+    protected Disposable mDisposable;
+    protected List<Result> mArticles;
     //private List<Response.Doc> articles;
-    protected RecyclerView.Adapter<ArticleViewHolder> adapter;
+    protected StoriesAdapter mAdapter;
     //private SearchArticleAdapter mAdapter;
-    protected io.reactivex.Observable<com.openclassrooms.mynews.Models.NYTimesAPI> stream;
-
+    protected io.reactivex.Observable<com.openclassrooms.mynews.Models.NYTimesAPI> mStream;
     String EXTRA_ARTICLE_URL = "EXTRA_ARTICLE_URL";
 
     @Override
@@ -72,8 +55,7 @@ public abstract class BaseFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, view);
 
-        stream = getStream();
-        adapter = getAdapter();
+        mStream = getStream();
 
         this.executeHttpRequestWithRetrofit();
         this.configureSwipeRefreshLayout();
@@ -102,8 +84,8 @@ public abstract class BaseFragment extends Fragment {
     }
 
     private void configureRecyclerView(){
-        this.articles = new ArrayList<>();
-        this.mRecyclerView.setAdapter(this.adapter);
+        this.mArticles = new ArrayList<>();
+        this.mRecyclerView.setAdapter(this.mAdapter);
         this.mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
@@ -113,9 +95,8 @@ public abstract class BaseFragment extends Fragment {
                     @Override
                     public void onItemClicked(RecyclerView recyclerView, int position, View v) {
 
-//PROBLEME ICI
-                        String articleUrl = "url temporaire";
-                        //String articleUrl = adapter.getResult(position).getUrl();
+
+                        String articleUrl = mAdapter.getResult(position).getUrl();
                         //String articleUrl = mAdapter.getResult(position).getUrl();
                         //String articleUrl = mAdapter.getResponse(position).getWebUrl();
 
@@ -131,7 +112,7 @@ public abstract class BaseFragment extends Fragment {
     // -----------------
 
     private void executeHttpRequestWithRetrofit(){
-        this.mDisposable = stream
+        this.mDisposable = mStream
                 .subscribeWith(new DisposableObserver<NYTimesAPI>(){
                     @Override
                     public void onNext(NYTimesAPI articles) {
@@ -162,9 +143,9 @@ public abstract class BaseFragment extends Fragment {
 
     private void updateUI(NYTimesAPI results){
         mSwipeRefreshLayout.setRefreshing(false);
-        articles.clear();
-        articles.addAll(results.getResults());
+        mArticles.clear();
+        mArticles.addAll(results.getResults());
         //articles.addAll(results.getResponse().getDocs());
-        adapter.notifyDataSetChanged();
+        mAdapter.notifyDataSetChanged();
     }
 }
