@@ -26,136 +26,25 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DisplaySearchFragment extends Fragment {
-
-    // FOR DESIGN
-    @BindView(R.id.fragment_main_recycler_view)
-    RecyclerView mRecyclerView;
-    @BindView(R.id.fragment_main_swipe_container)
-    SwipeRefreshLayout mSwipeRefreshLayout;
-
-    //FOR DATA
-    private Disposable mDisposable;
-    private List<Response.Doc> articles;
-    private SearchArticleAdapter mAdapter;
-    private io.reactivex.Observable<NYTimesAPI> stream;
-
-    //SEARCH ARTICLE QUERIES
-    String mQuery;      // "france"
-    String mNewsDesk;   //"news_desk:(%22Travel%22)"
-    int mBeginDate;     //20170910
-    int mEndDate;       //20171001
-
-    String EXTRA_ARTICLE_URL = "EXTRA_ARTICLE_URL";
+public class DisplaySearchFragment extends BaseSearchFragment {
 
     public DisplaySearchFragment() { }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_main, container, false);
-        ButterKnife.bind(this, view);
-
+    protected Observable<NYTimesAPI> getStream() {
         Bundle args = getArguments();
-        mQuery = args.getString("query", "");
-        mNewsDesk = args.getString("newsDesk", "");
-        mBeginDate = args.getInt("beginDate", 0);
-        mEndDate = args.getInt("endDate", 0);
+        String mQuery = args.getString("query", "");
+        String mNewsDesk = args.getString("newsDesk", "");
+        int mBeginDate = args.getInt("beginDate", 0);
+        int mEndDate = args.getInt("endDate", 0);
 
-        Log.e("DisplaySearchFragment", "mNewsDesk=" + mNewsDesk + " mQuery= " + mQuery + " begin date ="+mBeginDate + " end date =" + mEndDate);
-
-        /*stream = NYTStreams.streamFetchSearchArticles(mQuery, mNewsDesk, mBeginDate, mEndDate);
-        this.executeHttpRequestWithRetrofit();
-        this.configureSwipeRefreshLayout();
-        this.configureRecyclerView();
-        this.configureOnClickRecyclerView();
-        */
-        return view;
-    }
-
-    @Override
-    public void onDestroy(){
-        super.onDestroy();
-        this.disposeWhenDestroy();
-    }
-
-    // -----------------
-    // CONFIGURATION
-    // -----------------
-
-    private void configureSwipeRefreshLayout(){
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                executeHttpRequestWithRetrofit();
-            }
-        });
-    }
-
-    private void configureRecyclerView(){
-        this.articles = new ArrayList<>();
-        this.mAdapter = new SearchArticleAdapter(this.articles, Glide.with(this));
-        this.mRecyclerView.setAdapter(this.mAdapter);
-        this.mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-    }
-
-    private void configureOnClickRecyclerView(){
-        ItemClickSupport.addTo(mRecyclerView, R.layout.fragment_main_item)
-                .setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
-                    @Override
-                    public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                        String articleUrl = mAdapter.getResponse(position).getWebUrl();
-                        Intent intent = new Intent(getActivity(), DetailActivity.class);
-                        intent.putExtra(EXTRA_ARTICLE_URL, articleUrl);
-                        startActivity(intent);
-                    }
-                });
-    }
-
-    // -----------------
-    // HTTP REQUEST (RxJava)
-    // -----------------
-
-    private void executeHttpRequestWithRetrofit(){
-        this.mDisposable = stream
-                .subscribeWith(new DisposableObserver<NYTimesAPI>(){
-                    @Override
-                    public void onNext(NYTimesAPI articles) {
-                        Log.e("DisplaySearchFragment", "On Next");
-                        updateUI(articles);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e("DisplaySearchFragment", "On Error"+Log.getStackTraceString(e));
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        Log.e("DisplaySearchFragment", "On Complete");
-                    }
-                });
-    }
-
-    private void disposeWhenDestroy(){
-        if(this.mDisposable != null && !this.mDisposable.isDisposed())
-            this.mDisposable.dispose();
-    }
-
-    // -----------------
-    // UPDATE UI
-    // -----------------
-
-    private void updateUI(NYTimesAPI responses){
-        mSwipeRefreshLayout.setRefreshing(false);
-        articles.clear();
-        articles.addAll(responses.getResponse().getDocs());
-        mAdapter.notifyDataSetChanged();
+        return NYTStreams.streamFetchSearchArticles(mQuery, mNewsDesk, mBeginDate, mEndDate);
     }
 }
 

@@ -15,9 +15,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.openclassrooms.mynews.Controllers.Fragments.ArticleViews.MostPopularFragment;
-import com.openclassrooms.mynews.Controllers.Fragments.ArticleViews.TopStoriesFragment;
-import com.openclassrooms.mynews.Controllers.Fragments.ArticleViews.TopicFragment;
 import com.openclassrooms.mynews.R;
 import com.openclassrooms.mynews.Views.PagerAdapter;
 
