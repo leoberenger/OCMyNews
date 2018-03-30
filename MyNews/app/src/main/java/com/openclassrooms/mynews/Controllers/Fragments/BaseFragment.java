@@ -1,4 +1,4 @@
-package com.openclassrooms.mynews.Controllers.Fragments.ArticleViews;
+package com.openclassrooms.mynews.Controllers.Fragments;
 
 import android.content.Intent;
 import android.os.Bundle;

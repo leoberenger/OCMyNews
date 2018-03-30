@@ -3,12 +3,11 @@ package com.openclassrooms.mynews.Controllers.Activities;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.openclassrooms.mynews.Controllers.Fragments.ArticleViews.DisplaySearchFragment;
+import com.openclassrooms.mynews.Controllers.Fragments.SearchFragment;
 import com.openclassrooms.mynews.R;
 
 public class DisplaySearchActivity extends AppCompatActivity {
 
-    private DisplaySearchFragment mDisplaySearchFragment;
     private String EXTRA_QUERY = "EXTRA_QUERY";
     private String EXTRA_NEWS_DESKS = "EXTRA_NEWS_DESKS";
     private String EXTRA_BEGIN_DATE = "EXTRA_BEGIN_DATE";
@@ -23,9 +22,6 @@ public class DisplaySearchActivity extends AppCompatActivity {
 
     private void configureAndShowDisplaySearchFragment() {
 
-        if (mDisplaySearchFragment == null) {
-            mDisplaySearchFragment = new DisplaySearchFragment();
-
             Bundle bundle = getIntent().getExtras();
             String mQuery = bundle.getString(EXTRA_QUERY);
             String mNewsDesk = bundle.getString(EXTRA_NEWS_DESKS);
@@ -37,11 +33,11 @@ public class DisplaySearchActivity extends AppCompatActivity {
             args.putString("newsDesk", mNewsDesk);
             args.putInt("beginDate", mBeginDate);
             args.putInt("endDate", mEndDate);
-            mDisplaySearchFragment.setArguments(args);
+
+            SearchFragment mSearchFragment = SearchFragment.newInstance("query", mQuery, mNewsDesk, mBeginDate, mEndDate);
 
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.activity_display_search_frame_layout, mDisplaySearchFragment)
+                    .add(R.id.activity_display_search_frame_layout, mSearchFragment)
                     .commit();
         }
-    }
 }
