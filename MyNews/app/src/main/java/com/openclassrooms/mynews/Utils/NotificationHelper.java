@@ -56,7 +56,7 @@ public class NotificationHelper extends ContextWrapper {
                 R.mipmap.ic_launcher);
 
         return new NotificationCompat.Builder(getApplicationContext(), MY_CHANNEL)
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setSmallIcon(R.drawable.ic_announcement_black_24dp)
                 .setLargeIcon(notificationLargeIconBitmap)
                 .setContentTitle(title)
                 .setContentText(body)
