@@ -31,9 +31,6 @@
         <activity android:name=".Controllers.Activities.NotificationActivity" />
         <activity android:name=".Controllers.Activities.DisplaySearchActivity"></activity>
 
-        <receiver
-            android:name=".Utils.MyAlarmReceiver"
-            android:exported="true"/>
     </application>
 
 </manifest>
