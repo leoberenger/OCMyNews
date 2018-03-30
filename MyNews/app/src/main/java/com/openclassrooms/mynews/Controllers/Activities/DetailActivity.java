@@ -10,21 +10,19 @@ import com.openclassrooms.mynews.R;
 
 public class DetailActivity extends AppCompatActivity {
 
-    public String articleUrl;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        this.configureAndShowMainFragment();
+        this.configureAndShowDetailFragment();
     }
 
     // -------------------
     // CONFIGURATION
     // -------------------
 
-    private void configureAndShowMainFragment(){
+    private void configureAndShowDetailFragment(){
 
         DetailFragment detailFragment = (DetailFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_detail_frame_layout);
 
@@ -35,7 +33,7 @@ public class DetailActivity extends AppCompatActivity {
                     .commit();
 
             Intent intent = getIntent();
-            articleUrl = intent.getStringExtra("EXTRA_ARTICLE_URL");
+            String articleUrl = intent.getStringExtra("EXTRA_ARTICLE_URL");
 
             Bundle args = new Bundle();
             args.putString("articleUrl", articleUrl);

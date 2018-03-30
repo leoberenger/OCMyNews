@@ -8,11 +8,6 @@ import com.openclassrooms.mynews.R;
 
 public class DisplaySearchActivity extends AppCompatActivity {
 
-    private String EXTRA_QUERY = "EXTRA_QUERY";
-    private String EXTRA_NEWS_DESKS = "EXTRA_NEWS_DESKS";
-    private String EXTRA_BEGIN_DATE = "EXTRA_BEGIN_DATE";
-    private String EXTRA_END_DATE = "EXTRA_END_DATE";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,6 +16,11 @@ public class DisplaySearchActivity extends AppCompatActivity {
     }
 
     private void configureAndShowDisplaySearchFragment() {
+
+        String EXTRA_QUERY = "EXTRA_QUERY";
+        String EXTRA_NEWS_DESKS = "EXTRA_NEWS_DESKS";
+        String EXTRA_BEGIN_DATE = "EXTRA_BEGIN_DATE";
+        String EXTRA_END_DATE = "EXTRA_END_DATE";
 
             Bundle bundle = getIntent().getExtras();
             String mQuery = bundle.getString(EXTRA_QUERY);
