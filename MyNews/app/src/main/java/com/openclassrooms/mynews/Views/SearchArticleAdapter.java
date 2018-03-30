@@ -43,7 +43,7 @@ public class SearchArticleAdapter extends RecyclerView.Adapter<ArticleViewHolder
 
     @Override
     public void onBindViewHolder(ArticleViewHolder viewHolder, int position){
-        viewHolder.updateWithSearchArticle(this.mArticles.get(position), this.glide);
+        viewHolder.updateWithArticle(this.mArticles.get(position), this.glide);
     }
 
     @Override

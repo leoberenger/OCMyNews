@@ -32,7 +32,8 @@ public class ArticleViewHolder extends RecyclerView.ViewHolder{
         ButterKnife.bind(this, itemView);
     }
 
-    public void updateWithStoriesArticle(Result result, RequestManager glide){
+    //FOR TOP STORIES AND MOSTPOPULAR APIs
+    public void updateWithArticle(Result result, RequestManager glide){
         this.mTitle.setText(result.getTitle());
         this.mSection.setText(result.getSection());
         //SUBSECTION
@@ -50,7 +51,8 @@ public class ArticleViewHolder extends RecyclerView.ViewHolder{
             glide.load("http://www.nytimes.com/services/mobile/img/ios-newsreader-icon.png").into(mImage);
     }
 
-    public void updateWithSearchArticle(Response.Doc response, RequestManager glide){
+    //FOR SEARCHARTICLE API
+    public void updateWithArticle(Response.Doc response, RequestManager glide){
         this.mTitle.setText(response.getHeadline().getMain());
         this.mDate.setText(transformPublishedDate(response.getPubDate()));
 
