@@ -114,18 +114,18 @@ public class MostPopularFragment extends Fragment {
                 .subscribeWith(new DisposableObserver<NYTimesAPI>(){
                     @Override
                     public void onNext(NYTimesAPI articles) {
-                        Log.e("TAG", "On Next");
+                        Log.e("MostPopularFragment", "On Next");
                         updateUI(articles);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e("TAG", "On Error"+Log.getStackTraceString(e));
+                        Log.e("MostPopularFragment", "On Error"+Log.getStackTraceString(e));
                     }
 
                     @Override
                     public void onComplete() {
-                        Log.e("TAG", "On Complete");
+                        Log.e("MostPopularFragment", "On Complete");
                     }
                 });
     }

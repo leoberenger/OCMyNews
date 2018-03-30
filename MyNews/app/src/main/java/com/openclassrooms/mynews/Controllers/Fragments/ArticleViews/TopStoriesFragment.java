@@ -45,7 +45,6 @@ public class TopStoriesFragment extends Fragment{
     private Disposable mDisposable;
     private List<Result> articles;
     private StoriesAdapter mAdapter;
-    private io.reactivex.Observable<com.openclassrooms.mynews.Models.NYTimesAPI> mStream;
 
     String EXTRA_ARTICLE_URL = "EXTRA_ARTICLE_URL";
 
@@ -60,10 +59,10 @@ public class TopStoriesFragment extends Fragment{
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, view);
 
-        mStream = NYTStreams.streamFetchTopStories();
+        Observable<NYTimesAPI> mStream = NYTStreams.streamFetchTopStories();
 
-        this.executeHttpRequestWithRetrofit();
-        this.configureSwipeRefreshLayout();
+        this.executeHttpRequestWithRetrofit(mStream);
+        this.configureSwipeRefreshLayout(mStream);
         this.configureRecyclerView();
         this.configureOnClickRecyclerView();
         return view;
@@ -79,11 +78,11 @@ public class TopStoriesFragment extends Fragment{
     // CONFIGURATION
     // -----------------
 
-    private void configureSwipeRefreshLayout(){
+    private void configureSwipeRefreshLayout(final Observable<NYTimesAPI> stream){
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                executeHttpRequestWithRetrofit();
+                executeHttpRequestWithRetrofit(stream);
             }
         });
     }
@@ -112,23 +111,23 @@ public class TopStoriesFragment extends Fragment{
     // HTTP REQUEST (RxJava)
     // -----------------
 
-    private void executeHttpRequestWithRetrofit(){
-        this.mDisposable = mStream
+    private void executeHttpRequestWithRetrofit(Observable<NYTimesAPI> stream){
+        this.mDisposable = stream
                  .subscribeWith(new DisposableObserver<NYTimesAPI>(){
                     @Override
                     public void onNext(NYTimesAPI articles) {
-                        Log.e("TAG", "On Next");
+                        Log.e("TopStoriesFragment", "On Next");
                         updateUI(articles);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e("TAG", "On Error"+Log.getStackTraceString(e));
+                        Log.e("TopStoriesFragment", "On Error"+Log.getStackTraceString(e));
                     }
 
                     @Override
                     public void onComplete() {
-                        Log.e("TAG", "On Complete");
+                        Log.e("TopStoriesFragment", "On Complete");
                     }
                 });
     }
