@@ -4,7 +4,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="30dp">
+    android:layout_margin="30dp"
+    android:theme="@style/SearchTheme">
 
         <!-- Import Search Query -->
         <include layout="@layout/search_query"

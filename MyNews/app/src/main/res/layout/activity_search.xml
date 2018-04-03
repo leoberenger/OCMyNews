@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     android:layout_margin="30dp"
     tools:context="com.openclassrooms.mynews.Controllers.Activities.SearchActivity"
-    android:id="@+id/activity_search_root_layout">
+    android:id="@+id/activity_search_root_layout"
+    android:theme="@style/SearchTheme">
 
     <!-- Import Search Query -->
     <include layout="@layout/search_query"
