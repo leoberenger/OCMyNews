@@ -49,13 +49,15 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
         ButterKnife.bind(this);
 
+        Log.e("onCreate()", beginDatePicker.getText().toString());
+
         configureDatePicker(beginDatePicker);
         configureDatePicker(endDatePicker);
 
         searchBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                mQuery = queryInput.getText().toString();
 
+                mQuery = queryInput.getText().toString();
                 String begDateInput = beginDatePicker.getText().toString();
                 String endDateInput = endDatePicker.getText().toString();
 
@@ -64,9 +66,9 @@ public class SearchActivity extends AppCompatActivity {
                 }else if(!min1DeskIsSelected) {
                     Toast.makeText(getApplicationContext(), "Pick at least one topic", Toast.LENGTH_LONG).show();
                 }else if( !begDateInput.equals("") && !validateDateFormat(beginDatePicker) ){
-                    Toast.makeText(getApplicationContext(), "Invalid date format", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Invalid Begin Date format", Toast.LENGTH_LONG).show();
                 }else if( !endDateInput.equals("") && !validateDateFormat(endDatePicker) ){
-                    Toast.makeText(getApplicationContext(), "Invalid date format", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Invalid End Date format", Toast.LENGTH_LONG).show();
                 }else{
                     mNewsDesk = "news_desk:(" + newsDesks[0] + newsDesks[1] + newsDesks[2] + newsDesks[3] + newsDesks[4] + newsDesks[5] + ")";
                     mBeginDate = (!begDateInput.equals("")) ? transformDateFormat(beginDatePicker) : 0 ;
@@ -190,7 +192,7 @@ public class SearchActivity extends AppCompatActivity {
 
     public boolean validateDateFormat(EditText datePicker){
         //Regular Expression Testing dd-MM-YYYY
-        String regexp = "(0?[1-9]|[12][0-9]|3[01])-(0?[1-9]|1[012])-((18|19|20|21)\\d\\d)";
+        String regexp = "(0?[1-9]|[12][0-9]|3[01])/(0?[1-9]|1[012])/((18|19|20|21)\\d\\d)";
         String date = datePicker.getText().toString();
 
         return (date.matches(regexp));
