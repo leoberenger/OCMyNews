@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //Tabs
         tabs.setupWithViewPager(mViewPager);
-        tabs.setTabMode(TabLayout.MODE_FIXED);
+        tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
     }
 
     private void configureDrawerLayout(){

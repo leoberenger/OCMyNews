@@ -81,26 +81,26 @@ public class Result {
         }
 
         //FOR MOSTPOPULAR IMG URL
-        public class Medium {
+            public class Medium {
 
-            @SerializedName("media-metadata")
-            @Expose
-            private List<MediaMetadatum> mediaMetadata = null;
-
-            public List<MediaMetadatum> getMediaMetadata() {
-                return mediaMetadata;
-            }
-
-            public class MediaMetadatum {
-
-                @SerializedName("url")
+                @SerializedName("media-metadata")
                 @Expose
-                private String url;
+                private List<MediaMetadatum> mediaMetadata = null;
 
-                public String getUrl() {
-                    return url;
+                public List<MediaMetadatum> getMediaMetadata() {
+                    return mediaMetadata;
                 }
-            }
+
+                public class MediaMetadatum {
+
+                    @SerializedName("url")
+                    @Expose
+                    private String url;
+
+                    public String getUrl() {
+                        return url;
+                    }
+                }
         }
 }
 
