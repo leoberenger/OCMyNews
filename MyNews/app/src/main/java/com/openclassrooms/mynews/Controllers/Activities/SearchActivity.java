@@ -36,6 +36,8 @@ public class SearchActivity extends AppCompatActivity {
     private String [] newsDesks = {"","","","","","",};
     private String mNewsDesk;           //"news_desk:(%22Travel%22)";
 
+    private boolean min1DeskIsSelected = false;
+
     private String EXTRA_QUERY = "EXTRA_QUERY";
     private String EXTRA_NEWS_DESKS = "EXTRA_NEWS_DESKS";
     private String EXTRA_BEGIN_DATE = "EXTRA_BEGIN_DATE";
@@ -54,19 +56,22 @@ public class SearchActivity extends AppCompatActivity {
             public void onClick(View v) {
                 mQuery = queryInput.getText().toString();
 
-                if(!beginDatePicker.getText().toString().equals(""))
-                    mBeginDate = transformDateFormat(beginDatePicker);
-
-                if(!endDatePicker.getText().toString().equals(""))
-                    mEndDate = transformDateFormat(endDatePicker);
+                String begDateInput = beginDatePicker.getText().toString();
+                String endDateInput = endDatePicker.getText().toString();
 
                 if(mQuery.equals("")) {
                     Toast.makeText(getApplicationContext(), "Query required", Toast.LENGTH_LONG).show();
-                }else if((newsDesks[0].equals(""))&&(newsDesks[1].equals(""))&&(newsDesks[2].equals(""))
-                            &&(newsDesks[3].equals(""))&&(newsDesks[4].equals(""))&&(newsDesks[5].equals(""))) {
+                }else if(!min1DeskIsSelected) {
                     Toast.makeText(getApplicationContext(), "Pick at least one topic", Toast.LENGTH_LONG).show();
+                }else if( !begDateInput.equals("") && !validateDateFormat(beginDatePicker) ){
+                    Toast.makeText(getApplicationContext(), "Invalid date format", Toast.LENGTH_LONG).show();
+                }else if( !endDateInput.equals("") && !validateDateFormat(endDatePicker) ){
+                    Toast.makeText(getApplicationContext(), "Invalid date format", Toast.LENGTH_LONG).show();
                 }else{
                     mNewsDesk = "news_desk:(" + newsDesks[0] + newsDesks[1] + newsDesks[2] + newsDesks[3] + newsDesks[4] + newsDesks[5] + ")";
+                    mBeginDate = (!begDateInput.equals("")) ? transformDateFormat(beginDatePicker) : 0 ;
+                    mEndDate = (!endDateInput.equals("")) ? transformDateFormat(endDatePicker) : 0;
+
                     Log.e("Search Activity", "mNewsDesk=" + mNewsDesk + " mQuery= " + mQuery + " begin date ="+mBeginDate + " end date =" + mEndDate);
 
                     Intent intent = new Intent(SearchActivity.this, DisplaySearchActivity.class);
@@ -83,32 +88,57 @@ public class SearchActivity extends AppCompatActivity {
     public void onCheckboxClicked(View view) {
 
         boolean checked = ((CheckBox) view).isChecked();
+        min1DeskIsSelected = false;
 
         // Check which checkbox was clicked
         switch (view.getId()) {
             case R.id.checkbox_arts:
-                if (checked) newsDesks[0] = "%22Arts%22";
-                else newsDesks[0] = "";
+                if (checked) {
+                    newsDesks[0] = "%22Arts%22";
+                    min1DeskIsSelected = true;
+                }else{
+                    newsDesks[0] = "";
+                }
                 break;
             case R.id.checkbox_business:
-                if (checked) newsDesks[1] = "%22Business%22";
-                else newsDesks[1] = "";
+                if (checked) {
+                    newsDesks[1] = "%22Business%22";
+                    min1DeskIsSelected = true;
+                }else{
+                    newsDesks[1] = "";
+                }
                 break;
             case R.id.checkbox_entrepreneur:
-                if (checked)newsDesks[2] = "%22Entrepreneur%22";
-                else newsDesks[2] = "";
+                if (checked){
+                    newsDesks[2] = "%22Entrepreneur%22";
+                    min1DeskIsSelected = true;
+                }else{
+                    newsDesks[2] = "";
+                }
                 break;
             case R.id.checkbox_politics:
-                if (checked)newsDesks[3] = "%22Politics%22";
-                else newsDesks[3] = "";
+                if (checked){
+                    newsDesks[3] = "%22Politics%22";
+                    min1DeskIsSelected = true;
+                }else{
+                    newsDesks[3] = "";
+                }
                 break;
             case R.id.checkbox_sports:
-                if (checked)newsDesks[4] = "%22Sports%22";
-                else newsDesks[4] = "";
+                if (checked){
+                    newsDesks[4] = "%22Sports%22";
+                    min1DeskIsSelected = true;
+                }else{
+                    newsDesks[4] = "";
+                }
                 break;
             case R.id.checkbox_travel:
-                if (checked)newsDesks[5] = "%22Travel%22";
-                else newsDesks[5] = "";
+                if (checked){
+                    newsDesks[5] = "%22Travel%22";
+                    min1DeskIsSelected = true;
+                }else{
+                    newsDesks[5] = "";
+                }
                 break;
         }
     }
@@ -156,5 +186,13 @@ public class SearchActivity extends AppCompatActivity {
         int intDate = Integer.valueOf(orderedDate);
 
         return intDate;
+    }
+
+    public boolean validateDateFormat(EditText datePicker){
+        //Regular Expression Testing dd-MM-YYYY
+        String regexp = "(0?[1-9]|[12][0-9]|3[01])-(0?[1-9]|1[012])-((18|19|20|21)\\d\\d)";
+        String date = datePicker.getText().toString();
+
+        return (date.matches(regexp));
     }
 }

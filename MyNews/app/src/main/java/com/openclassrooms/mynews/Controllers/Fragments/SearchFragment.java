@@ -77,7 +77,10 @@ public class SearchFragment extends BaseFragment {
                 int beginDate = args.getInt("beginDate", 0);
                 int endDate = args.getInt("endDate", 0);
 
-                stream = NYTStreams.streamFetchSearchArticles(query, newsDesk, beginDate, endDate);
+                if((beginDate!=0) && (endDate !=0))
+                    stream = NYTStreams.streamFetchSearchArticles(query, newsDesk, beginDate, endDate);
+                else
+                    stream = NYTStreams.streamFetchSearchArticles(query, newsDesk);
                 break;
         }
         return stream;

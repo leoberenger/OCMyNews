@@ -36,6 +36,12 @@ public interface NYTService {
     @GET("search/v2/articlesearch.json?" + apiKeyQuery)
     Observable<NYTimesAPI> getSearchArticles(
             @Query("query") String query,
+            @Query("fq") String desk               //&fq=news_desk:(%22Travel%22)" +
+    );
+
+    @GET("search/v2/articlesearch.json?" + apiKeyQuery)
+    Observable<NYTimesAPI> getSearchArticles(
+            @Query("query") String query,
             @Query("fq") String desk,               //&fq=news_desk:(%22Travel%22)" +
             @Query("begin_date") int beginDate,     //"&begin_date=20170910" +
             @Query("end_date") int endDate          //"&end_date=20171001"

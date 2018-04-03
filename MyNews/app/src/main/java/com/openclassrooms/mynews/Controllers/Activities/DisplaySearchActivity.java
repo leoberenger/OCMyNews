@@ -12,10 +12,10 @@ public class DisplaySearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_search);
-        configureAndShowDisplaySearchFragment();
+        configureAndShowSearchFragment();
     }
 
-    private void configureAndShowDisplaySearchFragment() {
+    private void configureAndShowSearchFragment() {
 
         String EXTRA_QUERY = "EXTRA_QUERY";
         String EXTRA_NEWS_DESKS = "EXTRA_NEWS_DESKS";
