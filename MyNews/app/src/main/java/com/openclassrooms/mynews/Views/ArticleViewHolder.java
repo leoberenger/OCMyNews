@@ -35,15 +35,20 @@ public class ArticleViewHolder extends RecyclerView.ViewHolder{
     //FOR TOP STORIES AND MOSTPOPULAR APIs
     public void updateWithArticle(Result result, RequestManager glide){
         this.mTitle.setText(result.getTitle());
-        this.mSection.setText(result.getSection());
-        //SUBSECTION
+
+        String sectionText = ((result.getSubsection() != null)&&(!result.getSubsection().isEmpty()))?
+                result.getSection()+" > " + result.getSubsection():
+                result.getSection();
+
+        this.mSection.setText(sectionText);
+
         this.mDate.setText(transformPublishedDate(result.getPublishedDate()));
 
-        //FOR TOP STORIES
+        //FOR MOST POPULAR
         if((result.getMedia() != null) && (!result.getMedia().isEmpty()) && (!result.getMedia().get(0).getMediaMetadata().isEmpty()))
             glide.load(result.getMedia().get(0).getMediaMetadata().get(0).getUrl()).into(mImage);
 
-        //FOR MOST POPULAR
+        //FOR TOP STORIES
         else if((result.getMultimedia() != null) && (!result.getMultimedia().isEmpty()))
             glide.load(result.getMultimedia().get(0).getUrl()).into(mImage);
 
