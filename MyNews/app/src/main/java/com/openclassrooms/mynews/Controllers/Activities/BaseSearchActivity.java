@@ -11,6 +11,9 @@ public abstract class BaseSearchActivity extends AppCompatActivity{
     protected boolean [] deskIsSet = {false, false, false, false, false, false};
     protected int newsDesksLength = deskIsSet.length;
     protected String mQuery = "";
+    protected String mNewsDesk;
+    protected String [] newsDesk = {"%22Arts%22", "%22Business%22", "%22Entrepreneur%22", "%22Politics%22", "%22Sports%22", "%22Travel%22"};
+
 
     public void onCheckboxClicked(View view) {
 

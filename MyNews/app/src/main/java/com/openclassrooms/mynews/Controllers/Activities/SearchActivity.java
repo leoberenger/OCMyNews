@@ -26,8 +26,6 @@ public class SearchActivity extends BaseSearchActivity {
 
     private int mBeginDate = 0;
     private int mEndDate = 0;
-    private String mNewsDesk;
-    private String [] newsDesk = {"%22Arts%22", "%22Business%22", "%22Entrepreneur%22", "%22Politics%22", "%22Sports%22", "%22Travel%22"};
 
     private String EXTRA_QUERY = "EXTRA_QUERY";
     private String EXTRA_NEWS_DESKS = "EXTRA_NEWS_DESKS";

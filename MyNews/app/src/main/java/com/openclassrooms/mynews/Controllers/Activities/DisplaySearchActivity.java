@@ -17,10 +17,10 @@ public class DisplaySearchActivity extends AppCompatActivity {
 
     private void configureAndShowSearchFragment() {
 
-        String EXTRA_QUERY = "EXTRA_QUERY";
-        String EXTRA_NEWS_DESKS = "EXTRA_NEWS_DESKS";
-        String EXTRA_BEGIN_DATE = "EXTRA_BEGIN_DATE";
-        String EXTRA_END_DATE = "EXTRA_END_DATE";
+            String EXTRA_QUERY = "EXTRA_QUERY";
+            String EXTRA_NEWS_DESKS = "EXTRA_NEWS_DESKS";
+            String EXTRA_BEGIN_DATE = "EXTRA_BEGIN_DATE";
+            String EXTRA_END_DATE = "EXTRA_END_DATE";
 
             Bundle bundle = getIntent().getExtras();
             String mQuery = bundle.getString(EXTRA_QUERY);

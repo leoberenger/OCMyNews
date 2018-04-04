@@ -127,6 +127,16 @@ public class SearchAndNotifyActivity extends BaseSearchActivity {
                                         +", desk4 = "+ savedDesk[4]+", desk5 = "+ savedDesk[5]
                         );
 
+                        StringBuilder str = new StringBuilder("news_desk:(");
+                        for (int i = 0; i < newsDesksLength; i++) {
+                            if (deskIsSet[i])
+                                str.append(newsDesk[i]);
+                        }
+                        str.append(")");
+                        mNewsDesk = str.toString();
+
+                        prefs.edit().putString("newsDesks", mNewsDesk).apply();
+
                         JobManager.create(getApplicationContext()).addJobCreator(new MyJobCreator());
                         SearchAndNotifiyJob.schedulePeriodic();
                     }
