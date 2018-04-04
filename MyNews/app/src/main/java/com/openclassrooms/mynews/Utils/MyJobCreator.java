@@ -5,14 +5,14 @@ import android.support.annotation.Nullable;
 
 import com.evernote.android.job.Job;
 
-public class JobCreator implements com.evernote.android.job.JobCreator {
+public class MyJobCreator implements com.evernote.android.job.JobCreator {
 
     @Override
     @Nullable
     public Job create(@NonNull String tag) {
         switch (tag) {
-            case SyncJob.TAG:
-                return new SyncJob();
+            case SearchAndNotifiyJob.TAG:
+                return new SearchAndNotifiyJob();
             default:
                 return null;
         }

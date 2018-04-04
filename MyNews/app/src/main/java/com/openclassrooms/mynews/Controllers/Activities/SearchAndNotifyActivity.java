@@ -9,7 +9,10 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.evernote.android.job.JobManager;
 import com.openclassrooms.mynews.R;
+import com.openclassrooms.mynews.Utils.MyJobCreator;
+import com.openclassrooms.mynews.Utils.SearchAndNotifiyJob;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -124,8 +127,8 @@ public class SearchAndNotifyActivity extends BaseSearchActivity {
                                         +", desk4 = "+ savedDesk[4]+", desk5 = "+ savedDesk[5]
                         );
 
-                        //JobManager.create(getApplicationContext()).addJobCreator(new JobCreator());
-                        //SyncJob.scheduleJob();
+                        JobManager.create(getApplicationContext()).addJobCreator(new MyJobCreator());
+                        SearchAndNotifiyJob.schedulePeriodic();
                     }
                 }else{
                     queryInput.setText("");
@@ -137,7 +140,9 @@ public class SearchAndNotifyActivity extends BaseSearchActivity {
                     for(int i = 0; i<newsDesksLength; i++){
                         prefs.edit().putBoolean("desk"+i, false).apply();
                     }
-                    //stopAlarm();
+
+                    JobManager.instance().cancel(1234);
+
                 }
             }
         });
