@@ -12,18 +12,18 @@ import io.reactivex.Observable;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class StoriesFragment extends BaseFragment{
+public class DisplayStoriesFragment extends BaseDisplayFragment {
 
-    public StoriesFragment() { }
+    public DisplayStoriesFragment() { }
 
-    public static StoriesFragment newInstance(String storyType){
-        StoriesFragment storiesFragment = new StoriesFragment();
+    public static DisplayStoriesFragment newInstance(String storyType){
+        DisplayStoriesFragment displayStoriesFragment = new DisplayStoriesFragment();
 
         Bundle args = new Bundle();
         args.putString("storyType", storyType);
-        storiesFragment.setArguments(args);
+        displayStoriesFragment.setArguments(args);
 
-        return storiesFragment;
+        return displayStoriesFragment;
     }
 
     @Override

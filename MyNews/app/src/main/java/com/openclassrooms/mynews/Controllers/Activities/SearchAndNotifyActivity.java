@@ -14,7 +14,7 @@ import com.openclassrooms.mynews.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class NotificationActivity extends BaseSearchActivity {
+public class SearchAndNotifyActivity extends BaseSearchActivity {
 
     @BindView(R.id.activity_notification_switch) Switch notificationSwitch;
     @BindView(R.id.activity_notification_query) EditText queryInput;

@@ -9,20 +9,17 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.openclassrooms.mynews.Controllers.Activities.DetailActivity;
-import com.openclassrooms.mynews.Controllers.Activities.DisplaySearchActivity;
 import com.openclassrooms.mynews.Controllers.Activities.SearchActivity;
 import com.openclassrooms.mynews.Models.NYTimesAPI;
 import com.openclassrooms.mynews.Models.Response;
 import com.openclassrooms.mynews.R;
 import com.openclassrooms.mynews.Utils.ItemClickSupport;
 import com.openclassrooms.mynews.Utils.NYTStreams;
-import com.openclassrooms.mynews.Views.SearchArticleAdapter;
+import com.openclassrooms.mynews.Views.DisplayArticlesSearchAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,25 +29,25 @@ import io.reactivex.Observable;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SearchFragment extends BaseFragment {
+public class DisplaySearchFragment extends BaseDisplayFragment {
 
-    public SearchFragment() { }
+    public DisplaySearchFragment() { }
 
     //FOR TOPIC SEARCH
-    public static SearchFragment newInstance(String searchType, String newsDesk){
-        SearchFragment searchFragment = new SearchFragment();
+    public static DisplaySearchFragment newInstance(String searchType, String newsDesk){
+        DisplaySearchFragment displaySearchFragment = new DisplaySearchFragment();
 
         Bundle args = new Bundle();
         args.putString("searchType", searchType);
         args.putString("newsDesk", newsDesk);
-        searchFragment.setArguments(args);
+        displaySearchFragment.setArguments(args);
 
-        return searchFragment;
+        return displaySearchFragment;
     }
 
     //FOR ARTICLES SEARCH
-    public static SearchFragment newInstance(String searchType, String query, String newsDesk, int beginDate, int endDate){
-        SearchFragment searchFragment = new SearchFragment();
+    public static DisplaySearchFragment newInstance(String searchType, String query, String newsDesk, int beginDate, int endDate){
+        DisplaySearchFragment displaySearchFragment = new DisplaySearchFragment();
 
         Bundle args = new Bundle();
         args.putString("searchType", searchType);
@@ -58,9 +55,9 @@ public class SearchFragment extends BaseFragment {
         args.putString("newsDesk", newsDesk);
         args.putInt("beginDate", beginDate);
         args.putInt("endDate", endDate);
-        searchFragment.setArguments(args);
+        displaySearchFragment.setArguments(args);
 
-        return searchFragment;
+        return displaySearchFragment;
     }
 
     @Override
@@ -100,11 +97,11 @@ public class SearchFragment extends BaseFragment {
 
     //FOR DATA
     private List<Response.Doc> articles;
-    private SearchArticleAdapter mAdapter;
+    private DisplayArticlesSearchAdapter mAdapter;
 
     protected void configureRecyclerView(){
         this.articles = new ArrayList<>();
-        this.mAdapter = new SearchArticleAdapter(this.articles, Glide.with(this));
+        this.mAdapter = new DisplayArticlesSearchAdapter(this.articles, Glide.with(this));
         this.mRecyclerView.setAdapter(this.mAdapter);
         this.mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }

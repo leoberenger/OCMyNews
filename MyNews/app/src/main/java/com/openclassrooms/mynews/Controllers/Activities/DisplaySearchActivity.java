@@ -3,7 +3,7 @@ package com.openclassrooms.mynews.Controllers.Activities;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.openclassrooms.mynews.Controllers.Fragments.SearchFragment;
+import com.openclassrooms.mynews.Controllers.Fragments.DisplaySearchFragment;
 import com.openclassrooms.mynews.R;
 
 public class DisplaySearchActivity extends AppCompatActivity {
@@ -34,10 +34,10 @@ public class DisplaySearchActivity extends AppCompatActivity {
             args.putInt("beginDate", mBeginDate);
             args.putInt("endDate", mEndDate);
 
-            SearchFragment mSearchFragment = SearchFragment.newInstance("query", mQuery, mNewsDesk, mBeginDate, mEndDate);
+            DisplaySearchFragment mDisplaySearchFragment = DisplaySearchFragment.newInstance("query", mQuery, mNewsDesk, mBeginDate, mEndDate);
 
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.activity_display_search_frame_layout, mSearchFragment)
+                    .add(R.id.activity_display_search_frame_layout, mDisplaySearchFragment)
                     .commit();
         }
 }

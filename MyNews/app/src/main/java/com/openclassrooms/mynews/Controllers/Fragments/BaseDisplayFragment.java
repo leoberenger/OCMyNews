@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.openclassrooms.mynews.Controllers.Activities.DetailActivity;
@@ -17,7 +16,7 @@ import com.openclassrooms.mynews.Models.NYTimesAPI;
 import com.openclassrooms.mynews.Models.Result;
 import com.openclassrooms.mynews.R;
 import com.openclassrooms.mynews.Utils.ItemClickSupport;
-import com.openclassrooms.mynews.Views.StoriesAdapter;
+import com.openclassrooms.mynews.Views.DisplayStoriesAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +27,7 @@ import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 
-public abstract class BaseFragment extends android.support.v4.app.Fragment{
+public abstract class BaseDisplayFragment extends android.support.v4.app.Fragment{
 
     protected abstract Observable<NYTimesAPI> getStream();
 
@@ -41,7 +40,7 @@ public abstract class BaseFragment extends android.support.v4.app.Fragment{
     //FOR DATA
     private Disposable mDisposable;
     private List<Result> articles;
-    private StoriesAdapter mAdapter;
+    private DisplayStoriesAdapter mAdapter;
 
     String EXTRA_ARTICLE_URL = "EXTRA_ARTICLE_URL";
 
@@ -80,7 +79,7 @@ public abstract class BaseFragment extends android.support.v4.app.Fragment{
 
     protected void configureRecyclerView(){
         this.articles = new ArrayList<>();
-        this.mAdapter = new StoriesAdapter(this.articles, Glide.with(this));
+        this.mAdapter = new DisplayStoriesAdapter(this.articles, Glide.with(this));
         this.mRecyclerView.setAdapter(this.mAdapter);
         this.mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }

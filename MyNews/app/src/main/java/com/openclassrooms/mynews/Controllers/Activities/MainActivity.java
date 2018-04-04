@@ -2,7 +2,6 @@ package com.openclassrooms.mynews.Controllers.Activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -81,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 builder.setItems(R.array.alertDialog, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 if(which == 0){
-                                    Intent intent2 = new Intent(getApplicationContext(), NotificationActivity.class);
+                                    Intent intent2 = new Intent(getApplicationContext(), SearchAndNotifyActivity.class);
                                     startActivity(intent2);
                                 }
                             }

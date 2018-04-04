@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.RequestManager;
-import com.openclassrooms.mynews.Models.Result;
+import com.openclassrooms.mynews.Models.Response;
 import com.openclassrooms.mynews.R;
 
 import java.util.List;
@@ -16,19 +16,19 @@ import java.util.List;
  * Created by berenger on 06/03/2018.
  */
 
-public class StoriesAdapter extends RecyclerView.Adapter<ArticleViewHolder>{
+public class DisplayArticlesSearchAdapter extends RecyclerView.Adapter<ArticleViewHolder>{
 
     //FOR DATA
-    private List<Result> mArticles;
+    private List<Response.Doc> mArticles;
     public RequestManager glide;
 
     //CONSTRUCTOR
-    public StoriesAdapter(List<Result> articles, RequestManager glide){
+    public DisplayArticlesSearchAdapter(List<Response.Doc> articles, RequestManager glide){
         this.mArticles = articles;
         this.glide = glide;
     }
 
-    public Result getResult(int position){
+    public Response.Doc getResponse(int position){
         return this.mArticles.get(position);
     }
 

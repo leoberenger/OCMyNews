@@ -4,8 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.openclassrooms.mynews.Controllers.Fragments.SearchFragment;
-import com.openclassrooms.mynews.Controllers.Fragments.StoriesFragment;
+import com.openclassrooms.mynews.Controllers.Fragments.DisplaySearchFragment;
+import com.openclassrooms.mynews.Controllers.Fragments.DisplayStoriesFragment;
 
 /**
  * Created by berenger on 26/02/2018.
@@ -23,19 +23,19 @@ public class PagerAdapter extends FragmentPagerAdapter{
 
         switch (position){
             case 0:
-                fragment = StoriesFragment.newInstance("topStories");
+                fragment = DisplayStoriesFragment.newInstance("topStories");
                 break;
             case 1:
-                fragment = StoriesFragment.newInstance("mostPopular");
+                fragment = DisplayStoriesFragment.newInstance("mostPopular");
                 break;
             case 2:
-                fragment = SearchFragment.newInstance("topic", "Business");
+                fragment = DisplaySearchFragment.newInstance("topic", "Business");
                 break;
             case 3:
-                fragment = SearchFragment.newInstance("topic","Sports");
+                fragment = DisplaySearchFragment.newInstance("topic","Sports");
                 break;
             case 4:
-                fragment = SearchFragment.newInstance("topic","Arts");
+                fragment = DisplaySearchFragment.newInstance("topic","Arts");
                 break;
         }
 
