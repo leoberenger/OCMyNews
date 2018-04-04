@@ -18,8 +18,16 @@ public class SearchAndNotifyActivity extends BaseSearchActivity {
 
     @BindView(R.id.activity_notification_switch) Switch notificationSwitch;
     @BindView(R.id.activity_notification_query) EditText queryInput;
+    @BindView(R.id.checkbox_arts) CheckBox checkboxArts;
+    @BindView(R.id.checkbox_business) CheckBox checkboxBusiness;
+    @BindView(R.id.checkbox_entrepreneur) CheckBox checkboxEntrepreneur;
+    @BindView(R.id.checkbox_politics) CheckBox checkboxPolitics;
+    @BindView(R.id.checkbox_sports) CheckBox checkboxSports;
+    @BindView(R.id.checkbox_travel) CheckBox checkboxTravel;
+
+    CheckBox [] checkBoxes = new CheckBox [newsDesksLength];
+
     private SharedPreferences prefs;
-    private String mQuery;
     private boolean switchEnabled = false;
 
     @Override
@@ -29,6 +37,13 @@ public class SearchAndNotifyActivity extends BaseSearchActivity {
         ButterKnife.bind(this);
 
         prefs = getSharedPreferences("notification", MODE_PRIVATE);
+
+        checkBoxes[0] = checkboxArts;
+        checkBoxes[1] = checkboxBusiness;
+        checkBoxes[2] = checkboxEntrepreneur;
+        checkBoxes[3] = checkboxPolitics;
+        checkBoxes[4] = checkboxSports;
+        checkBoxes[5] = checkboxTravel;
 
         mQuery = prefs.getString("query", "");
 
@@ -42,22 +57,12 @@ public class SearchAndNotifyActivity extends BaseSearchActivity {
         Log.e("onCreate()", "Query = "+mQuery+", desk0 = "+ deskIsSet[0]+", desk1 = "+ deskIsSet[1]
                 +", desk2 = "+ deskIsSet[2]+", desk3 = "+ deskIsSet[3]+", desk4 = "+ deskIsSet[4]+", desk5 = "+ deskIsSet[5]);
 
+        this.getAndShowSavedNotification();
         this.configureSwitch();
     }
 
-
-    private void configureSwitch(){
-
+    private void getAndShowSavedNotification(){
         queryInput.setText(mQuery);
-
-        CheckBox [] checkBoxes = {
-                findViewById(R.id.checkbox_arts),
-                findViewById(R.id.checkbox_business),
-                findViewById(R.id.checkbox_entrepreneur),
-                findViewById(R.id.checkbox_politics),
-                findViewById(R.id.checkbox_sports),
-                findViewById(R.id.checkbox_travel),
-        };
 
         for(int i = 0; i <newsDesksLength; i++){
             if(deskIsSet[i])
@@ -68,11 +73,20 @@ public class SearchAndNotifyActivity extends BaseSearchActivity {
 
         if (switchEnabled) notificationSwitch.setChecked(true);
 
+    }
+
+    private void configureSwitch(){
 
         notificationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean switchIsChecked) {
 
-                String mQuery = queryInput.getText().toString();
+                mQuery = queryInput.getText().toString();
+                boolean min1DeskIsSelected = false;
+
+                for(int i = 0; i<newsDesksLength; i++){
+                    if(deskIsSet[i])
+                        min1DeskIsSelected = true;
+                }
 
                 if(switchIsChecked){
                     if(mQuery.equals("")) {
@@ -114,6 +128,10 @@ public class SearchAndNotifyActivity extends BaseSearchActivity {
                         //SyncJob.scheduleJob();
                     }
                 }else{
+                    queryInput.setText("");
+                    for(int i = 0; i <newsDesksLength; i++)
+                        checkBoxes[i].setChecked(false);
+
                     prefs.edit().putBoolean("switch", false).apply();
                     prefs.edit().putString("query", "").apply();
                     for(int i = 0; i<newsDesksLength; i++){

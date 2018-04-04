@@ -52,6 +52,12 @@ public class SearchActivity extends BaseSearchActivity {
                 mQuery = queryInput.getText().toString();
                 String begDateInput = beginDatePicker.getText().toString();
                 String endDateInput = endDatePicker.getText().toString();
+                boolean min1DeskIsSelected = false;
+
+                for(int i = 0; i<newsDesksLength; i++){
+                    if(deskIsSet[i])
+                        min1DeskIsSelected = true;
+                }
 
                 if(mQuery.equals("")) {
                     Toast.makeText(getApplicationContext(), "Query required", Toast.LENGTH_LONG).show();
