@@ -2,12 +2,10 @@ package com.openclassrooms.mynews.Controllers.Activities;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -19,24 +17,17 @@ import java.util.Calendar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SearchActivity extends AppCompatActivity {
+public class SearchActivity extends BaseSearchActivity {
 
-    @BindView(R.id.activity_search_query_input)
-    EditText queryInput;
-    @BindView(R.id.search_begin_date)
-    EditText beginDatePicker;
-    @BindView(R.id.search_end_date)
-    EditText endDatePicker;
-    @BindView(R.id.activity_search_button)
-    Button searchBtn;
+    @BindView(R.id.search_begin_date) EditText beginDatePicker;
+    @BindView(R.id.search_end_date) EditText endDatePicker;
+    @BindView(R.id.activity_search_button) Button searchBtn;
+    @BindView(R.id.activity_search_query_input)EditText queryInput;
 
-    private String mQuery = "";         //"france";
-    private int mBeginDate = 0;         //20170910
-    private int mEndDate = 0;           //20171001
-    private String [] newsDesks = {"","","","","","",};
-    private String mNewsDesk;           //"news_desk:(%22Travel%22)";
-
-    private boolean min1DeskIsSelected = false;
+    private int mBeginDate = 0;
+    private int mEndDate = 0;
+    private String mNewsDesk;
+    private String [] newsDesk = {"%22Arts%22", "%22Business%22", "%22Entrepreneur%22", "%22Politics%22", "%22Sports%22", "%22Travel%22"};
 
     private String EXTRA_QUERY = "EXTRA_QUERY";
     private String EXTRA_NEWS_DESKS = "EXTRA_NEWS_DESKS";
@@ -49,11 +40,12 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
         ButterKnife.bind(this);
 
-        Log.e("onCreate()", beginDatePicker.getText().toString());
-
         configureDatePicker(beginDatePicker);
         configureDatePicker(endDatePicker);
+        this.configureSearch();
+    }
 
+    private void configureSearch() {
         searchBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
@@ -69,8 +61,16 @@ public class SearchActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Invalid Begin Date format", Toast.LENGTH_LONG).show();
                 }else if( !endDateInput.equals("") && !validateDateFormat(endDatePicker) ){
                     Toast.makeText(getApplicationContext(), "Invalid End Date format", Toast.LENGTH_LONG).show();
-                }else{
-                    mNewsDesk = "news_desk:(" + newsDesks[0] + newsDesks[1] + newsDesks[2] + newsDesks[3] + newsDesks[4] + newsDesks[5] + ")";
+                }else {
+
+                    StringBuilder str = new StringBuilder("news_desk:(");
+                    for (int i = 0; i < newsDesksLength; i++) {
+                        if (deskIsSet[i])
+                            str.append(newsDesk[i]);
+                    }
+                    str.append(")");
+                    mNewsDesk = str.toString();
+
                     mBeginDate = (!begDateInput.equals("")) ? transformDateFormat(beginDatePicker) : 0 ;
                     mEndDate = (!endDateInput.equals("")) ? transformDateFormat(endDatePicker) : 0;
 
@@ -85,64 +85,6 @@ public class SearchActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    public void onCheckboxClicked(View view) {
-
-        boolean checked = ((CheckBox) view).isChecked();
-        min1DeskIsSelected = false;
-
-        // Check which checkbox was clicked
-        switch (view.getId()) {
-            case R.id.checkbox_arts:
-                if (checked) {
-                    newsDesks[0] = "%22Arts%22";
-                    min1DeskIsSelected = true;
-                }else{
-                    newsDesks[0] = "";
-                }
-                break;
-            case R.id.checkbox_business:
-                if (checked) {
-                    newsDesks[1] = "%22Business%22";
-                    min1DeskIsSelected = true;
-                }else{
-                    newsDesks[1] = "";
-                }
-                break;
-            case R.id.checkbox_entrepreneur:
-                if (checked){
-                    newsDesks[2] = "%22Entrepreneur%22";
-                    min1DeskIsSelected = true;
-                }else{
-                    newsDesks[2] = "";
-                }
-                break;
-            case R.id.checkbox_politics:
-                if (checked){
-                    newsDesks[3] = "%22Politics%22";
-                    min1DeskIsSelected = true;
-                }else{
-                    newsDesks[3] = "";
-                }
-                break;
-            case R.id.checkbox_sports:
-                if (checked){
-                    newsDesks[4] = "%22Sports%22";
-                    min1DeskIsSelected = true;
-                }else{
-                    newsDesks[4] = "";
-                }
-                break;
-            case R.id.checkbox_travel:
-                if (checked){
-                    newsDesks[5] = "%22Travel%22";
-                    min1DeskIsSelected = true;
-                }else{
-                    newsDesks[5] = "";
-                }
-                break;
-        }
     }
 
     private void configureDatePicker(final EditText datePicker){
