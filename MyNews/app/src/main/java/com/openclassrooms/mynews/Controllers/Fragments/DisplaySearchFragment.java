@@ -16,6 +16,7 @@ import com.openclassrooms.mynews.Controllers.Activities.DetailActivity;
 import com.openclassrooms.mynews.Controllers.Activities.SearchActivity;
 import com.openclassrooms.mynews.Models.NYTimesAPI;
 import com.openclassrooms.mynews.Models.Response;
+import com.openclassrooms.mynews.Models.Search;
 import com.openclassrooms.mynews.R;
 import com.openclassrooms.mynews.Utils.ItemClickSupport;
 import com.openclassrooms.mynews.Utils.NYTStreams;
@@ -30,7 +31,9 @@ import io.reactivex.Observable;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DisplaySearchFragment extends BaseDisplayFragment {
+public class DisplaySearchFragment extends BaseDisplayFragment{
+
+    static Search search = new Search();
 
     public DisplaySearchFragment() { }
 
@@ -40,7 +43,7 @@ public class DisplaySearchFragment extends BaseDisplayFragment {
 
         Bundle args = new Bundle();
         args.putString("searchType", searchType);
-        args.putString("newsDesk", newsDesk);
+        search.setNewsDesk(args, newsDesk);
         displaySearchFragment.setArguments(args);
 
         return displaySearchFragment;
@@ -52,10 +55,7 @@ public class DisplaySearchFragment extends BaseDisplayFragment {
 
         Bundle args = new Bundle();
         args.putString("searchType", searchType);
-        args.putString("query", query);
-        args.putString("newsDesk", newsDesk);
-        args.putInt("beginDate", beginDate);
-        args.putInt("endDate", endDate);
+        search.setSearch(args, query, newsDesk, beginDate, endDate);
         displaySearchFragment.setArguments(args);
 
         return displaySearchFragment;
@@ -72,15 +72,15 @@ public class DisplaySearchFragment extends BaseDisplayFragment {
         switch (searchType) {
 
             case "topic":
-                String mNewsDesk = "news_desk:(%22" + args.getString("newsDesk", "") + "%22)";
+                String mNewsDesk = "news_desk:(%22" + search.getNewsDesk(args) + "%22)";
                 stream = NYTStreams.streamFetchTopic(mNewsDesk);
                 break;
 
             case "query":
-                String query = args.getString("query", "");
-                String newsDesk = args.getString("newsDesk", "");
-                int beginDate = args.getInt("beginDate", 0);
-                int endDate = args.getInt("endDate", 0);
+                String query = search.getQuery(args);
+                String newsDesk = search.getNewsDesk(args);
+                int beginDate = search.getBeginDate(args);
+                int endDate = search.getEndDate(args);
 
                 if((beginDate!=0) && (endDate !=0))
                     stream = NYTStreams.streamFetchSearchArticles(query, newsDesk, beginDate, endDate);

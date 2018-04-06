@@ -14,8 +14,6 @@ import com.openclassrooms.mynews.Controllers.Activities.DisplaySearchActivity;
 import com.openclassrooms.mynews.Models.NYTimesAPI;
 import com.openclassrooms.mynews.Models.Search;
 
-import java.util.Calendar;
-
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
@@ -88,7 +86,7 @@ public class SearchAndNotifyJob extends Job {
 
             // Create an explicit intent for an Activity in your app
             Intent intent = new Intent(getContext(), DisplaySearchActivity.class);
-            search.setQueryInfos(intent, q, nd, 20180406, 20180406);
+            search.setSearch(intent, q, nd, 20180406, 20180406);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             PendingIntent pendingIntent = PendingIntent.getActivity(getContext(),
                 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);

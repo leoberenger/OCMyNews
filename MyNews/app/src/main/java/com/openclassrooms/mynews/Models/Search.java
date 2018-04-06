@@ -2,6 +2,7 @@ package com.openclassrooms.mynews.Models;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.widget.EditText;
 
 public class Search {
@@ -10,6 +11,11 @@ public class Search {
     private String newsDesk;
     private int beginDate;
     private int endDate;
+
+    private String BUNDLE_QUERY = "query";
+    private String BUNDLE_NEWS_DESK = "newsDesk";
+    private String BUNDLE_BEGIN_DATE = "beginDate";
+    private String BUNDLE_END_DATE = "endDate";
 
     //-------------------------------------
     // CONSTRUCTORS
@@ -45,12 +51,20 @@ public class Search {
         return editText.getText().toString();
     }
 
-    public String getQuery(SharedPreferences prefs, String key){
-        return prefs.getString(key, "");
+    public String getQuery(SharedPreferences prefs){
+        return prefs.getString(BUNDLE_QUERY, "");
+    }
+
+    public String getQuery(Bundle bundle){
+        return bundle.getString(BUNDLE_QUERY, "");
     }
 
     public void setQuery(String query) {
         this.query = query;
+    }
+
+    public void setQuery(Bundle bundle, String query){
+        bundle.putString(BUNDLE_QUERY, query);
     }
 
     //-------------------------------------
@@ -59,6 +73,10 @@ public class Search {
 
     public String getNewsDesk() {
         return newsDesk;
+    }
+
+    public String getNewsDesk(Bundle bundle){
+        return bundle.getString(BUNDLE_NEWS_DESK, "");
     }
 
     public String getNewsDesk(boolean [] desksArray, String [] desksName){
@@ -79,6 +97,10 @@ public class Search {
         this.newsDesk = newsDesk;
     }
 
+    public void setNewsDesk(Bundle bundle, String newsDesk){
+        bundle.putString(BUNDLE_NEWS_DESK, newsDesk);
+    }
+
     //-------------------------------------
     // BEGIN DATE
     //-------------------------------------
@@ -87,8 +109,16 @@ public class Search {
         return beginDate;
     }
 
+    public int getBeginDate(Bundle bundle) {
+        return bundle.getInt(BUNDLE_BEGIN_DATE, 0);
+    }
+
     public void setBeginDate(int beginDate) {
         this.beginDate = beginDate;
+    }
+
+    public void setBeginDate(Bundle bundle, int beginDate){
+        bundle.putInt(BUNDLE_BEGIN_DATE, beginDate);
     }
 
     //-------------------------------------
@@ -99,15 +129,23 @@ public class Search {
         return endDate;
     }
 
+    public int getEndDate(Bundle bundle) {
+        return bundle.getInt(BUNDLE_END_DATE, 0);
+    }
+
     public void setEndDate(int endDate) {
         this.endDate = endDate;
+    }
+
+    public void setEndDate(Bundle bundle, int endDate){
+        bundle.putInt(BUNDLE_END_DATE, endDate);
     }
 
     //-------------------------------------
     // OTHER
     //-------------------------------------
 
-    public void setQueryInfos(Intent i, String query, String desk, int begDate, int endDate){
+    public void setSearch(Intent i, String query, String desk, int begDate, int endDate){
         String EXTRA_QUERY = "EXTRA_QUERY";
         String EXTRA_NEWS_DESKS = "EXTRA_NEWS_DESKS";
         String EXTRA_BEGIN_DATE = "EXTRA_BEGIN_DATE";
@@ -117,6 +155,13 @@ public class Search {
         i.putExtra(EXTRA_NEWS_DESKS, desk);
         i.putExtra(EXTRA_BEGIN_DATE, begDate);
         i.putExtra(EXTRA_END_DATE, endDate);
+    }
+
+    public void setSearch(Bundle b, String query, String desk, int begDate, int endDate){
+        setQuery(b, query);
+        setNewsDesk(b, desk);
+        setBeginDate(b, begDate);
+        setEndDate(b, endDate);
     }
 
     public boolean checkMin1DeskSelected(boolean [] desks){
