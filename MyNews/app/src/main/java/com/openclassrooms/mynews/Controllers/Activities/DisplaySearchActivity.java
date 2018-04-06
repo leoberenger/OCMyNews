@@ -2,6 +2,7 @@ package com.openclassrooms.mynews.Controllers.Activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.openclassrooms.mynews.Controllers.Fragments.DisplaySearchFragment;
 import com.openclassrooms.mynews.R;
@@ -22,12 +23,20 @@ public class DisplaySearchActivity extends AppCompatActivity {
             String EXTRA_BEGIN_DATE = "EXTRA_BEGIN_DATE";
             String EXTRA_END_DATE = "EXTRA_END_DATE";
 
+            String mQuery = getIntent().getStringExtra("EXTRA_QUERY");
+            String mNewsDesk = getIntent().getStringExtra("EXTRA_NEWS_DESKS");
+            int mBeginDate = 20180401;
+            int mEndDate = 20180404;
+
+            Log.e("DisplayActivity", "mQuery="+mQuery+", mNewsDesk = " + mNewsDesk);
+
+            /*
             Bundle bundle = getIntent().getExtras();
             String mQuery = bundle.getString(EXTRA_QUERY);
             String mNewsDesk = bundle.getString(EXTRA_NEWS_DESKS);
             int mBeginDate = bundle.getInt(EXTRA_BEGIN_DATE);
             int mEndDate = bundle.getInt(EXTRA_END_DATE);
-
+*/
             Bundle args = new Bundle();
             args.putString("query", mQuery);
             args.putString("newsDesk", mNewsDesk);

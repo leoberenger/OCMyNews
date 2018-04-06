@@ -12,7 +12,8 @@ import android.widget.Toast;
 import com.evernote.android.job.JobManager;
 import com.openclassrooms.mynews.R;
 import com.openclassrooms.mynews.Utils.MyJobCreator;
-import com.openclassrooms.mynews.Utils.SearchAndNotifiyJob;
+import com.openclassrooms.mynews.Utils.SearchAndNotifyJob;
+import com.openclassrooms.mynews.Controllers.base.BaseSearchActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,8 +40,6 @@ public class SearchAndNotifyActivity extends BaseSearchActivity {
         setContentView(R.layout.activity_notification);
         ButterKnife.bind(this);
 
-        prefs = getSharedPreferences("notification", MODE_PRIVATE);
-
         checkBoxes[0] = checkboxArts;
         checkBoxes[1] = checkboxBusiness;
         checkBoxes[2] = checkboxEntrepreneur;
@@ -48,17 +47,13 @@ public class SearchAndNotifyActivity extends BaseSearchActivity {
         checkBoxes[4] = checkboxSports;
         checkBoxes[5] = checkboxTravel;
 
+        //Retrieve saved search from Preferences
+        prefs = getSharedPreferences("notification", MODE_PRIVATE);
+
         mQuery = prefs.getString("query", "");
-
-        for(int i=0; i<newsDesksLength; i++){
-            deskIsSet[i] = prefs.getBoolean("desk"+i, false);
-        }
-
         switchEnabled = prefs.getBoolean("switch", false);
-
-
-        Log.e("onCreate()", "Query = "+mQuery+", desk0 = "+ deskIsSet[0]+", desk1 = "+ deskIsSet[1]
-                +", desk2 = "+ deskIsSet[2]+", desk3 = "+ deskIsSet[3]+", desk4 = "+ deskIsSet[4]+", desk5 = "+ deskIsSet[5]);
+        for(int i=0; i<newsDesksLength; i++)
+            desksAreChecked[i] = prefs.getBoolean("desk"+i, false);
 
         this.getAndShowSavedNotification();
         this.configureSwitch();
@@ -68,7 +63,7 @@ public class SearchAndNotifyActivity extends BaseSearchActivity {
         queryInput.setText(mQuery);
 
         for(int i = 0; i <newsDesksLength; i++){
-            if(deskIsSet[i])
+            if(desksAreChecked[i])
                 checkBoxes[i].setChecked(true);
             else
                 checkBoxes[i].setChecked(false);
@@ -87,7 +82,7 @@ public class SearchAndNotifyActivity extends BaseSearchActivity {
                 boolean min1DeskIsSelected = false;
 
                 for(int i = 0; i<newsDesksLength; i++){
-                    if(deskIsSet[i])
+                    if(desksAreChecked[i])
                         min1DeskIsSelected = true;
                 }
 
@@ -99,37 +94,16 @@ public class SearchAndNotifyActivity extends BaseSearchActivity {
                         Toast.makeText(getApplicationContext(), "Pick at least one topic", Toast.LENGTH_LONG).show();
                         notificationSwitch.setChecked(false);
                     }else{
+                        //1 - Save Search elements to Preferences
                         prefs.edit().putBoolean("switch", true).apply();
                         prefs.edit().putString("query", mQuery).apply();
                         for(int i = 0; i<newsDesksLength; i++){
-                            prefs.edit().putBoolean("desk"+i, deskIsSet[i]).apply();
+                            prefs.edit().putBoolean("desk"+i, desksAreChecked[i]).apply();
                         }
-
-                        Toast.makeText(getApplicationContext(), "Notification saved", Toast.LENGTH_LONG).show();
-
-                        Log.e("Set", " mQuery= " + mQuery
-                                        +", desk0 = "+ deskIsSet[0]+", desk1 = "+ deskIsSet[1]
-                                        +", desk2 = "+ deskIsSet[2]+", desk3 = "+ deskIsSet[3]
-                                        +", desk4 = "+ deskIsSet[4]+", desk5 = "+ deskIsSet[5]
-                        );
-
-                        String mSavedQuery = prefs.getString("query", "");
-                        boolean [] savedDesk = new boolean[deskIsSet.length];
-
-                        for(int i=0; i<newsDesksLength; i++){
-                            savedDesk[i] = prefs.getBoolean("desk"+i, false);
-                        }
-
-
-                        Log.e("Saved", "Notification Saved for query " + mSavedQuery
-                                        +", desk0 = "+ savedDesk[0]+", desk1 = "+ savedDesk[1]
-                                        +", desk2 = "+ savedDesk[2]+", desk3 = "+ savedDesk[3]
-                                        +", desk4 = "+ savedDesk[4]+", desk5 = "+ savedDesk[5]
-                        );
 
                         StringBuilder str = new StringBuilder("news_desk:(");
                         for (int i = 0; i < newsDesksLength; i++) {
-                            if (deskIsSet[i])
+                            if (desksAreChecked[i])
                                 str.append(newsDesk[i]);
                         }
                         str.append(")");
@@ -137,8 +111,15 @@ public class SearchAndNotifyActivity extends BaseSearchActivity {
 
                         prefs.edit().putString("newsDesks", mNewsDesk).apply();
 
-                        JobManager.create(getApplicationContext()).addJobCreator(new MyJobCreator());
-                        SearchAndNotifiyJob.schedulePeriodic();
+                        Log.e("NotifActivity", "mQuery="+mQuery+", mNewsDesk = " + mNewsDesk);
+
+                        //2 - Create Job Manager
+                        JobManager.create(getApplicationContext())
+                                .addJobCreator(new MyJobCreator());
+                        SearchAndNotifyJob.schedulePeriodic(mQuery, mNewsDesk);
+
+                        //3 - Show Toast message
+                        Toast.makeText(getApplicationContext(), "Notification saved", Toast.LENGTH_LONG).show();
                     }
                 }else{
                     queryInput.setText("");
@@ -152,7 +133,6 @@ public class SearchAndNotifyActivity extends BaseSearchActivity {
                     }
 
                     JobManager.instance().cancel(1234);
-
                 }
             }
         });

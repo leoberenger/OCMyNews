@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 
 import com.openclassrooms.mynews.Models.NYTimesAPI;
 import com.openclassrooms.mynews.Utils.NYTStreams;
+import com.openclassrooms.mynews.Controllers.base.BaseDisplayFragment;
 
 import io.reactivex.Observable;
 

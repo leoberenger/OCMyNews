@@ -20,6 +20,7 @@ import com.openclassrooms.mynews.R;
 import com.openclassrooms.mynews.Utils.ItemClickSupport;
 import com.openclassrooms.mynews.Utils.NYTStreams;
 import com.openclassrooms.mynews.Views.DisplayArticlesSearchAdapter;
+import com.openclassrooms.mynews.Controllers.base.BaseDisplayFragment;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.openclassrooms.mynews.Controllers.Fragments;
+package com.openclassrooms.mynews.Controllers.base;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -33,16 +33,16 @@ public abstract class BaseDisplayFragment extends android.support.v4.app.Fragmen
 
     // FOR DESIGN
     @BindView(R.id.fragment_main_recycler_view)
-    RecyclerView mRecyclerView;
+    protected RecyclerView mRecyclerView;
     @BindView(R.id.fragment_main_swipe_container)
-    SwipeRefreshLayout mSwipeRefreshLayout;
+    protected SwipeRefreshLayout mSwipeRefreshLayout;
 
     //FOR DATA
     private Disposable mDisposable;
     private List<Result> articles;
     private DisplayStoriesAdapter mAdapter;
 
-    String EXTRA_ARTICLE_URL = "EXTRA_ARTICLE_URL";
+    protected String EXTRA_ARTICLE_URL = "EXTRA_ARTICLE_URL";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.openclassrooms.mynews.R;
+import com.openclassrooms.mynews.Controllers.base.BaseSearchActivity;
 
 import java.util.Calendar;
 
@@ -23,14 +24,6 @@ public class SearchActivity extends BaseSearchActivity {
     @BindView(R.id.search_end_date) EditText endDatePicker;
     @BindView(R.id.activity_search_button) Button searchBtn;
     @BindView(R.id.activity_search_query_input)EditText queryInput;
-
-    private int mBeginDate = 0;
-    private int mEndDate = 0;
-
-    private String EXTRA_QUERY = "EXTRA_QUERY";
-    private String EXTRA_NEWS_DESKS = "EXTRA_NEWS_DESKS";
-    private String EXTRA_BEGIN_DATE = "EXTRA_BEGIN_DATE";
-    private String EXTRA_END_DATE = "EXTRA_END_DATE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,44 +40,29 @@ public class SearchActivity extends BaseSearchActivity {
         searchBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                mQuery = queryInput.getText().toString();
-                String begDateInput = beginDatePicker.getText().toString();
-                String endDateInput = endDatePicker.getText().toString();
-                boolean min1DeskIsSelected = false;
-
-                for(int i = 0; i<newsDesksLength; i++){
-                    if(deskIsSet[i])
-                        min1DeskIsSelected = true;
-                }
+                mQuery = getString(queryInput);
+                String begDateInput = getString(beginDatePicker);
+                String endDateInput = getString(endDatePicker);
+                boolean oneTopicSelected = checkMin1DeskSelected(desksAreChecked);
 
                 if(mQuery.equals("")) {
-                    Toast.makeText(getApplicationContext(), "Query required", Toast.LENGTH_LONG).show();
-                }else if(!min1DeskIsSelected) {
-                    Toast.makeText(getApplicationContext(), "Pick at least one topic", Toast.LENGTH_LONG).show();
+                    showToast("Query required");
+                }else if( !oneTopicSelected) {
+                    showToast("Pick at least one topic");
                 }else if( !begDateInput.equals("") && !validateDateFormat(beginDatePicker) ){
-                    Toast.makeText(getApplicationContext(), "Invalid Begin Date format", Toast.LENGTH_LONG).show();
+                    showToast("Invalid Begin Date format");
                 }else if( !endDateInput.equals("") && !validateDateFormat(endDatePicker) ){
-                    Toast.makeText(getApplicationContext(), "Invalid End Date format", Toast.LENGTH_LONG).show();
+                    showToast("Invalid End Date format");
                 }else {
 
-                    StringBuilder str = new StringBuilder("news_desk:(");
-                    for (int i = 0; i < newsDesksLength; i++) {
-                        if (deskIsSet[i])
-                            str.append(newsDesk[i]);
-                    }
-                    str.append(")");
-                    mNewsDesk = str.toString();
-
+                    mNewsDesk = getNewsDesk(desksAreChecked);
                     mBeginDate = (!begDateInput.equals("")) ? transformDateFormat(beginDatePicker) : 0 ;
                     mEndDate = (!endDateInput.equals("")) ? transformDateFormat(endDatePicker) : 0;
 
                     Log.e("Search Activity", "mNewsDesk=" + mNewsDesk + " mQuery= " + mQuery + " begin date ="+mBeginDate + " end date =" + mEndDate);
 
                     Intent intent = new Intent(SearchActivity.this, DisplaySearchActivity.class);
-                    intent.putExtra(EXTRA_QUERY, mQuery);
-                    intent.putExtra(EXTRA_NEWS_DESKS, mNewsDesk);
-                    intent.putExtra(EXTRA_BEGIN_DATE, mBeginDate);
-                    intent.putExtra(EXTRA_END_DATE, mEndDate);
+                    setQuery(intent, mQuery, mNewsDesk, mBeginDate, mEndDate);
                     startActivity(intent);
                 }
             }
@@ -128,7 +106,7 @@ public class SearchActivity extends BaseSearchActivity {
 
     }
 
-    public int transformDateFormat(EditText datePicker){ //transforms 10/01/2018 to 20180110
+    private int transformDateFormat(EditText datePicker){ //transforms 10/01/2018 to 20180110
         String date = datePicker.getText().toString();
         String orderedDate = date.substring(6,10) + date.substring(3,5) + date.substring(0,2);
         int intDate = Integer.valueOf(orderedDate);
@@ -136,11 +114,57 @@ public class SearchActivity extends BaseSearchActivity {
         return intDate;
     }
 
-    public boolean validateDateFormat(EditText datePicker){
+    private boolean validateDateFormat(EditText datePicker){
         //Regular Expression Testing dd-MM-YYYY
         String regexp = "(0?[1-9]|[12][0-9]|3[01])/(0?[1-9]|1[012])/((18|19|20|21)\\d\\d)";
         String date = datePicker.getText().toString();
 
         return (date.matches(regexp));
     }
+
+    private String getString(EditText editText){
+        return editText.getText().toString();
+    }
+
+    private void showToast(String toastTxt){
+        Toast.makeText(getApplicationContext(), toastTxt, Toast.LENGTH_LONG).show();
+    }
+
+    private String getNewsDesk(boolean [] desksArray){
+
+        StringBuilder str = new StringBuilder("news_desk:(");
+
+        for (int i = 0; i < newsDesksLength; i++) {
+            if (desksArray[i])
+                str.append(newsDesk[i]);
+        }
+
+        str.append(")");
+
+        return str.toString();
+    }
+
+    private boolean checkMin1DeskSelected(boolean [] desks){
+        boolean min1DeskIsSelected = false;
+
+        for(int i = 0; i<newsDesksLength; i++){
+            if(desks[i])
+                min1DeskIsSelected = true;
+        }
+
+        return min1DeskIsSelected;
+    }
+
+    private void setQuery(Intent i, String query, String desk, int begDate, int endDate){
+        String EXTRA_QUERY = "EXTRA_QUERY";
+        String EXTRA_NEWS_DESKS = "EXTRA_NEWS_DESKS";
+        String EXTRA_BEGIN_DATE = "EXTRA_BEGIN_DATE";
+        String EXTRA_END_DATE = "EXTRA_END_DATE";
+
+        i.putExtra(EXTRA_QUERY, query);
+        i.putExtra(EXTRA_NEWS_DESKS, desk);
+        i.putExtra(EXTRA_BEGIN_DATE, begDate);
+        i.putExtra(EXTRA_END_DATE, endDate);
+    }
+
 }
