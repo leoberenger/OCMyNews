@@ -7,7 +7,7 @@
     android:layout_margin="30dp"
     android:theme="@style/SearchTheme">
 
-        <!-- Import Search Query -->
+        <!-- Import Search Search -->
         <include layout="@layout/search_query"
             android:id="@+id/activity_notification_query"/>
 

@@ -10,6 +10,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.openclassrooms.mynews.Models.Search;
 import com.openclassrooms.mynews.R;
 import com.openclassrooms.mynews.Controllers.base.BaseSearchActivity;
 
@@ -24,6 +25,7 @@ public class SearchActivity extends BaseSearchActivity {
     @BindView(R.id.search_end_date) EditText endDatePicker;
     @BindView(R.id.activity_search_button) Button searchBtn;
     @BindView(R.id.activity_search_query_input)EditText queryInput;
+    private Search mSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,13 +42,17 @@ public class SearchActivity extends BaseSearchActivity {
         searchBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                mQuery = getString(queryInput);
-                String begDateInput = getString(beginDatePicker);
-                String endDateInput = getString(endDatePicker);
-                boolean oneTopicSelected = checkMin1DeskSelected(desksAreChecked);
+                mSearch = new Search();
+
+                mQuery = mSearch.getQuery(queryInput);
+                boolean oneTopicSelected = mSearch.checkMin1DeskSelected(desksAreChecked);
+                mNewsDesk = mSearch.getNewsDesk(desksAreChecked, newsDesk);
+                String begDateInput = mSearch.getQuery(beginDatePicker);
+                String endDateInput = mSearch.getQuery(endDatePicker);
+
 
                 if(mQuery.equals("")) {
-                    showToast("Query required");
+                    showToast("Search required");
                 }else if( !oneTopicSelected) {
                     showToast("Pick at least one topic");
                 }else if( !begDateInput.equals("") && !validateDateFormat(beginDatePicker) ){
@@ -55,14 +61,13 @@ public class SearchActivity extends BaseSearchActivity {
                     showToast("Invalid End Date format");
                 }else {
 
-                    mNewsDesk = getNewsDesk(desksAreChecked);
                     mBeginDate = (!begDateInput.equals("")) ? transformDateFormat(beginDatePicker) : 0 ;
                     mEndDate = (!endDateInput.equals("")) ? transformDateFormat(endDatePicker) : 0;
 
                     Log.e("Search Activity", "mNewsDesk=" + mNewsDesk + " mQuery= " + mQuery + " begin date ="+mBeginDate + " end date =" + mEndDate);
 
                     Intent intent = new Intent(SearchActivity.this, DisplaySearchActivity.class);
-                    setQuery(intent, mQuery, mNewsDesk, mBeginDate, mEndDate);
+                    mSearch.setQuery(intent, mQuery, mNewsDesk, mBeginDate, mEndDate);
                     startActivity(intent);
                 }
             }
@@ -122,49 +127,7 @@ public class SearchActivity extends BaseSearchActivity {
         return (date.matches(regexp));
     }
 
-    private String getString(EditText editText){
-        return editText.getText().toString();
-    }
-
     private void showToast(String toastTxt){
         Toast.makeText(getApplicationContext(), toastTxt, Toast.LENGTH_LONG).show();
     }
-
-    private String getNewsDesk(boolean [] desksArray){
-
-        StringBuilder str = new StringBuilder("news_desk:(");
-
-        for (int i = 0; i < newsDesksLength; i++) {
-            if (desksArray[i])
-                str.append(newsDesk[i]);
-        }
-
-        str.append(")");
-
-        return str.toString();
-    }
-
-    private boolean checkMin1DeskSelected(boolean [] desks){
-        boolean min1DeskIsSelected = false;
-
-        for(int i = 0; i<newsDesksLength; i++){
-            if(desks[i])
-                min1DeskIsSelected = true;
-        }
-
-        return min1DeskIsSelected;
-    }
-
-    private void setQuery(Intent i, String query, String desk, int begDate, int endDate){
-        String EXTRA_QUERY = "EXTRA_QUERY";
-        String EXTRA_NEWS_DESKS = "EXTRA_NEWS_DESKS";
-        String EXTRA_BEGIN_DATE = "EXTRA_BEGIN_DATE";
-        String EXTRA_END_DATE = "EXTRA_END_DATE";
-
-        i.putExtra(EXTRA_QUERY, query);
-        i.putExtra(EXTRA_NEWS_DESKS, desk);
-        i.putExtra(EXTRA_BEGIN_DATE, begDate);
-        i.putExtra(EXTRA_END_DATE, endDate);
-    }
-
 }

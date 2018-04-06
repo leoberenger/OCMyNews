@@ -88,7 +88,7 @@ public class SearchAndNotifyActivity extends BaseSearchActivity {
 
                 if(switchIsChecked){
                     if(mQuery.equals("")) {
-                        Toast.makeText(getApplicationContext(), "Query required", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Search required", Toast.LENGTH_LONG).show();
                         notificationSwitch.setChecked(false);
                     }else if(!min1DeskIsSelected) {
                         Toast.makeText(getApplicationContext(), "Pick at least one topic", Toast.LENGTH_LONG).show();
