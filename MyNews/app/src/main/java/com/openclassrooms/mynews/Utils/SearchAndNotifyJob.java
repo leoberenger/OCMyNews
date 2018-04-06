@@ -32,8 +32,10 @@ public class SearchAndNotifyJob extends Job {
     protected Result onRunJob(@NonNull Params params) {
 
         PersistableBundleCompat extras = params.getExtras();
-        myQuery = extras.getString("query", "");
-        myNewsDesk = extras.getString("newsDesks", "");
+        Search search = new Search();
+
+        myQuery = search.getQuery(extras);
+        myNewsDesk = search.getNewsDesk(extras);
 
         stream = NYTStreams.streamFetchSearchArticles(myQuery, myNewsDesk);
 
@@ -64,9 +66,15 @@ public class SearchAndNotifyJob extends Job {
 
     public static void schedulePeriodic(String query, String newsDesk) {
 
+        Search search = new Search();
         PersistableBundleCompat bundleCompat = new PersistableBundleCompat();
-        bundleCompat.putString("query", query);
-        bundleCompat.putString("newsDesks", newsDesk);
+        search.setQuery(bundleCompat, query);
+        search.setNewsDesk(bundleCompat, newsDesk);
+
+        //ADD CURRENT TIME
+        // FOR BEGIN
+        // AND END
+        // DATE
 
         new JobRequest.Builder(SearchAndNotifyJob.TAG)
                 //.setPeriodic(TimeUnit.MINUTES.toMillis(15), TimeUnit.MINUTES.toMillis(5))
@@ -87,6 +95,7 @@ public class SearchAndNotifyJob extends Job {
             // Create an explicit intent for an Activity in your app
             Intent intent = new Intent(getContext(), DisplaySearchActivity.class);
             search.setSearch(intent, q, nd, 20180406, 20180406);
+
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             PendingIntent pendingIntent = PendingIntent.getActivity(getContext(),
                 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);

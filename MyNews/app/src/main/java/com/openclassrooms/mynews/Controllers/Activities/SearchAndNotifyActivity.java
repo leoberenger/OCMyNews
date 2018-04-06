@@ -53,7 +53,7 @@ public class SearchAndNotifyActivity extends BaseSearchActivity {
         prefs = getSharedPreferences("notification", MODE_PRIVATE);
         mSearch = new Search();
 
-        mQuery = mSearch.getQuery(prefs, "query");
+        mQuery = mSearch.getQuery(prefs);
         switchEnabled = prefs.getBoolean("switch", false);
 
         for(int i=0; i<newsDesksLength; i++)
@@ -95,14 +95,15 @@ public class SearchAndNotifyActivity extends BaseSearchActivity {
                     }else{
                         //1 - Save Search elements to Preferences
                         prefs.edit().putBoolean("switch", true).apply();
-                        prefs.edit().putString("query", mQuery).apply();
+                        mSearch.setQuery(prefs, mQuery);
+
                         for(int i = 0; i<newsDesksLength; i++){
                             prefs.edit().putBoolean("desk"+i, desksAreChecked[i]).apply();
                         }
 
                         mNewsDesk = mSearch.getNewsDesk(desksAreChecked, newsDesk);
 
-                        prefs.edit().putString("newsDesks", mNewsDesk).apply();
+                        mSearch.setNewsDesk(prefs, mNewsDesk);
 
                         Log.e("NotifActivity", "mQuery="+mQuery+", mNewsDesk = " + mNewsDesk);
 
@@ -120,7 +121,7 @@ public class SearchAndNotifyActivity extends BaseSearchActivity {
                         checkBoxes[i].setChecked(false);
 
                     prefs.edit().putBoolean("switch", false).apply();
-                    prefs.edit().putString("query", "").apply();
+                    mSearch.setQuery(prefs, "");
                     for(int i = 0; i<newsDesksLength; i++){
                         prefs.edit().putBoolean("desk"+i, false).apply();
                     }

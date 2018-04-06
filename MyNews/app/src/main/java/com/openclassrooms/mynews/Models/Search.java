@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.EditText;
 
+import com.evernote.android.job.util.support.PersistableBundleCompat;
+
 public class Search {
 
     private String query;
@@ -12,10 +14,10 @@ public class Search {
     private int beginDate;
     private int endDate;
 
-    private String BUNDLE_QUERY = "query";
-    private String BUNDLE_NEWS_DESK = "newsDesk";
-    private String BUNDLE_BEGIN_DATE = "beginDate";
-    private String BUNDLE_END_DATE = "endDate";
+    private String QUERY_KEY = "query";
+    private String NEWS_DESK_KEY = "newsDesk";
+    private String BEGIN_DATE_KEY = "beginDate";
+    private String END_DATE_KEY = "endDate";
 
     //-------------------------------------
     // CONSTRUCTORS
@@ -52,11 +54,15 @@ public class Search {
     }
 
     public String getQuery(SharedPreferences prefs){
-        return prefs.getString(BUNDLE_QUERY, "");
+        return prefs.getString(QUERY_KEY, "");
     }
 
     public String getQuery(Bundle bundle){
-        return bundle.getString(BUNDLE_QUERY, "");
+        return bundle.getString(QUERY_KEY, "");
+    }
+
+    public String getQuery(PersistableBundleCompat bundle){
+        return bundle.getString(QUERY_KEY, "");
     }
 
     public void setQuery(String query) {
@@ -64,7 +70,15 @@ public class Search {
     }
 
     public void setQuery(Bundle bundle, String query){
-        bundle.putString(BUNDLE_QUERY, query);
+        bundle.putString(QUERY_KEY, query);
+    }
+
+    public void setQuery(PersistableBundleCompat bundle, String query){
+        bundle.putString(QUERY_KEY, query);
+    }
+
+    public void setQuery(SharedPreferences prefs, String query){
+        prefs.edit().putString(QUERY_KEY, query).apply();
     }
 
     //-------------------------------------
@@ -76,7 +90,11 @@ public class Search {
     }
 
     public String getNewsDesk(Bundle bundle){
-        return bundle.getString(BUNDLE_NEWS_DESK, "");
+        return bundle.getString(NEWS_DESK_KEY, "");
+    }
+
+    public String getNewsDesk(PersistableBundleCompat bundle){
+        return bundle.getString(NEWS_DESK_KEY, "");
     }
 
     public String getNewsDesk(boolean [] desksArray, String [] desksName){
@@ -98,7 +116,15 @@ public class Search {
     }
 
     public void setNewsDesk(Bundle bundle, String newsDesk){
-        bundle.putString(BUNDLE_NEWS_DESK, newsDesk);
+        bundle.putString(NEWS_DESK_KEY, newsDesk);
+    }
+
+    public void setNewsDesk(PersistableBundleCompat bundle, String newsDesk){
+        bundle.putString(NEWS_DESK_KEY, newsDesk);
+    }
+
+    public void setNewsDesk(SharedPreferences prefs, String newsDesk){
+        prefs.edit().putString(NEWS_DESK_KEY, newsDesk).apply();
     }
 
     //-------------------------------------
@@ -110,7 +136,7 @@ public class Search {
     }
 
     public int getBeginDate(Bundle bundle) {
-        return bundle.getInt(BUNDLE_BEGIN_DATE, 0);
+        return bundle.getInt(BEGIN_DATE_KEY, 0);
     }
 
     public void setBeginDate(int beginDate) {
@@ -118,7 +144,7 @@ public class Search {
     }
 
     public void setBeginDate(Bundle bundle, int beginDate){
-        bundle.putInt(BUNDLE_BEGIN_DATE, beginDate);
+        bundle.putInt(BEGIN_DATE_KEY, beginDate);
     }
 
     //-------------------------------------
@@ -130,7 +156,7 @@ public class Search {
     }
 
     public int getEndDate(Bundle bundle) {
-        return bundle.getInt(BUNDLE_END_DATE, 0);
+        return bundle.getInt(END_DATE_KEY, 0);
     }
 
     public void setEndDate(int endDate) {
@@ -138,7 +164,7 @@ public class Search {
     }
 
     public void setEndDate(Bundle bundle, int endDate){
-        bundle.putInt(BUNDLE_END_DATE, endDate);
+        bundle.putInt(END_DATE_KEY, endDate);
     }
 
     //-------------------------------------
@@ -146,15 +172,10 @@ public class Search {
     //-------------------------------------
 
     public void setSearch(Intent i, String query, String desk, int begDate, int endDate){
-        String EXTRA_QUERY = "EXTRA_QUERY";
-        String EXTRA_NEWS_DESKS = "EXTRA_NEWS_DESKS";
-        String EXTRA_BEGIN_DATE = "EXTRA_BEGIN_DATE";
-        String EXTRA_END_DATE = "EXTRA_END_DATE";
-
-        i.putExtra(EXTRA_QUERY, query);
-        i.putExtra(EXTRA_NEWS_DESKS, desk);
-        i.putExtra(EXTRA_BEGIN_DATE, begDate);
-        i.putExtra(EXTRA_END_DATE, endDate);
+        i.putExtra(QUERY_KEY, query);
+        i.putExtra(NEWS_DESK_KEY, desk);
+        i.putExtra(BEGIN_DATE_KEY, begDate);
+        i.putExtra(END_DATE_KEY, endDate);
     }
 
     public void setSearch(Bundle b, String query, String desk, int begDate, int endDate){

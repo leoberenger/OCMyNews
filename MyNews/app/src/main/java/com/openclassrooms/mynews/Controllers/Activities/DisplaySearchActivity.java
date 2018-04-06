@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.openclassrooms.mynews.Controllers.Fragments.DisplaySearchFragment;
+import com.openclassrooms.mynews.Models.Search;
 import com.openclassrooms.mynews.R;
 
 public class DisplaySearchActivity extends AppCompatActivity {
@@ -18,31 +19,22 @@ public class DisplaySearchActivity extends AppCompatActivity {
 
     private void configureAndShowSearchFragment() {
 
-            String EXTRA_QUERY = "EXTRA_QUERY";
-            String EXTRA_NEWS_DESKS = "EXTRA_NEWS_DESKS";
-            String EXTRA_BEGIN_DATE = "EXTRA_BEGIN_DATE";
-            String EXTRA_END_DATE = "EXTRA_END_DATE";
+            Search search = new Search();
+            Bundle bundle = getIntent().getExtras();
 
-            String mQuery = getIntent().getStringExtra("EXTRA_QUERY");
-            String mNewsDesk = getIntent().getStringExtra("EXTRA_NEWS_DESKS");
-            int mBeginDate = 20180401;
-            int mEndDate = 20180404;
+            String mQuery = search.getQuery(bundle);
+            String mNewsDesk = search.getNewsDesk(bundle);
+            int mBeginDate = search.getBeginDate(bundle);
+            int mEndDate = search.getEndDate(bundle);
 
             Log.e("DisplayActivity", "mQuery="+mQuery+", mNewsDesk = " + mNewsDesk);
-
-            /*
-            Bundle bundle = getIntent().getExtras();
-            String mQuery = bundle.getString(EXTRA_QUERY);
-            String mNewsDesk = bundle.getString(EXTRA_NEWS_DESKS);
-            int mBeginDate = bundle.getInt(EXTRA_BEGIN_DATE);
-            int mEndDate = bundle.getInt(EXTRA_END_DATE);
-*/
+/*
             Bundle args = new Bundle();
             args.putString("query", mQuery);
             args.putString("newsDesk", mNewsDesk);
             args.putInt("beginDate", mBeginDate);
             args.putInt("endDate", mEndDate);
-
+*/
             DisplaySearchFragment mDisplaySearchFragment = DisplaySearchFragment.newInstance("query", mQuery, mNewsDesk, mBeginDate, mEndDate);
 
             getSupportFragmentManager().beginTransaction()
