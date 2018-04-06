@@ -65,6 +65,7 @@ public class Search {
         return bundle.getString(QUERY_KEY, "");
     }
 
+
     public void setQuery(String query) {
         this.query = query;
     }
@@ -111,6 +112,7 @@ public class Search {
         return str.toString();
     }
 
+
     public void setNewsDesk(String newsDesk) {
         this.newsDesk = newsDesk;
     }
@@ -139,6 +141,7 @@ public class Search {
         return bundle.getInt(BEGIN_DATE_KEY, 0);
     }
 
+
     public void setBeginDate(int beginDate) {
         this.beginDate = beginDate;
     }
@@ -158,6 +161,7 @@ public class Search {
     public int getEndDate(Bundle bundle) {
         return bundle.getInt(END_DATE_KEY, 0);
     }
+
 
     public void setEndDate(int endDate) {
         this.endDate = endDate;
