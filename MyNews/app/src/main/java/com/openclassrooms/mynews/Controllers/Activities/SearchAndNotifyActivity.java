@@ -10,6 +10,7 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import com.evernote.android.job.JobManager;
+import com.openclassrooms.mynews.Models.Search;
 import com.openclassrooms.mynews.R;
 import com.openclassrooms.mynews.Utils.MyJobCreator;
 import com.openclassrooms.mynews.Utils.SearchAndNotifyJob;
@@ -33,6 +34,7 @@ public class SearchAndNotifyActivity extends BaseSearchActivity {
 
     private SharedPreferences prefs;
     private boolean switchEnabled = false;
+    private Search mSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +51,11 @@ public class SearchAndNotifyActivity extends BaseSearchActivity {
 
         //Retrieve saved search from Preferences
         prefs = getSharedPreferences("notification", MODE_PRIVATE);
+        mSearch = new Search();
 
-        mQuery = prefs.getString("query", "");
+        mQuery = mSearch.getQuery(prefs, "query");
         switchEnabled = prefs.getBoolean("switch", false);
+
         for(int i=0; i<newsDesksLength; i++)
             desksAreChecked[i] = prefs.getBoolean("desk"+i, false);
 
@@ -78,20 +82,15 @@ public class SearchAndNotifyActivity extends BaseSearchActivity {
         notificationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean switchIsChecked) {
 
-                mQuery = queryInput.getText().toString();
-                boolean min1DeskIsSelected = false;
-
-                for(int i = 0; i<newsDesksLength; i++){
-                    if(desksAreChecked[i])
-                        min1DeskIsSelected = true;
-                }
+                mQuery = mSearch.getQuery(queryInput);
+                boolean oneTopicSelected = mSearch.checkMin1DeskSelected(desksAreChecked);
 
                 if(switchIsChecked){
-                    if(mQuery.equals("")) {
-                        Toast.makeText(getApplicationContext(), "Search required", Toast.LENGTH_LONG).show();
+                    if( mQuery.equals("")) {
+                        showToast("Search required");
                         notificationSwitch.setChecked(false);
-                    }else if(!min1DeskIsSelected) {
-                        Toast.makeText(getApplicationContext(), "Pick at least one topic", Toast.LENGTH_LONG).show();
+                    }else if( !oneTopicSelected) {
+                        showToast("Pick at least one topic");
                         notificationSwitch.setChecked(false);
                     }else{
                         //1 - Save Search elements to Preferences
@@ -101,13 +100,7 @@ public class SearchAndNotifyActivity extends BaseSearchActivity {
                             prefs.edit().putBoolean("desk"+i, desksAreChecked[i]).apply();
                         }
 
-                        StringBuilder str = new StringBuilder("news_desk:(");
-                        for (int i = 0; i < newsDesksLength; i++) {
-                            if (desksAreChecked[i])
-                                str.append(newsDesk[i]);
-                        }
-                        str.append(")");
-                        mNewsDesk = str.toString();
+                        mNewsDesk = mSearch.getNewsDesk(desksAreChecked, newsDesk);
 
                         prefs.edit().putString("newsDesks", mNewsDesk).apply();
 
@@ -119,7 +112,7 @@ public class SearchAndNotifyActivity extends BaseSearchActivity {
                         SearchAndNotifyJob.schedulePeriodic(mQuery, mNewsDesk);
 
                         //3 - Show Toast message
-                        Toast.makeText(getApplicationContext(), "Notification saved", Toast.LENGTH_LONG).show();
+                        showToast("Notification saved");
                     }
                 }else{
                     queryInput.setText("");
@@ -136,6 +129,10 @@ public class SearchAndNotifyActivity extends BaseSearchActivity {
                 }
             }
         });
+    }
+
+    private void showToast(String toastTxt){
+        Toast.makeText(getApplicationContext(), toastTxt, Toast.LENGTH_LONG).show();
     }
 }
 

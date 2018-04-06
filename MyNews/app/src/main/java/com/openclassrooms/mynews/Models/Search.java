@@ -1,6 +1,7 @@
 package com.openclassrooms.mynews.Models;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.widget.EditText;
 
 public class Search {
@@ -44,20 +45,12 @@ public class Search {
         return editText.getText().toString();
     }
 
-    public void setQuery(String query) {
-        this.query = query;
+    public String getQuery(SharedPreferences prefs, String key){
+        return prefs.getString(key, "");
     }
 
-    public void setQuery(Intent i, String query, String desk, int begDate, int endDate){
-        String EXTRA_QUERY = "EXTRA_QUERY";
-        String EXTRA_NEWS_DESKS = "EXTRA_NEWS_DESKS";
-        String EXTRA_BEGIN_DATE = "EXTRA_BEGIN_DATE";
-        String EXTRA_END_DATE = "EXTRA_END_DATE";
-
-        i.putExtra(EXTRA_QUERY, query);
-        i.putExtra(EXTRA_NEWS_DESKS, desk);
-        i.putExtra(EXTRA_BEGIN_DATE, begDate);
-        i.putExtra(EXTRA_END_DATE, endDate);
+    public void setQuery(String query) {
+        this.query = query;
     }
 
     //-------------------------------------
@@ -113,6 +106,18 @@ public class Search {
     //-------------------------------------
     // OTHER
     //-------------------------------------
+
+    public void setQueryInfos(Intent i, String query, String desk, int begDate, int endDate){
+        String EXTRA_QUERY = "EXTRA_QUERY";
+        String EXTRA_NEWS_DESKS = "EXTRA_NEWS_DESKS";
+        String EXTRA_BEGIN_DATE = "EXTRA_BEGIN_DATE";
+        String EXTRA_END_DATE = "EXTRA_END_DATE";
+
+        i.putExtra(EXTRA_QUERY, query);
+        i.putExtra(EXTRA_NEWS_DESKS, desk);
+        i.putExtra(EXTRA_BEGIN_DATE, begDate);
+        i.putExtra(EXTRA_END_DATE, endDate);
+    }
 
     public boolean checkMin1DeskSelected(boolean [] desks){
         boolean min1DeskIsSelected = false;

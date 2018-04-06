@@ -67,7 +67,7 @@ public class SearchActivity extends BaseSearchActivity {
                     Log.e("Search Activity", "mNewsDesk=" + mNewsDesk + " mQuery= " + mQuery + " begin date ="+mBeginDate + " end date =" + mEndDate);
 
                     Intent intent = new Intent(SearchActivity.this, DisplaySearchActivity.class);
-                    mSearch.setQuery(intent, mQuery, mNewsDesk, mBeginDate, mEndDate);
+                    mSearch.setQueryInfos(intent, mQuery, mNewsDesk, mBeginDate, mEndDate);
                     startActivity(intent);
                 }
             }

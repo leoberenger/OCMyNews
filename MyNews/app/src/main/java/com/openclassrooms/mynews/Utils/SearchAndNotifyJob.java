@@ -12,6 +12,9 @@ import com.evernote.android.job.JobRequest;
 import com.evernote.android.job.util.support.PersistableBundleCompat;
 import com.openclassrooms.mynews.Controllers.Activities.DisplaySearchActivity;
 import com.openclassrooms.mynews.Models.NYTimesAPI;
+import com.openclassrooms.mynews.Models.Search;
+
+import java.util.Calendar;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
@@ -25,8 +28,6 @@ public class SearchAndNotifyJob extends Job {
     private SharedPreferences prefs;
     private String myQuery;
     private String myNewsDesk;
-    private String EXTRA_QUERY = "EXTRA_QUERY";
-    private String EXTRA_NEWS_DESKS = "EXTRA_NEWS_DESKS";
 
     @NonNull
     @Override
@@ -83,18 +84,18 @@ public class SearchAndNotifyJob extends Job {
     private void sendNotification(String q, String nd){
 
             int notificationID = 1234;
+            Search search = new Search();
 
             // Create an explicit intent for an Activity in your app
             Intent intent = new Intent(getContext(), DisplaySearchActivity.class);
-            intent.putExtra(EXTRA_QUERY, q);
-            intent.putExtra(EXTRA_NEWS_DESKS, nd);
+            search.setQueryInfos(intent, q, nd, 20180406, 20180406);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             PendingIntent pendingIntent = PendingIntent.getActivity(getContext(),
                 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             NotificationHelper notificationHelper = new NotificationHelper(getContext());
             NotificationCompat.Builder builder = notificationHelper
-                    .getNotificationBuilder("New New York Times Articles", "New articles correspond to" +myQuery, pendingIntent);
+                    .getNotificationBuilder("New New York Times Articles", "New articles correspond to : " +myQuery, pendingIntent);
             notificationHelper.getNotificationManager().notify(notificationID, builder.build());
     }
 }
