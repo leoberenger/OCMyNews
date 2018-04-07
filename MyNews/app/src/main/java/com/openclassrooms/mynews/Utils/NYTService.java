@@ -4,6 +4,7 @@ package com.openclassrooms.mynews.Utils;
 import com.openclassrooms.mynews.Models.NYTimesAPI;
 
 import io.reactivex.Observable;
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -47,8 +48,6 @@ public interface NYTService {
             @Query("end_date") int endDate          //"&end_date=20171001"
     );
 
-
-    //GLOBAL RETROFIT BUILDER
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl("https://api.nytimes.com/svc/")
             .addConverterFactory(GsonConverterFactory.create())

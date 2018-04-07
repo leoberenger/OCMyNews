@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -34,6 +35,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     DrawerLayout mDrawerLayout;
     @BindView(R.id.activity_main_nav_view)
     NavigationView mNavigationView;
+
+    private FragmentStatePagerAdapter mAdapter;
 
 
     @Override
@@ -130,8 +133,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void configureViewPagerAndTabs(){
+
         //ViewPager
-        mViewPager.setAdapter(new PagerAdapter(getSupportFragmentManager()){});
+        mAdapter = new PagerAdapter(getSupportFragmentManager());
+        mViewPager.setAdapter(mAdapter);
+        mViewPager.setAdapter(this.mAdapter);
 
         //Tabs
         tabs.setupWithViewPager(mViewPager);

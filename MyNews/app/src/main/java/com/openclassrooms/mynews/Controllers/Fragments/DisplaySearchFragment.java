@@ -1,11 +1,9 @@
 package com.openclassrooms.mynews.Controllers.Fragments;
 
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,42 +14,34 @@ import com.openclassrooms.mynews.Controllers.Activities.DetailActivity;
 import com.openclassrooms.mynews.Controllers.Activities.SearchActivity;
 import com.openclassrooms.mynews.Models.NYTimesAPI;
 import com.openclassrooms.mynews.Models.Response;
-import com.openclassrooms.mynews.Models.Search;
 import com.openclassrooms.mynews.R;
 import com.openclassrooms.mynews.Utils.ItemClickSupport;
 import com.openclassrooms.mynews.Utils.NYTStreams;
-import com.openclassrooms.mynews.Views.DisplayArticlesSearchAdapter;
-import com.openclassrooms.mynews.Controllers.base.BaseDisplayFragment;
+import com.openclassrooms.mynews.Views.DisplaySearchAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class DisplaySearchFragment extends BaseDisplayFragment{
+public class DisplaySearchFragment extends DisplayFragment {
 
-    private String SEARCH_TYPE_KEY = "searchType";
-    private String TOPIC_KEY = "topic";
+    private List<Response.Doc> searchArticles;
+    private DisplaySearchAdapter searchAdapter;
 
-    static Search search = new Search();
+    public DisplaySearchFragment() { }
 
-    public DisplaySearchFragment() {}
-
-    @Override
     protected Observable<NYTimesAPI> getStream() {
 
         Observable<NYTimesAPI> stream = null;
 
         Bundle args = getArguments();
-        String searchType = args.getString(SEARCH_TYPE_KEY);
+        String searchType = args.getString((getResources().getString(R.string.bundle_search_type)));
 
         switch (searchType) {
 
             case "topic":
-                String topic = args.getString(TOPIC_KEY);
+                String topic = args.getString(getResources().getString(R.string.bundle_search_type_topic));
                 String mNewsDesk = "news_desk:(%22" + topic + "%22)";
                 stream = NYTStreams.streamFetchTopic(mNewsDesk);
                 break;
@@ -71,28 +61,21 @@ public class DisplaySearchFragment extends BaseDisplayFragment{
         return stream;
     }
 
-
-    //-----------------------------------------
-    // OVERRIDING BASE FRAGMENT METHODS TO FIT SEARCH ARTICLES API List
-    //-----------------------------------------
-
-    //FOR DATA
-    private List<Response.Doc> articles;
-    private DisplayArticlesSearchAdapter mAdapter;
-
+    @Override
     protected void configureRecyclerView(){
-        this.articles = new ArrayList<>();
-        this.mAdapter = new DisplayArticlesSearchAdapter(this.articles, Glide.with(this));
-        this.mRecyclerView.setAdapter(this.mAdapter);
+        this.searchArticles = new ArrayList<>();
+        this.searchAdapter = new DisplaySearchAdapter(this.searchArticles, Glide.with(this));
+        this.mRecyclerView.setAdapter(this.searchAdapter);
         this.mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
+    @Override
     protected void configureOnClickRecyclerView(){
         ItemClickSupport.addTo(mRecyclerView, R.layout.fragment_main_item)
                 .setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
                     @Override
                     public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                        String articleUrl = mAdapter.getResponse(position).getWebUrl();
+                        String articleUrl = searchAdapter.getResponse(position).getWebUrl();
                         Intent intent = new Intent(getActivity(), DetailActivity.class);
                         intent.putExtra(EXTRA_ARTICLE_URL, articleUrl);
                         startActivity(intent);
@@ -100,11 +83,12 @@ public class DisplaySearchFragment extends BaseDisplayFragment{
                 });
     }
 
+    @Override
     protected void updateUI(NYTimesAPI responses){
         mSwipeRefreshLayout.setRefreshing(false);
-        articles.clear();
-        articles.addAll(responses.getResponse().getDocs());
-        mAdapter.notifyDataSetChanged();
+        searchArticles.clear();
+        searchArticles.addAll(responses.getResponse().getDocs());
+        searchAdapter.notifyDataSetChanged();
 
         //no article to show -> alertDialog
         if(responses.getResponse().getDocs().isEmpty()) {
@@ -124,4 +108,3 @@ public class DisplaySearchFragment extends BaseDisplayFragment{
         }
     }
 }
-

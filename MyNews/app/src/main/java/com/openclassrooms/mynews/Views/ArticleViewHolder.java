@@ -56,7 +56,7 @@ public class ArticleViewHolder extends RecyclerView.ViewHolder{
             glide.load("http://www.nytimes.com/services/mobile/img/ios-newsreader-icon.png").into(mImage);
     }
 
-    //FOR SEARCHARTICLE API
+    //FOR SEARCH ARTICLE API
     public void updateWithArticle(Response.Doc response, RequestManager glide){
         this.mTitle.setText(response.getHeadline().getMain());
         this.mDate.setText(transformPublishedDate(response.getPubDate()));

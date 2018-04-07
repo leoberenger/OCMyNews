@@ -4,14 +4,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.openclassrooms.mynews.Controllers.Fragments.DisplaySearchFragment;
+import com.openclassrooms.mynews.Controllers.Fragments.DisplayFragment;
 import com.openclassrooms.mynews.Models.Search;
 import com.openclassrooms.mynews.R;
 
 public class DisplaySearchActivity extends AppCompatActivity {
-
-    private String SEARCH_TYPE_KEY = "searchType";
-    private String SEARCH_TYPE_QUERY_KEY = "query";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,19 +29,21 @@ public class DisplaySearchActivity extends AppCompatActivity {
 
             Log.e("DisplayActivity", "mQuery="+mQuery+", mNewsDesk = " + mNewsDesk);
 
-            DisplaySearchFragment mDisplaySearchFragment = new DisplaySearchFragment();
+            DisplayFragment mDisplayFragment = new DisplayFragment();
 
             Bundle args = new Bundle();
-            args.putString(SEARCH_TYPE_KEY, SEARCH_TYPE_QUERY_KEY);
+            args.putString(getResources().getString(R.string.bundle_search_type),
+                    getResources().getString(R.string.bundle_search_type_query));
+
             args.putString("query", mQuery);
             args.putString("newsDesk", mNewsDesk);
             args.putInt("beginDate", mBeginDate);
             args.putInt("endDate", mEndDate);
 
-            mDisplaySearchFragment.setArguments(args);
+            mDisplayFragment.setArguments(args);
 
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.activity_display_search_frame_layout, mDisplaySearchFragment)
+                    .add(R.id.activity_display_search_frame_layout, mDisplayFragment)
                     .commit();
         }
 }

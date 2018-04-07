@@ -28,5 +28,20 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <!-- KEYS FOR BUNDLE ARGS -->
+    <string name="bundle_search_type">"searchType"</string>
+    <string name="bundle_search_type_query">"query"</string>
+    <string name="bundle_search_type_topic">"topic"</string>
+    <string name="bundle_search_type_top_stories">"topStories"</string>
+    <string name="bundle_search_type_most_popular">"mostPopular"</string>
+
+    <string-array name="news_desks">
+        <item>"Arts"</item>
+        <item>"Business"</item>
+        <item>"Entrepreneur"</item>
+        <item>"Politics"</item>
+        <item>"Sports"</item>
+        <item>"Travel"</item>
+    </string-array>
 
 </resources>

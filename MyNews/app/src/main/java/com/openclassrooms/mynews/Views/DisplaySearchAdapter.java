@@ -16,14 +16,14 @@ import java.util.List;
  * Created by berenger on 06/03/2018.
  */
 
-public class DisplayArticlesSearchAdapter extends RecyclerView.Adapter<ArticleViewHolder>{
+public class DisplaySearchAdapter extends RecyclerView.Adapter<ArticleViewHolder>{
 
     //FOR DATA
     private List<Response.Doc> mArticles;
     public RequestManager glide;
 
     //CONSTRUCTOR
-    public DisplayArticlesSearchAdapter(List<Response.Doc> articles, RequestManager glide){
+    public DisplaySearchAdapter(List<Response.Doc> articles, RequestManager glide){
         this.mArticles = articles;
         this.glide = glide;
     }
