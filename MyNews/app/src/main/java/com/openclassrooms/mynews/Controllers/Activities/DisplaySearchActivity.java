@@ -10,6 +10,9 @@ import com.openclassrooms.mynews.R;
 
 public class DisplaySearchActivity extends AppCompatActivity {
 
+    private String SEARCH_TYPE_KEY = "searchType";
+    private String SEARCH_TYPE_QUERY_KEY = "query";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,14 +31,17 @@ public class DisplaySearchActivity extends AppCompatActivity {
             int mEndDate = search.getEndDate(bundle);
 
             Log.e("DisplayActivity", "mQuery="+mQuery+", mNewsDesk = " + mNewsDesk);
-/*
+
+            DisplaySearchFragment mDisplaySearchFragment = new DisplaySearchFragment();
+
             Bundle args = new Bundle();
+            args.putString(SEARCH_TYPE_KEY, SEARCH_TYPE_QUERY_KEY);
             args.putString("query", mQuery);
             args.putString("newsDesk", mNewsDesk);
             args.putInt("beginDate", mBeginDate);
             args.putInt("endDate", mEndDate);
-*/
-            DisplaySearchFragment mDisplaySearchFragment = DisplaySearchFragment.newInstance("query", mQuery, mNewsDesk, mBeginDate, mEndDate);
+
+            mDisplaySearchFragment.setArguments(args);
 
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.activity_display_search_frame_layout, mDisplaySearchFragment)

@@ -33,33 +33,12 @@ import io.reactivex.Observable;
  */
 public class DisplaySearchFragment extends BaseDisplayFragment{
 
+    private String SEARCH_TYPE_KEY = "searchType";
+    private String TOPIC_KEY = "topic";
+
     static Search search = new Search();
 
-    public DisplaySearchFragment() { }
-
-    //FOR TOPIC SEARCH
-    public static DisplaySearchFragment newInstance(String searchType, String newsDesk){
-        DisplaySearchFragment displaySearchFragment = new DisplaySearchFragment();
-
-        Bundle args = new Bundle();
-        args.putString("searchType", searchType);
-        search.setNewsDesk(args, newsDesk);
-        displaySearchFragment.setArguments(args);
-
-        return displaySearchFragment;
-    }
-
-    //FOR ARTICLES SEARCH
-    public static DisplaySearchFragment newInstance(String searchType, String query, String newsDesk, int beginDate, int endDate){
-        DisplaySearchFragment displaySearchFragment = new DisplaySearchFragment();
-
-        Bundle args = new Bundle();
-        args.putString("searchType", searchType);
-        search.setSearch(args, query, newsDesk, beginDate, endDate);
-        displaySearchFragment.setArguments(args);
-
-        return displaySearchFragment;
-    }
+    public DisplaySearchFragment() {}
 
     @Override
     protected Observable<NYTimesAPI> getStream() {
@@ -67,12 +46,13 @@ public class DisplaySearchFragment extends BaseDisplayFragment{
         Observable<NYTimesAPI> stream = null;
 
         Bundle args = getArguments();
-        String searchType = args.getString("searchType");
+        String searchType = args.getString(SEARCH_TYPE_KEY);
 
         switch (searchType) {
 
             case "topic":
-                String mNewsDesk = "news_desk:(%22" + search.getNewsDesk(args) + "%22)";
+                String topic = args.getString(TOPIC_KEY);
+                String mNewsDesk = "news_desk:(%22" + topic + "%22)";
                 stream = NYTStreams.streamFetchTopic(mNewsDesk);
                 break;
 

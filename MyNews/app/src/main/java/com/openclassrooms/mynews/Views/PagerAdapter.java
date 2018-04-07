@@ -18,6 +18,13 @@ public class PagerAdapter extends FragmentPagerAdapter{
     private String TOP_STORIES_KEY = "topStories";
     private String MOST_POPULAR_KEY = "mostPopular";
 
+
+    private String SEARCH_TYPE_KEY = "searchType";
+    private String TOPIC_KEY = "topic";
+    private String BUSINESS_KEY = "Business";
+    private String SPORTS_KEY = "Sports";
+    private String ARTS_KEY = "Arts";
+
     public PagerAdapter(FragmentManager fm) {
         super(fm);
     }
@@ -28,31 +35,56 @@ public class PagerAdapter extends FragmentPagerAdapter{
 
         switch (position){
             case 0:
-                DisplayStoriesFragment displayStoriesFragment = new DisplayStoriesFragment();
+                DisplayStoriesFragment displayTopStoriesFragment = new DisplayStoriesFragment();
 
-                Bundle args = new Bundle();
-                args.putString(STORY_TYPE_KEY, TOP_STORIES_KEY);
-                displayStoriesFragment.setArguments(args);
+                Bundle argsTS = new Bundle();
+                argsTS.putString(STORY_TYPE_KEY, TOP_STORIES_KEY);
+                displayTopStoriesFragment.setArguments(argsTS);
 
-                fragment = displayStoriesFragment;
+                fragment = displayTopStoriesFragment;
                 break;
+
             case 1:
-                DisplayStoriesFragment displayStoriesFragment2 = new DisplayStoriesFragment();
+                DisplayStoriesFragment displayMostPopFragment = new DisplayStoriesFragment();
 
-                Bundle args2 = new Bundle();
-                args2.putString(STORY_TYPE_KEY, MOST_POPULAR_KEY);
-                displayStoriesFragment2.setArguments(args2);
+                Bundle argsMP = new Bundle();
+                argsMP.putString(STORY_TYPE_KEY, MOST_POPULAR_KEY);
+                displayMostPopFragment.setArguments(argsMP);
 
-                fragment = displayStoriesFragment2;
+                fragment = displayMostPopFragment;
                 break;
+
             case 2:
-                fragment = DisplaySearchFragment.newInstance("topic", "Business");
+                DisplaySearchFragment businessFragment = new DisplaySearchFragment();
+
+                Bundle argsBusiness = new Bundle();
+                argsBusiness.putString(SEARCH_TYPE_KEY, TOPIC_KEY);
+                argsBusiness.putString(TOPIC_KEY, BUSINESS_KEY);
+                businessFragment.setArguments(argsBusiness);
+
+                fragment = businessFragment;
                 break;
+
             case 3:
-                fragment = DisplaySearchFragment.newInstance("topic","Sports");
+                DisplaySearchFragment sportsFragment = new DisplaySearchFragment();
+
+                Bundle argsSports = new Bundle();
+                argsSports.putString(SEARCH_TYPE_KEY, TOPIC_KEY);
+                argsSports.putString(TOPIC_KEY, SPORTS_KEY);
+                sportsFragment.setArguments(argsSports);
+
+                fragment = sportsFragment;
                 break;
+
             case 4:
-                fragment = DisplaySearchFragment.newInstance("topic","Arts");
+                DisplaySearchFragment artsFragment = new DisplaySearchFragment();
+
+                Bundle argsArts = new Bundle();
+                argsArts.putString(SEARCH_TYPE_KEY, TOPIC_KEY);
+                argsArts.putString(TOPIC_KEY, ARTS_KEY);
+                artsFragment.setArguments(argsArts);
+
+                fragment = artsFragment;
                 break;
         }
 
