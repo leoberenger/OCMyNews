@@ -15,34 +15,23 @@ import io.reactivex.Observable;
  */
 public class DisplayStoriesFragment extends BaseDisplayFragment {
 
+    private String STORY_TYPE_KEY = "storyType";
+    private String TOP_STORIES_KEY = "topStories";
+    private String MOST_POPULAR_KEY = "mostPopular";
+
     public DisplayStoriesFragment() { }
 
-    public static DisplayStoriesFragment newInstance(String storyType){
-        DisplayStoriesFragment displayStoriesFragment = new DisplayStoriesFragment();
-
-        Bundle args = new Bundle();
-        args.putString("storyType", storyType);
-        displayStoriesFragment.setArguments(args);
-
-        return displayStoriesFragment;
-    }
 
     @Override
     protected Observable<NYTimesAPI> getStream() {
 
-        Observable<NYTimesAPI> stream = null;
-
         Bundle args = getArguments();
-        String storyType = args.getString("storyType");
+        String storyType = args.getString(STORY_TYPE_KEY);
 
-        switch (storyType) {
-            case "topStories":
-                stream = NYTStreams.streamFetchTopStories();
-                break;
-            case "mostPopular":
-                stream = NYTStreams.streamFetchMostPopular();
-                break;
-        }
+        Observable<NYTimesAPI> stream = (storyType.equals(TOP_STORIES_KEY))?
+                NYTStreams.streamFetchTopStories() :
+                NYTStreams.streamFetchMostPopular() ;
+
         return stream;
     }
 }

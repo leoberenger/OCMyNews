@@ -1,5 +1,6 @@
 package com.openclassrooms.mynews.Views;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -13,6 +14,10 @@ import com.openclassrooms.mynews.Controllers.Fragments.DisplayStoriesFragment;
 
 public class PagerAdapter extends FragmentPagerAdapter{
 
+    private String STORY_TYPE_KEY = "storyType";
+    private String TOP_STORIES_KEY = "topStories";
+    private String MOST_POPULAR_KEY = "mostPopular";
+
     public PagerAdapter(FragmentManager fm) {
         super(fm);
     }
@@ -23,10 +28,22 @@ public class PagerAdapter extends FragmentPagerAdapter{
 
         switch (position){
             case 0:
-                fragment = DisplayStoriesFragment.newInstance("topStories");
+                DisplayStoriesFragment displayStoriesFragment = new DisplayStoriesFragment();
+
+                Bundle args = new Bundle();
+                args.putString(STORY_TYPE_KEY, TOP_STORIES_KEY);
+                displayStoriesFragment.setArguments(args);
+
+                fragment = displayStoriesFragment;
                 break;
             case 1:
-                fragment = DisplayStoriesFragment.newInstance("mostPopular");
+                DisplayStoriesFragment displayStoriesFragment2 = new DisplayStoriesFragment();
+
+                Bundle args2 = new Bundle();
+                args2.putString(STORY_TYPE_KEY, MOST_POPULAR_KEY);
+                displayStoriesFragment2.setArguments(args2);
+
+                fragment = displayStoriesFragment2;
                 break;
             case 2:
                 fragment = DisplaySearchFragment.newInstance("topic", "Business");

@@ -18,7 +18,7 @@ import butterknife.ButterKnife;
  */
 public class DetailFragment extends Fragment {
 
-    String articleUrl;
+    private String ARTICLE_URL_KEY = "articleUrl";
 
     @BindView(R.id.fragment_detail_frame_layout)
     WebView myWebView;
@@ -33,7 +33,7 @@ public class DetailFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         Bundle args = getArguments();
-        articleUrl = args.getString("articleUrl", "");
+        String articleUrl = args.getString(ARTICLE_URL_KEY, "");
 
         myWebView.loadUrl(articleUrl);
 
