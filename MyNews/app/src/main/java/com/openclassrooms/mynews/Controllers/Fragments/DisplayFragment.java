@@ -55,7 +55,6 @@ public class DisplayFragment extends android.support.v4.app.Fragment {
     private DisplayStoriesAdapter adapter;
 
     protected String EXTRA_ARTICLE_URL = "EXTRA_ARTICLE_URL";
-    static Search search = new Search();
 
     public DisplayFragment() { }
 

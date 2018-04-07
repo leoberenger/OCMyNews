@@ -23,21 +23,16 @@ public class SearchAndNotifyJob extends Job {
     private Disposable mDisposable;
     static final String TAG = "notification_job_tag";
     private Observable<NYTimesAPI> stream;
-    private SharedPreferences prefs;
-    private String myQuery;
-    private String myNewsDesk;
 
     @NonNull
     @Override
     protected Result onRunJob(@NonNull Params params) {
 
         PersistableBundleCompat extras = params.getExtras();
-        Search search = new Search();
+        SearchMgr searchMgr = SearchMgr.getInstance();
+        final Search search = searchMgr.getSearchFromPersistBundle(extras);
 
-        myQuery = search.getQuery(extras);
-        myNewsDesk = search.getNewsDesk(extras);
-
-        stream = NYTStreams.streamFetchSearchArticles(myQuery, myNewsDesk);
+        stream = NYTStreams.streamFetchSearchArticles(search);
 
         this.mDisposable = stream
                 .subscribeWith(new DisposableObserver<NYTimesAPI>(){
@@ -45,7 +40,7 @@ public class SearchAndNotifyJob extends Job {
                     public void onNext(NYTimesAPI articles) {
                         Log.e("TopStoriesFragment", "On Next");
                         if (!articles.getResponse().getDocs().isEmpty())
-                            sendNotification(myQuery, myNewsDesk);
+                            sendNotification(search);
                     }
 
                     @Override
@@ -64,17 +59,11 @@ public class SearchAndNotifyJob extends Job {
         return Result.SUCCESS;
     }
 
-    public static void schedulePeriodic(String query, String newsDesk) {
+    public static void schedulePeriodic(Search search) {
 
-        Search search = new Search();
+        SearchMgr searchMgr = SearchMgr.getInstance();
         PersistableBundleCompat bundleCompat = new PersistableBundleCompat();
-        search.setQuery(bundleCompat, query);
-        search.setNewsDesk(bundleCompat, newsDesk);
-
-        //ADD CURRENT TIME
-        // FOR BEGIN
-        // AND END
-        // DATE
+        searchMgr.setSearchToPersistBundle(bundleCompat, search);
 
         new JobRequest.Builder(SearchAndNotifyJob.TAG)
                 //.setPeriodic(TimeUnit.MINUTES.toMillis(15), TimeUnit.MINUTES.toMillis(5))
@@ -87,22 +76,22 @@ public class SearchAndNotifyJob extends Job {
                 .schedule();
     }
 
-    private void sendNotification(String q, String nd){
+    private void sendNotification(Search search){
+
+        SearchMgr searchMgr = SearchMgr.getInstance();
 
             int notificationID = 1234;
-            Search search = new Search();
 
             // Create an explicit intent for an Activity in your app
             Intent intent = new Intent(getContext(), DisplaySearchActivity.class);
-            search.setSearch(intent, q, nd, 20180406, 20180406);
-
+            searchMgr.setSearchToIntent(intent, search);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             PendingIntent pendingIntent = PendingIntent.getActivity(getContext(),
                 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             NotificationHelper notificationHelper = new NotificationHelper(getContext());
             NotificationCompat.Builder builder = notificationHelper
-                    .getNotificationBuilder("New New York Times Articles", "New articles correspond to : " +myQuery, pendingIntent);
+                    .getNotificationBuilder("New New York Times Articles", "New articles correspond to : " +search.getQuery(), pendingIntent);
             notificationHelper.getNotificationManager().notify(notificationID, builder.build());
     }
 }

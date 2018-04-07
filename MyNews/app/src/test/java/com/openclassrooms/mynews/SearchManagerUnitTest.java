@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
-public class SearchUnitTest {
+public class SearchManagerUnitTest {
 
     @Test
     public void query_isNotEmpty() throws Exception {

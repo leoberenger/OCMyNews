@@ -14,9 +14,11 @@ import com.openclassrooms.mynews.Controllers.Activities.DetailActivity;
 import com.openclassrooms.mynews.Controllers.Activities.SearchActivity;
 import com.openclassrooms.mynews.Models.NYTimesAPI;
 import com.openclassrooms.mynews.Models.Response;
+import com.openclassrooms.mynews.Models.Search;
 import com.openclassrooms.mynews.R;
 import com.openclassrooms.mynews.Utils.ItemClickSupport;
 import com.openclassrooms.mynews.Utils.NYTStreams;
+import com.openclassrooms.mynews.Utils.SearchMgr;
 import com.openclassrooms.mynews.Views.DisplaySearchAdapter;
 
 import java.util.ArrayList;
@@ -31,31 +33,30 @@ public class DisplaySearchFragment extends DisplayFragment {
 
     public DisplaySearchFragment() { }
 
+    @Override
     protected Observable<NYTimesAPI> getStream() {
+
+        SearchMgr searchMgr = SearchMgr.getInstance();
+        Search search;
 
         Observable<NYTimesAPI> stream = null;
 
         Bundle args = getArguments();
-        String searchType = args.getString((getResources().getString(R.string.bundle_search_type)));
+        search = searchMgr.getSearchFromBundle(args);
+        String searchType = search.getSearchType();
 
         switch (searchType) {
 
             case "topic":
-                String topic = args.getString(getResources().getString(R.string.bundle_search_type_topic));
-                String mNewsDesk = "news_desk:(%22" + topic + "%22)";
-                stream = NYTStreams.streamFetchTopic(mNewsDesk);
+                String topic = search.getNewsDesk();
+                stream = NYTStreams.streamFetchTopic("news_desk:(%22" + topic + "%22)");
                 break;
 
             case "query":
-                String query = search.getQuery(args);
-                String newsDesk = search.getNewsDesk(args);
-                int beginDate = search.getBeginDate(args);
-                int endDate = search.getEndDate(args);
-
-                if((beginDate!=0) && (endDate !=0))
-                    stream = NYTStreams.streamFetchSearchArticles(query, newsDesk, beginDate, endDate);
+                if((search.getBeginDate()!=0) && (search.getEndDate() !=0))
+                    stream = NYTStreams.streamFetchSearchArticles(search);
                 else
-                    stream = NYTStreams.streamFetchSearchArticles(query, newsDesk);
+                    stream = NYTStreams.streamFetchSearchArticles(search.getQuery(), search.getNewsDesk());
                 break;
         }
         return stream;
@@ -99,7 +100,7 @@ public class DisplaySearchFragment extends DisplayFragment {
                 builder = new AlertDialog.Builder(getContext());
             }
             builder.setMessage("No Articles for this search")
-                    .setPositiveButton("New Search", new DialogInterface.OnClickListener() {
+                    .setPositiveButton("New SearchManager", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             Intent intent = new Intent(getActivity(), SearchActivity.class);
                             startActivity(intent);

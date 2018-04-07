@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
-        //Get to Search or Notification Activity
+        //Get to SearchManager or Notification Activity
         switch (item.getItemId()){
             case R.id.menu_search:
                 Intent intent = new Intent(this, SearchActivity.class);

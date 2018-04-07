@@ -2,6 +2,7 @@ package com.openclassrooms.mynews.Utils;
 
 
 import com.openclassrooms.mynews.Models.NYTimesAPI;
+import com.openclassrooms.mynews.Models.Search;
 
 import java.util.concurrent.TimeUnit;
 
@@ -51,9 +52,9 @@ public class NYTStreams {
                 .timeout(10, TimeUnit.SECONDS);
     }
 
-    public static Observable<NYTimesAPI> streamFetchSearchArticles(String query, String desk, int startDate, int endDate){
+    public static Observable<NYTimesAPI> streamFetchSearchArticles(Search search){
         NYTService nYTService = NYTService.retrofit.create(NYTService.class);
-        return nYTService.getSearchArticles(query, desk, startDate, endDate)
+        return nYTService.getSearchArticles(search.getQuery(), search.getNewsDesk(), search.getBeginDate(), search.getEndDate())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .timeout(10, TimeUnit.SECONDS);

@@ -20,7 +20,7 @@ public class DisplaySearchAdapter extends RecyclerView.Adapter<ArticleViewHolder
 
     //FOR DATA
     private List<Response.Doc> mArticles;
-    public RequestManager glide;
+    private RequestManager glide;
 
     //CONSTRUCTOR
     public DisplaySearchAdapter(List<Response.Doc> articles, RequestManager glide){

@@ -7,11 +7,11 @@
     android:layout_margin="30dp"
     android:theme="@style/SearchTheme">
 
-        <!-- Import Search Search -->
+        <!-- Import SearchManager SearchManager -->
         <include layout="@layout/search_query"
             android:id="@+id/activity_notification_query"/>
 
-        <!-- Import Search Desk -->
+        <!-- Import SearchManager Desk -->
         <include
             android:id="@+id/activity_notification_desk"
             layout="@layout/search_desk"

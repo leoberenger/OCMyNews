@@ -1,6 +1,7 @@
 package com.openclassrooms.mynews.Controllers.Activities;
 
 import android.app.DatePickerDialog;
+import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 import com.openclassrooms.mynews.Models.Search;
 import com.openclassrooms.mynews.R;
 import com.openclassrooms.mynews.Controllers.base.BaseSearchActivity;
+import com.openclassrooms.mynews.Utils.SearchMgr;
 
 import java.util.Calendar;
 
@@ -42,17 +44,18 @@ public class SearchActivity extends BaseSearchActivity {
         searchBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                mSearch = new Search();
+                SearchMgr searchMgr = SearchMgr.getInstance();
 
-                mQuery = mSearch.getQuery(queryInput);
-                boolean oneTopicSelected = mSearch.checkMin1DeskSelected(desksAreChecked);
-                mNewsDesk = mSearch.getNewsDesk(desksAreChecked, newsDesk);
-                String begDateInput = mSearch.getQuery(beginDatePicker);
-                String endDateInput = mSearch.getQuery(endDatePicker);
+                mQuery = queryInput.getText().toString();
+                String begDateInput = beginDatePicker.getText().toString();
+                String endDateInput = endDatePicker.getText().toString();
+                boolean oneTopicSelected = searchMgr.checkMin1DeskSelected(desksAreChecked);
+                mNewsDesk = searchMgr.getNewsDeskName(desksAreChecked, newsDesk);
 
+                Search search = new Search("query", mQuery, mNewsDesk, mBeginDate, mEndDate);
 
                 if(mQuery.equals("")) {
-                    showToast("Search required");
+                    showToast("SearchManager required");
                 }else if( !oneTopicSelected) {
                     showToast("Pick at least one topic");
                 }else if( !begDateInput.equals("") && !validateDateFormat(beginDatePicker) ){
@@ -64,10 +67,10 @@ public class SearchActivity extends BaseSearchActivity {
                     mBeginDate = (!begDateInput.equals("")) ? transformDateFormat(beginDatePicker) : 0 ;
                     mEndDate = (!endDateInput.equals("")) ? transformDateFormat(endDatePicker) : 0;
 
-                    Log.e("Search Activity", "mNewsDesk=" + mNewsDesk + " mQuery= " + mQuery + " begin date ="+mBeginDate + " end date =" + mEndDate);
+                    Log.e("SearchManager Activity", "mNewsDesk=" + mNewsDesk + " mQuery= " + mQuery + " begin date ="+mBeginDate + " end date =" + mEndDate);
 
                     Intent intent = new Intent(SearchActivity.this, DisplaySearchActivity.class);
-                    mSearch.setSearch(intent, mQuery, mNewsDesk, mBeginDate, mEndDate);
+                    searchMgr.setSearchToIntent(intent, search);
                     startActivity(intent);
                 }
             }
