@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
@@ -30,29 +31,33 @@ public class DisplaySearchFragment extends DisplayFragment {
 
     private List<Response.Doc> searchArticles;
     private DisplaySearchAdapter searchAdapter;
+    String SEARCH_TYPE_KEY = "searchType";
+    String SEARCH_TYPE_TOPIC = "topic";
+
 
     public DisplaySearchFragment() { }
 
     @Override
     protected Observable<NYTimesAPI> getStream() {
 
-        SearchMgr searchMgr = SearchMgr.getInstance();
-        Search search;
-
         Observable<NYTimesAPI> stream = null;
 
         Bundle args = getArguments();
-        search = searchMgr.getSearchFromBundle(args);
-        String searchType = search.getSearchType();
+        String searchType = args.getString(SEARCH_TYPE_KEY);
+        Log.e("DisplaySearchFragment","searchType = " + searchType);
 
         switch (searchType) {
 
             case "topic":
-                String topic = search.getNewsDesk();
+                String topic = args.getString(SEARCH_TYPE_TOPIC);
+                Log.e("DisplaySearchFgmt", "Topic = " + topic);
                 stream = NYTStreams.streamFetchTopic("news_desk:(%22" + topic + "%22)");
                 break;
 
             case "query":
+                SearchMgr searchMgr = SearchMgr.getInstance();
+                Search search = searchMgr.getSearchFromBundle(args);
+
                 if((search.getBeginDate()!=0) && (search.getEndDate() !=0))
                     stream = NYTStreams.streamFetchSearchArticles(search);
                 else
