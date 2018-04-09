@@ -6,11 +6,9 @@
     <string name="menu_search">Recherche</string>
     <string name="menu_more">Plus</string>
 
-    <string-array name="alertDialog">
-        <item>Notifications</item>
-        <item>Help</item>
-        <item>About</item>
-    </string-array>
+    <string name="menu_more_notifications">Notifications</string>
+    <string name="menu_more_help">Help</string>
+    <string name="menu_more_about">About</string>
 
     <!-- NAVIGATION DRAWER -->
     <string name="nav_drawer_topstories">Top Stories</string>

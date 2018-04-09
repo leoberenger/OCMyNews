@@ -13,9 +13,13 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import com.openclassrooms.mynews.R;
 import com.openclassrooms.mynews.Views.PagerAdapter;
@@ -79,16 +83,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(intent);
                 return true;
             case R.id.menu_more:
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setItems(R.array.alertDialog, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                if(which == 0){
-                                    Intent intent2 = new Intent(getApplicationContext(), NotificationActivity.class);
-                                    startActivity(intent2);
-                                }
-                            }
-                        });
-                builder.create().show();
+                View customView = findViewById(R.id.menu_more);
+                showPopup(customView);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -154,4 +150,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mNavigationView.setNavigationItemSelectedListener(this);
     }
 
+    public void showPopup(View v) {
+        PopupMenu popupMenu = new PopupMenu(this, v);
+
+        popupMenu.setOnMenuItemClickListener (new PopupMenu.OnMenuItemClickListener () {
+            @Override
+            public boolean onMenuItemClick (MenuItem item)
+            {
+                int id = item.getItemId();
+                switch (id)
+                {
+                    case R.id.menu_more_notifications:
+                        Intent intent2 = new Intent(getApplicationContext(), NotificationActivity.class);
+                        startActivity(intent2);
+                        break;
+                    case R.id.menu_more_help:
+                        Toast.makeText(getApplicationContext(), "No Help Will Come", Toast.LENGTH_LONG).show();
+                        break;
+                    case R.id.menu_more_about:
+                        Toast.makeText(getApplicationContext(), "Nothing to talk about", Toast.LENGTH_LONG).show();
+                        break;
+                }
+                return true;
+            }
+        });
+        popupMenu.inflate (R.menu.activity_main_menu_more);
+        popupMenu.show();
+        }
    }
