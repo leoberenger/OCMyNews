@@ -59,7 +59,7 @@ public class ArticleViewHolder extends RecyclerView.ViewHolder{
     //FOR SEARCH ARTICLE API
     public void updateWithArticle(Response.Doc response, RequestManager glide){
         this.mTitle.setText(response.getHeadline().getMain());
-//        this.mDate.setText(transformPublishedDate(response.getPubDate()));
+        this.mDate.setText(transformPublishedDate(response.getPubDate()));
 
         if(!response.getMultimedia().isEmpty())
             glide.load("https://static01.nyt.com/" + response.getMultimedia().get(0).getUrl()).into(mImage);
