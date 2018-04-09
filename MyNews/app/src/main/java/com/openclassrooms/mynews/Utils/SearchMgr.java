@@ -13,13 +13,12 @@ public class SearchMgr {
 
     private Search search;
 
-    private String SEARCH_TYPE_KEY = "searchType";
-    private String QUERY_KEY = "query";
-    private String TOPIC_KEY = "topic";
+    private final String SEARCH_TYPE_KEY = "searchType";
+    private final String QUERY_KEY = "query";
 
-    private String NEWS_DESK_KEY = "newsDesk";
-    private String BEGIN_DATE_KEY = "beginDate";
-    private String END_DATE_KEY = "endDate";
+    private final String NEWS_DESK_KEY = "newsDesk";
+    private final String BEGIN_DATE_KEY = "beginDate";
+    private final String END_DATE_KEY = "endDate";
 
 
     public static SearchMgr getInstance() {
@@ -156,10 +155,14 @@ public class SearchMgr {
     public boolean noDeskSelected(boolean [] desks){
         boolean noDeskSelected = true;
 
+        for (int i = 0 ; i< desks.length; i++){
+            if (desks[i] == true) noDeskSelected = false;
+        }
+        /*
         for(boolean desk : desks){
             noDeskSelected = !desk;
         }
-
+        */
         return noDeskSelected;
     }
 

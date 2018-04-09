@@ -19,8 +19,8 @@ import java.util.List;
 public class DisplaySearchAdapter extends RecyclerView.Adapter<ArticleViewHolder>{
 
     //FOR DATA
-    private List<Response.Doc> mArticles;
-    private RequestManager glide;
+    private final List<Response.Doc> mArticles;
+    private final RequestManager glide;
 
     //CONSTRUCTOR
     public DisplaySearchAdapter(List<Response.Doc> articles, RequestManager glide){

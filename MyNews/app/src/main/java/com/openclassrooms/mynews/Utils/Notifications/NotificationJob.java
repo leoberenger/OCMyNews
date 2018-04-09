@@ -13,6 +13,7 @@ import com.openclassrooms.mynews.Controllers.Activities.DisplaySearchActivity;
 import com.openclassrooms.mynews.Models.API.NYTimesAPI;
 import com.openclassrooms.mynews.Models.Search;
 import com.openclassrooms.mynews.Utils.APIRequests.NYTStreams;
+import com.openclassrooms.mynews.Utils.DateMgr;
 import com.openclassrooms.mynews.Utils.SearchMgr;
 
 import io.reactivex.Observable;
@@ -24,14 +25,21 @@ public class NotificationJob extends Job {
     private Disposable mDisposable;
     static final String TAG = "notification_job_tag";
     private Observable<NYTimesAPI> stream;
+    private final static SearchMgr searchMgr = SearchMgr.getInstance();
+    private final static DateMgr dateMgr = DateMgr.getInstance();
 
     @NonNull
     @Override
     protected Result onRunJob(@NonNull Params params) {
 
         PersistableBundleCompat extras = params.getExtras();
-        SearchMgr searchMgr = SearchMgr.getInstance();
         final Search search = searchMgr.getSearchFromPersistBundle(extras);
+
+        //Set Begin Date = YESTERDAY and End Date = TODAY
+        int beginDate = dateMgr.getDate(1);
+        int endDate = dateMgr.getDate(0);
+        search.setBeginDate(beginDate);
+        search.setEndDate(endDate);
 
         stream = NYTStreams.streamFetchSearchArticles(search);
 
@@ -62,7 +70,6 @@ public class NotificationJob extends Job {
 
     public static void schedulePeriodic(Search search) {
 
-        SearchMgr searchMgr = SearchMgr.getInstance();
         PersistableBundleCompat bundleCompat = new PersistableBundleCompat();
         searchMgr.setSearchToPersistBundle(bundleCompat, search);
 
@@ -79,20 +86,26 @@ public class NotificationJob extends Job {
 
     private void sendNotification(Search search){
 
-        SearchMgr searchMgr = SearchMgr.getInstance();
+        // Create intent for DisplaySearchActivity
+        Intent intent = new Intent(getContext(), DisplaySearchActivity.class);
+        searchMgr.setSearchToIntent(intent, search);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-            int notificationID = 1234;
+        PendingIntent pendingIntent =
+                PendingIntent.getActivity(
+                        getContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-            // Create an explicit intent for an Activity in your app
-            Intent intent = new Intent(getContext(), DisplaySearchActivity.class);
-            searchMgr.setSearchToIntent(intent, search);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            PendingIntent pendingIntent = PendingIntent.getActivity(getContext(),
-                0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        //Create Notification
+        int notificationID = 1234;
+        NotificationHelper notificationHelper =
+                new NotificationHelper(getContext());
+        NotificationCompat.Builder builder =
+                notificationHelper.getNotificationBuilder(
+                        "New New York Times Articles",
+                        "New articles correspond to : " +search.getQuery(),
+                        pendingIntent);
+        notificationHelper.getNotificationManager().notify(notificationID, builder.build());
 
-            NotificationHelper notificationHelper = new NotificationHelper(getContext());
-            NotificationCompat.Builder builder = notificationHelper
-                    .getNotificationBuilder("New New York Times Articles", "New articles correspond to : " +search.getQuery(), pendingIntent);
-            notificationHelper.getNotificationManager().notify(notificationID, builder.build());
+
     }
 }

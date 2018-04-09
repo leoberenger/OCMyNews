@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
 public class SearchManagerUnitTest {
 
     @Test
-    public void query_isNotEmpty() throws Exception {
+    public void query_isNotEmpty() {
         String query= "";
         assertEquals("", query);
     }

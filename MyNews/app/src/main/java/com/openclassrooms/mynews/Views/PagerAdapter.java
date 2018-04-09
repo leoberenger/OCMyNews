@@ -3,7 +3,6 @@ package com.openclassrooms.mynews.Views;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.openclassrooms.mynews.Controllers.Fragments.DisplayFragment;
@@ -15,15 +14,15 @@ import com.openclassrooms.mynews.Controllers.Fragments.DisplaySearchFragment;
 
 public class PagerAdapter extends FragmentStatePagerAdapter {
 
-    String SEARCH_TYPE_KEY = "searchType";
-    String SEARCH_TYPE_TOPIC = "topic";
-    String SEARCH_TYPE_TOP_STORIES = "topStories";
-    String SEARCH_TYPE_MOST_POPULAR = "mostPopular";
-    String SEARCH_TOPIC_BUSINESS = "Business";
-    String SEARCH_TOPIC_SPORTS = "Sports";
-    String SEARCH_TOPIC_ARTS = "Arts";
+    private final String SEARCH_TYPE_KEY = "searchType";
+    private final String SEARCH_TYPE_TOPIC = "topic";
+    private final String SEARCH_TYPE_TOP_STORIES = "topStories";
+    private final String SEARCH_TYPE_MOST_POPULAR = "mostPopular";
+    private final String SEARCH_TOPIC_BUSINESS = "Business";
+    private final String SEARCH_TOPIC_SPORTS = "Sports";
+    private final String SEARCH_TOPIC_ARTS = "Arts";
 
-    int nbTabs = 5;
+    private final int nbTabs = 5;
 
     public PagerAdapter(FragmentManager fm) {
         super(fm);

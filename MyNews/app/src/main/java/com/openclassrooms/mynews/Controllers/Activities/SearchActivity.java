@@ -3,6 +3,7 @@ package com.openclassrooms.mynews.Controllers.Activities;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -26,7 +27,7 @@ public class SearchActivity extends BaseSearchActivity {
     @BindView(R.id.activity_search_button) Button searchBtn;
     @BindView(R.id.activity_search_query_input)EditText queryInput;
 
-    private String searchType = getResources().getString(R.string.bundle_search_type_query);
+    private final String searchType = "query";
     private Search mSearch;
     private SearchMgr searchMgr;
     private DateMgr dateMgr;
@@ -56,8 +57,11 @@ public class SearchActivity extends BaseSearchActivity {
                 boolean queryIsEmpty = searchMgr.emptyQuery(mQuery);
                 boolean noBeginDate = searchMgr.emptyDateInput(beginDatePicker.getText().toString());
                 boolean noEndDate = searchMgr.emptyDateInput(endDatePicker.getText().toString());
-                boolean invalidBeginDateFormat = dateMgr.validateDateFormat(beginDatePicker);
-                boolean invalidEndDateFormat = dateMgr.validateDateFormat(endDatePicker);
+                boolean invalidBeginDateFormat = dateMgr.invalidDateFormat(beginDatePicker);
+                boolean invalidEndDateFormat = dateMgr.invalidDateFormat(endDatePicker);
+
+                Log.e("SearchActivity", "Begin Date entered = " + beginDatePicker.getText().toString());
+                Log.e("SearchActivity", "End Date entered = " + endDatePicker.getText().toString());
 
                 if(queryIsEmpty) {
                     showToast("Query required");
@@ -68,10 +72,16 @@ public class SearchActivity extends BaseSearchActivity {
                 }else if(!noEndDate && invalidEndDateFormat){
                     showToast("Invalid End Date format");
                 }else {
+
                     mBeginDate = (!noBeginDate) ? dateMgr.transformDateFormat(beginDatePicker) : 0 ;
                     mEndDate = (!noEndDate) ? dateMgr.transformDateFormat(endDatePicker) : 0;
 
                     mSearch = new Search(searchType, mQuery, mNewsDesk, mBeginDate, mEndDate);
+
+                    Log.e("SearchActivity", "query = " + mSearch.getQuery()
+                            + " desks = " + mSearch.getNewsDesk()
+                            + " beginDate = " + mSearch.getBeginDate()
+                            + " endDate = " + mSearch.getEndDate());
 
                     Intent intent = new Intent(SearchActivity.this, DisplaySearchActivity.class);
                     searchMgr.setSearchToIntent(intent, mSearch);

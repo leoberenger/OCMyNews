@@ -14,7 +14,7 @@ import android.support.v4.content.ContextCompat;
 
 import com.openclassrooms.mynews.R;
 
-public class NotificationHelper extends ContextWrapper {
+class NotificationHelper extends ContextWrapper {
     private NotificationManager mNotificationManager;
     private final String MY_CHANNEL = "my_channel";
     private final long[] vibrationScheme = new long[]{200, 400};

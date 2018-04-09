@@ -8,13 +8,13 @@ import com.openclassrooms.mynews.R;
 
 public abstract class BaseSearchActivity extends AppCompatActivity{
 
-    protected boolean [] newsDesksSelected = {false, false, false, false, false, false};
-    protected int newsDesksLength = newsDesksSelected.length;
+    final boolean [] newsDesksSelected = {false, false, false, false, false, false};
+    final int newsDesksLength = newsDesksSelected.length;
 
-    protected String mQuery = "";
-    protected String mNewsDesk;
-    protected int mBeginDate = 0;
-    protected int mEndDate = 0;
+    String mQuery = "";
+    String mNewsDesk;
+    int mBeginDate = 0;
+    int mEndDate = 0;
 
     public void onCheckboxClicked(View view) {
 

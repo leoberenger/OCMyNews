@@ -44,18 +44,18 @@ public class DisplayFragment extends android.support.v4.app.Fragment {
     protected SwipeRefreshLayout mSwipeRefreshLayout;
 
     //FOR DATA
-    protected Disposable mDisposable;
+    private Disposable mDisposable;
 
     private List<Result> articles;
     private DisplayStoriesAdapter adapter;
 
-    protected String EXTRA_ARTICLE_URL = "EXTRA_ARTICLE_URL";
-    protected SearchMgr searchMgr;
-    protected Search mSearch;
+    final String EXTRA_ARTICLE_URL = "EXTRA_ARTICLE_URL";
+    SearchMgr searchMgr;
+    Search mSearch;
 
     public DisplayFragment() { }
 
-    protected Observable<NYTimesAPI> getStream() {
+    Observable<NYTimesAPI> getStream() {
 
         Observable<NYTimesAPI> stream = null;
 
@@ -103,7 +103,7 @@ public class DisplayFragment extends android.support.v4.app.Fragment {
     // CONFIGURATION
     // -----------------
 
-    protected void configureSwipeRefreshLayout(final Observable<NYTimesAPI> stream){
+    private void configureSwipeRefreshLayout(final Observable<NYTimesAPI> stream){
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -112,14 +112,14 @@ public class DisplayFragment extends android.support.v4.app.Fragment {
         });
     }
 
-    protected void configureRecyclerView(){
+    void configureRecyclerView(){
         this.articles = new ArrayList<>();
         this.adapter = new DisplayStoriesAdapter(this.articles, Glide.with(this));
         this.mRecyclerView.setAdapter(this.adapter);
         this.mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
-    protected void configureOnClickRecyclerView(){
+    void configureOnClickRecyclerView(){
         ItemClickSupport.addTo(mRecyclerView, R.layout.fragment_main_item)
                 .setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
                     @Override
@@ -138,7 +138,7 @@ public class DisplayFragment extends android.support.v4.app.Fragment {
     // HTTP REQUEST (RxJava)
     // -----------------
 
-    protected void executeHttpRequestWithRetrofit(Observable<NYTimesAPI> stream){
+    private void executeHttpRequestWithRetrofit(Observable<NYTimesAPI> stream){
         this.mDisposable = stream
                 .subscribeWith(new DisposableObserver<NYTimesAPI>(){
                     @Override
@@ -159,7 +159,7 @@ public class DisplayFragment extends android.support.v4.app.Fragment {
                 });
     }
 
-    protected void disposeWhenDestroy(){
+    private void disposeWhenDestroy(){
         if(this.mDisposable != null && !this.mDisposable.isDisposed())
             this.mDisposable.dispose();
     }
@@ -168,7 +168,7 @@ public class DisplayFragment extends android.support.v4.app.Fragment {
     // UPDATE UI
     // -----------------
 
-    protected void updateUI(NYTimesAPI results){
+    void updateUI(NYTimesAPI results){
         mSwipeRefreshLayout.setRefreshing(false);
         articles.clear();
         articles.addAll(results.getResults());

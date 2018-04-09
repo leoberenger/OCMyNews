@@ -1,15 +1,8 @@
 package com.openclassrooms.mynews.Models;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.widget.EditText;
-
-import com.evernote.android.job.util.support.PersistableBundleCompat;
-
 public class Search {
 
-    private String searchType;
+    private final String searchType;
     private String query;
     private String newsDesk;
     private int beginDate;
@@ -18,14 +11,6 @@ public class Search {
     //--------------------------
     // CONSTRUCTORS
     //--------------------------
-
-    public Search(){}
-
-    public Search(String searchType, String query, String newsDesk) {
-        this.searchType = searchType;
-        this.query = query;
-        this.newsDesk = newsDesk;
-    }
 
     public Search(String searchType, String query, String newsDesk, int beginDate, int endDate) {
         this.searchType = searchType;
@@ -39,10 +24,6 @@ public class Search {
     //--------------------------
     // GETTERS
     //--------------------------
-
-    public String getSearchType() {
-        return searchType;
-    }
 
     public String getQuery() {
         return query;
@@ -63,10 +44,6 @@ public class Search {
     //--------------------------
     // SETTERS
     //--------------------------
-
-    public void setSearchType(String searchType) {
-        this.searchType = searchType;
-    }
 
     public void setQuery(String query) {
         this.query = query;

@@ -19,8 +19,8 @@ import java.util.List;
 public class DisplayStoriesAdapter extends RecyclerView.Adapter<ArticleViewHolder>{
 
     //FOR DATA
-    private List<Result> mArticles;
-    public RequestManager glide;
+    private final List<Result> mArticles;
+    private final RequestManager glide;
 
     //CONSTRUCTOR
     public DisplayStoriesAdapter(List<Result> articles, RequestManager glide){

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
@@ -28,8 +29,8 @@ public class DisplaySearchFragment extends DisplayFragment {
 
     private List<Response.Doc> searchArticles;
     private DisplaySearchAdapter searchAdapter;
-    String SEARCH_TYPE_KEY = "searchType";
-    String SEARCH_TYPE_TOPIC = "topic";
+    private final String SEARCH_TYPE_KEY = "searchType";
+    private final String SEARCH_TYPE_TOPIC = "topic";
 
 
 
@@ -52,6 +53,12 @@ public class DisplaySearchFragment extends DisplayFragment {
 
             case "query":
                 mSearch = searchMgr.getSearchFromBundle(args);
+
+                Log.e("DisplaySearchFragment", "query = " + mSearch.getQuery()
+                        + " desks = " + mSearch.getNewsDesk()
+                        + " beginDate = " + mSearch.getBeginDate()
+                        + " endDate = " + mSearch.getEndDate());
+
                 stream = (mSearch.getBeginDate() == 0 || mSearch.getEndDate() == 0) ?
                         NYTStreams.streamFetchSearchArticles(mSearch.getQuery(), mSearch.getNewsDesk()):
                         NYTStreams.streamFetchSearchArticles(mSearch);

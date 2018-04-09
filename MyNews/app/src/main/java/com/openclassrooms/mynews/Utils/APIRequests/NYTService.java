@@ -14,7 +14,7 @@ import retrofit2.http.Query;
  * Created by berenger on 01/03/2018.
  */
 
-public interface NYTService {
+interface NYTService {
 
     String apiKeyQuery = "api-key=186147632b12462f92f003d7b33d2786";
 

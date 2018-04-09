@@ -29,7 +29,7 @@ public class NotificationActivity extends BaseSearchActivity {
     @BindView(R.id.checkbox_sports) CheckBox checkboxSports;
     @BindView(R.id.checkbox_travel) CheckBox checkboxTravel;
 
-    CheckBox [] checkBoxes = new CheckBox [newsDesksLength];
+    private final CheckBox [] checkBoxes = new CheckBox [newsDesksLength];
 
     private SharedPreferences prefs;
     private boolean switchEnabled = false;
@@ -96,11 +96,8 @@ public class NotificationActivity extends BaseSearchActivity {
 
                         //1 - Create Search Object
                         mNewsDesk = searchMgr.newsDesks(newsDesksSelected);
-                        //GET CURRENT DATE
-                        mBeginDate = 20180407;
-                        mEndDate = 20180407;
 
-                        search = new Search("query", mQuery, mNewsDesk, mBeginDate, mEndDate);
+                        search = new Search("query", mQuery, mNewsDesk, 0, 0);
 
                         //2 - Create Job Manager
                         JobManager.create(getApplicationContext())
