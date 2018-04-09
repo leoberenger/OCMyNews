@@ -25,6 +25,7 @@ import com.openclassrooms.mynews.Models.Search;
 import com.openclassrooms.mynews.R;
 import com.openclassrooms.mynews.Utils.ItemClickSupport;
 import com.openclassrooms.mynews.Utils.NYTStreams;
+import com.openclassrooms.mynews.Utils.SearchMgr;
 import com.openclassrooms.mynews.Views.DisplaySearchAdapter;
 import com.openclassrooms.mynews.Views.DisplayStoriesAdapter;
 
@@ -55,6 +56,8 @@ public class DisplayFragment extends android.support.v4.app.Fragment {
     private DisplayStoriesAdapter adapter;
 
     protected String EXTRA_ARTICLE_URL = "EXTRA_ARTICLE_URL";
+    protected SearchMgr searchMgr;
+    protected Search mSearch;
 
     public DisplayFragment() { }
 
@@ -83,6 +86,8 @@ public class DisplayFragment extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, view);
+
+        searchMgr = SearchMgr.getInstance();
 
         Observable<NYTimesAPI> mStream = getStream();
 

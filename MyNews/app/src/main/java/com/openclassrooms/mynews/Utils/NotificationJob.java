@@ -2,7 +2,6 @@ package com.openclassrooms.mynews.Utils;
 
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -18,7 +17,7 @@ import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 
-public class SearchAndNotifyJob extends Job {
+public class NotificationJob extends Job {
 
     private Disposable mDisposable;
     static final String TAG = "notification_job_tag";
@@ -65,7 +64,7 @@ public class SearchAndNotifyJob extends Job {
         PersistableBundleCompat bundleCompat = new PersistableBundleCompat();
         searchMgr.setSearchToPersistBundle(bundleCompat, search);
 
-        new JobRequest.Builder(SearchAndNotifyJob.TAG)
+        new JobRequest.Builder(NotificationJob.TAG)
                 //.setPeriodic(TimeUnit.MINUTES.toMillis(15), TimeUnit.MINUTES.toMillis(5))
                 //.setUpdateCurrent(true)
                 //.setRequiredNetworkType(JobRequest.NetworkType.CONNECTED)

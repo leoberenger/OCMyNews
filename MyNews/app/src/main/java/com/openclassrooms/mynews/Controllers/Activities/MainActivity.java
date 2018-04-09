@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 builder.setItems(R.array.alertDialog, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 if(which == 0){
-                                    Intent intent2 = new Intent(getApplicationContext(), SearchAndNotifyActivity.class);
+                                    Intent intent2 = new Intent(getApplicationContext(), NotificationActivity.class);
                                     startActivity(intent2);
                                 }
                             }

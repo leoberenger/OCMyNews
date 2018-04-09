@@ -13,14 +13,14 @@ import com.evernote.android.job.JobManager;
 import com.openclassrooms.mynews.Models.Search;
 import com.openclassrooms.mynews.R;
 import com.openclassrooms.mynews.Utils.MyJobCreator;
-import com.openclassrooms.mynews.Utils.SearchAndNotifyJob;
+import com.openclassrooms.mynews.Utils.NotificationJob;
 import com.openclassrooms.mynews.Controllers.base.BaseSearchActivity;
 import com.openclassrooms.mynews.Utils.SearchMgr;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SearchAndNotifyActivity extends BaseSearchActivity {
+public class NotificationActivity extends BaseSearchActivity {
 
     @BindView(R.id.activity_notification_switch) Switch notificationSwitch;
     @BindView(R.id.activity_notification_query) EditText queryInput;
@@ -65,12 +65,12 @@ public class SearchAndNotifyActivity extends BaseSearchActivity {
         switchEnabled = prefs.getBoolean("switch", false);
 
         for(int i=0; i<newsDesksLength; i++)
-            desksAreChecked[i] = prefs.getBoolean("desk"+i, false);
+            newsDesksSelected[i] = prefs.getBoolean("desk"+i, false);
 
         queryInput.setText(mQuery);
 
         for(int i = 0; i <newsDesksLength; i++){
-            if(desksAreChecked[i])
+            if(newsDesksSelected[i])
                 checkBoxes[i].setChecked(true);
             else
                 checkBoxes[i].setChecked(false);
@@ -88,7 +88,7 @@ public class SearchAndNotifyActivity extends BaseSearchActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean switchIsChecked) {
 
                 mQuery = queryInput.getText().toString();
-                boolean oneTopicSelected = searchMgr.checkMin1DeskSelected(desksAreChecked);
+                boolean oneTopicSelected = searchMgr.noDeskSelected(newsDesksSelected);
 
                 if(switchIsChecked){
                     if( mQuery.equals("")) {
@@ -102,9 +102,9 @@ public class SearchAndNotifyActivity extends BaseSearchActivity {
                         //0 - Create Search Object
 
                         for(int i = 0; i<newsDesksLength; i++){
-                            prefs.edit().putBoolean("desk"+i, desksAreChecked[i]).apply();
+                            prefs.edit().putBoolean("desk"+i, newsDesksSelected[i]).apply();
                         }
-                        mNewsDesk = searchMgr.getNewsDeskName(desksAreChecked, newsDesk);
+                        mNewsDesk = searchMgr.newsDesks(newsDesksSelected);
 
                         //GET CURRENT DATE
 
@@ -122,7 +122,7 @@ public class SearchAndNotifyActivity extends BaseSearchActivity {
                         //2 - Create Job Manager
                         JobManager.create(getApplicationContext())
                                 .addJobCreator(new MyJobCreator());
-                        SearchAndNotifyJob.schedulePeriodic(search);
+                        NotificationJob.schedulePeriodic(search);
 
                         //3 - Show Toast message
                         showToast("Notification saved");

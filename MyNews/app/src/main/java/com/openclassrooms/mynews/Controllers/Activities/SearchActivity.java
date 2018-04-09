@@ -1,7 +1,6 @@
 package com.openclassrooms.mynews.Controllers.Activities;
 
 import android.app.DatePickerDialog;
-import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +13,7 @@ import android.widget.Toast;
 import com.openclassrooms.mynews.Models.Search;
 import com.openclassrooms.mynews.R;
 import com.openclassrooms.mynews.Controllers.base.BaseSearchActivity;
+import com.openclassrooms.mynews.Utils.DateMgr;
 import com.openclassrooms.mynews.Utils.SearchMgr;
 
 import java.util.Calendar;
@@ -27,13 +27,20 @@ public class SearchActivity extends BaseSearchActivity {
     @BindView(R.id.search_end_date) EditText endDatePicker;
     @BindView(R.id.activity_search_button) Button searchBtn;
     @BindView(R.id.activity_search_query_input)EditText queryInput;
+
+    private String searchType = getResources().getString(R.string.bundle_search_type_query);
     private Search mSearch;
+    private SearchMgr searchMgr;
+    private DateMgr dateMgr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         ButterKnife.bind(this);
+
+        searchMgr = SearchMgr.getInstance();
+        dateMgr = DateMgr.getInstance();
 
         configureDatePicker(beginDatePicker);
         configureDatePicker(endDatePicker);
@@ -44,33 +51,32 @@ public class SearchActivity extends BaseSearchActivity {
         searchBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                SearchMgr searchMgr = SearchMgr.getInstance();
-
                 mQuery = queryInput.getText().toString();
-                String begDateInput = beginDatePicker.getText().toString();
-                String endDateInput = endDatePicker.getText().toString();
-                boolean oneTopicSelected = searchMgr.checkMin1DeskSelected(desksAreChecked);
-                mNewsDesk = searchMgr.getNewsDeskName(desksAreChecked, newsDesk);
+                mNewsDesk = searchMgr.newsDesks(newsDesksSelected);
 
-                Search search = new Search("query", mQuery, mNewsDesk, mBeginDate, mEndDate);
+                boolean noDesksAreSelected = searchMgr.noDeskSelected(newsDesksSelected);
+                boolean queryIsEmpty = searchMgr.emptyQuery(mQuery);
+                boolean noBeginDate = searchMgr.emptyDateInput(beginDatePicker.getText().toString());
+                boolean noEndDate = searchMgr.emptyDateInput(endDatePicker.getText().toString());
+                boolean invalidBeginDateFormat = dateMgr.validateDateFormat(beginDatePicker);
+                boolean invalidEndDateFormat = dateMgr.validateDateFormat(endDatePicker);
 
-                if(mQuery.equals("")) {
-                    showToast("SearchManager required");
-                }else if( !oneTopicSelected) {
+                if(queryIsEmpty) {
+                    showToast("Query required");
+                }else if(noDesksAreSelected) {
                     showToast("Pick at least one topic");
-                }else if( !begDateInput.equals("") && !validateDateFormat(beginDatePicker) ){
+                }else if(!noBeginDate && invalidBeginDateFormat){
                     showToast("Invalid Begin Date format");
-                }else if( !endDateInput.equals("") && !validateDateFormat(endDatePicker) ){
+                }else if(!noEndDate && invalidEndDateFormat){
                     showToast("Invalid End Date format");
                 }else {
+                    mBeginDate = (!noBeginDate) ? dateMgr.transformDateFormat(beginDatePicker) : 0 ;
+                    mEndDate = (!noEndDate) ? dateMgr.transformDateFormat(endDatePicker) : 0;
 
-                    mBeginDate = (!begDateInput.equals("")) ? transformDateFormat(beginDatePicker) : 0 ;
-                    mEndDate = (!endDateInput.equals("")) ? transformDateFormat(endDatePicker) : 0;
-
-                    Log.e("SearchManager Activity", "mNewsDesk=" + mNewsDesk + " mQuery= " + mQuery + " begin date ="+mBeginDate + " end date =" + mEndDate);
+                    mSearch = new Search(searchType, mQuery, mNewsDesk, mBeginDate, mEndDate);
 
                     Intent intent = new Intent(SearchActivity.this, DisplaySearchActivity.class);
-                    searchMgr.setSearchToIntent(intent, search);
+                    searchMgr.setSearchToIntent(intent, mSearch);
                     startActivity(intent);
                 }
             }
@@ -112,22 +118,6 @@ public class SearchActivity extends BaseSearchActivity {
             }
         });
 
-    }
-
-    private int transformDateFormat(EditText datePicker){ //transforms 10/01/2018 to 20180110
-        String date = datePicker.getText().toString();
-        String orderedDate = date.substring(6,10) + date.substring(3,5) + date.substring(0,2);
-        int intDate = Integer.valueOf(orderedDate);
-
-        return intDate;
-    }
-
-    private boolean validateDateFormat(EditText datePicker){
-        //Regular Expression Testing dd-MM-YYYY
-        String regexp = "(0?[1-9]|[12][0-9]|3[01])/(0?[1-9]|1[012])/((18|19|20|21)\\d\\d)";
-        String date = datePicker.getText().toString();
-
-        return (date.matches(regexp));
     }
 
     private void showToast(String toastTxt){

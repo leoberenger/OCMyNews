@@ -50,7 +50,6 @@ public class SearchMgr {
         int endD = i.getIntExtra(END_DATE_KEY, 0);
 
         return search = new Search(QUERY_KEY, query, desk, begD, endD);
-
     }
 
     public Search getSearchFromBundle(Bundle bundle){
@@ -139,28 +138,37 @@ public class SearchMgr {
     // NEWS DESK
     //-------------------------------------
 
-    public String getNewsDeskName(boolean [] desksArray, String [] desksName){
+    public String newsDesks(boolean [] desksArray){
+
+        String [] newsDesksName = {"Arts", "Business", "Entrepreneur", "Politics", "Sports", "Travel"};
 
         StringBuilder str = new StringBuilder("news_desk:(");
-
-        for (int i = 0; i < desksArray.length; i++) {
-            if (desksArray[i])
-                str.append(desksName[i]);
+        for(int i = 0; i < desksArray.length; i++) {
+            if (desksArray[i]) {
+                String topic = " %22" + newsDesksName[i] + "%22";
+                str.append(topic);
+            }
         }
-
         str.append(")");
 
         return str.toString();
     }
 
-    public boolean checkMin1DeskSelected(boolean [] desks){
-        boolean min1DeskIsSelected = false;
+    public boolean noDeskSelected(boolean [] desks){
+        boolean noDeskSelected = true;
 
-        for(int i = 0; i<desks.length; i++){
-            if(desks[i])
-                min1DeskIsSelected = true;
+        for(boolean desk : desks){
+            noDeskSelected = !desk;
         }
 
-        return min1DeskIsSelected;
+        return noDeskSelected;
+    }
+
+    public boolean emptyQuery(String query){
+        return (query.isEmpty());
+    }
+
+    public boolean emptyDateInput (String dateInput){
+        return (dateInput.isEmpty());
     }
 }

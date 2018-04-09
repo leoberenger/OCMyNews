@@ -21,11 +21,6 @@ public class Search {
 
     public Search(){}
 
-    public Search(String searchType, String newsDesk) {
-        this.searchType = searchType;
-        this.newsDesk = newsDesk;
-    }
-
     public Search(String searchType, String query, String newsDesk) {
         this.searchType = searchType;
         this.query = query;

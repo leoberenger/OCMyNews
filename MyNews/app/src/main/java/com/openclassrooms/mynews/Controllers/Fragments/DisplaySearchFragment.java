@@ -35,6 +35,7 @@ public class DisplaySearchFragment extends DisplayFragment {
     String SEARCH_TYPE_TOPIC = "topic";
 
 
+
     public DisplaySearchFragment() { }
 
     @Override
@@ -44,24 +45,19 @@ public class DisplaySearchFragment extends DisplayFragment {
 
         Bundle args = getArguments();
         String searchType = args.getString(SEARCH_TYPE_KEY);
-        Log.e("DisplaySearchFragment","searchType = " + searchType);
 
         switch (searchType) {
 
             case "topic":
                 String topic = args.getString(SEARCH_TYPE_TOPIC);
-                Log.e("DisplaySearchFgmt", "Topic = " + topic);
                 stream = NYTStreams.streamFetchTopic("news_desk:(%22" + topic + "%22)");
                 break;
 
             case "query":
-                SearchMgr searchMgr = SearchMgr.getInstance();
-                Search search = searchMgr.getSearchFromBundle(args);
-
-                if((search.getBeginDate()!=0) && (search.getEndDate() !=0))
-                    stream = NYTStreams.streamFetchSearchArticles(search);
-                else
-                    stream = NYTStreams.streamFetchSearchArticles(search.getQuery(), search.getNewsDesk());
+                mSearch = searchMgr.getSearchFromBundle(args);
+                stream = (mSearch.getBeginDate() == 0 || mSearch.getEndDate() == 0) ?
+                        NYTStreams.streamFetchSearchArticles(mSearch.getQuery(), mSearch.getNewsDesk()):
+                        NYTStreams.streamFetchSearchArticles(mSearch);
                 break;
         }
         return stream;
@@ -105,7 +101,7 @@ public class DisplaySearchFragment extends DisplayFragment {
                 builder = new AlertDialog.Builder(getContext());
             }
             builder.setMessage("No Articles for this search")
-                    .setPositiveButton("New SearchManager", new DialogInterface.OnClickListener() {
+                    .setPositiveButton("New Search", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             Intent intent = new Intent(getActivity(), SearchActivity.class);
                             startActivity(intent);

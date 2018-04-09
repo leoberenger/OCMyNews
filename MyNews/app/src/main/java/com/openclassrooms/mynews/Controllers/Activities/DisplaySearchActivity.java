@@ -12,25 +12,26 @@ import com.openclassrooms.mynews.Utils.SearchMgr;
 
 public class DisplaySearchActivity extends AppCompatActivity {
 
+    private SearchMgr searchMgr;
+    private Search mSearch;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_search);
+
+        searchMgr = SearchMgr.getInstance();
         configureAndShowSearchFragment();
     }
 
     private void configureAndShowSearchFragment() {
 
-        SearchMgr searchMgr = SearchMgr.getInstance();
         Intent intent = getIntent();
-        Search search = searchMgr.getSearchFromIntent(intent);
-
-
-        Log.e("DisplayActivity", "mQuery="+search.getQuery()+", mNewsDesk = " +search.getNewsDesk());
+        mSearch = searchMgr.getSearchFromIntent(intent);
 
         DisplayFragment mDisplayFragment = new DisplayFragment();
         Bundle args = new Bundle();
-        searchMgr.setSearchToBundle(args, search);
+        searchMgr.setSearchToBundle(args, mSearch);
         mDisplayFragment.setArguments(args);
 
         getSupportFragmentManager().beginTransaction()

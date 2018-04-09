@@ -8,9 +8,8 @@ import com.openclassrooms.mynews.R;
 
 public abstract class BaseSearchActivity extends AppCompatActivity{
 
-    protected boolean [] desksAreChecked = {false, false, false, false, false, false};
-    protected String [] newsDesk = {"%22Arts%22", "%22Business%22", "%22Entrepreneur%22", "%22Politics%22", "%22Sports%22", "%22Travel%22"};
-    protected int newsDesksLength = desksAreChecked.length;
+    protected boolean [] newsDesksSelected = {false, false, false, false, false, false};
+    protected int newsDesksLength = newsDesksSelected.length;
 
     protected String mQuery = "";
     protected String mNewsDesk;
@@ -23,12 +22,12 @@ public abstract class BaseSearchActivity extends AppCompatActivity{
 
         // Check which checkbox was clicked
         switch (view.getId()) {
-            case R.id.checkbox_arts: desksAreChecked[0] = checked; break;
-            case R.id.checkbox_business: desksAreChecked[1] = checked; break;
-            case R.id.checkbox_entrepreneur: desksAreChecked[2] = checked; break;
-            case R.id.checkbox_politics: desksAreChecked[3] = checked; break;
-            case R.id.checkbox_sports: desksAreChecked[4] = checked; break;
-            case R.id.checkbox_travel: desksAreChecked[5] = checked; break;
+            case R.id.checkbox_arts: newsDesksSelected[0] = checked; break;
+            case R.id.checkbox_business: newsDesksSelected[1] = checked; break;
+            case R.id.checkbox_entrepreneur: newsDesksSelected[2] = checked; break;
+            case R.id.checkbox_politics: newsDesksSelected[3] = checked; break;
+            case R.id.checkbox_sports: newsDesksSelected[4] = checked; break;
+            case R.id.checkbox_travel: newsDesksSelected[5] = checked; break;
         }
     }
 }
