@@ -31,16 +31,6 @@ public class SearchMgr {
     // GET METHODS
     //-------------------------------------
 
-    public Search getSearchFromPrefs (SharedPreferences prefs){
-
-        String query = prefs.getString(QUERY_KEY, "");
-        String desk = prefs.getString(NEWS_DESK_KEY, "");
-        int begD = prefs.getInt(BEGIN_DATE_KEY, 0);
-        int endD = prefs.getInt(END_DATE_KEY, 0);
-
-        return search = new Search(QUERY_KEY, query, desk, begD, endD);
-    }
-
     public Search getSearchFromIntent(Intent i) {
 
         String query = i.getStringExtra(QUERY_KEY);
@@ -78,15 +68,15 @@ public class SearchMgr {
 
     public void setSearchToPrefs(SharedPreferences prefs, String query, boolean [] newsDesksSelected, boolean switchEnabled){
 
-        //Save NewsDesksArray
-        for(int i = 0; i<newsDesksSelected.length; i++)
-            prefs.edit().putBoolean("desk"+i, newsDesksSelected[i]).apply();
-
-        //Save switch
-        prefs.edit().putBoolean("switchEnabled", switchEnabled).apply();
-
         //Save query
         prefs.edit().putString(QUERY_KEY, query).apply();
+
+        //Save NewsDesksArray
+        for(int i = 0; i<newsDesksSelected.length; i++) {
+            prefs.edit().putBoolean("desk" + i, newsDesksSelected[i]).apply();
+        }
+        //Save switch
+        prefs.edit().putBoolean("switchEnabled", switchEnabled).apply();
     }
 
     public void setSearchToIntent(Intent i, Search search){
@@ -162,7 +152,7 @@ public class SearchMgr {
         for(boolean desk : desks){
             noDeskSelected = !desk;
         }
-        */
+*/
         return noDeskSelected;
     }
 

@@ -60,8 +60,6 @@ public class SearchActivity extends BaseSearchActivity {
                 boolean invalidBeginDateFormat = dateMgr.invalidDateFormat(beginDatePicker);
                 boolean invalidEndDateFormat = dateMgr.invalidDateFormat(endDatePicker);
 
-                Log.e("SearchActivity", "Begin Date entered = " + beginDatePicker.getText().toString());
-                Log.e("SearchActivity", "End Date entered = " + endDatePicker.getText().toString());
 
                 if(queryIsEmpty) {
                     showToast("Query required");

@@ -35,11 +35,23 @@ public class NotificationJob extends Job {
         PersistableBundleCompat extras = params.getExtras();
         final Search search = searchMgr.getSearchFromPersistBundle(extras);
 
+        Log.e("NotifJob onRunJob pre",
+                "query = " + search.getQuery()
+                        + " desks = " + search.getNewsDesk()
+                        + " beginDate = " + search.getBeginDate()
+                        + " endDate = " + search.getEndDate());
+
         //Set Begin Date = YESTERDAY and End Date = TODAY
         int beginDate = dateMgr.getDate(1);
         int endDate = dateMgr.getDate(0);
         search.setBeginDate(beginDate);
         search.setEndDate(endDate);
+
+        Log.e("NotifJob onRunJob post",
+                "query = " + search.getQuery()
+                        + " desks = " + search.getNewsDesk()
+                        + " beginDate = " + search.getBeginDate()
+                        + " endDate = " + search.getEndDate());
 
         stream = NYTStreams.streamFetchSearchArticles(search);
 
@@ -70,8 +82,15 @@ public class NotificationJob extends Job {
 
     public static void schedulePeriodic(Search search) {
 
+        Log.e("NotifJob shedPeriodic",
+                        "query = " + search.getQuery()
+                        + " desks = " + search.getNewsDesk()
+                        + " beginDate = " + search.getBeginDate()
+                        + " endDate = " + search.getEndDate());
+
         PersistableBundleCompat bundleCompat = new PersistableBundleCompat();
         searchMgr.setSearchToPersistBundle(bundleCompat, search);
+
 
         new JobRequest.Builder(NotificationJob.TAG)
                 //.setPeriodic(TimeUnit.MINUTES.toMillis(15), TimeUnit.MINUTES.toMillis(5))
@@ -85,6 +104,12 @@ public class NotificationJob extends Job {
     }
 
     private void sendNotification(Search search){
+
+        Log.e("sendNotif",
+                "query = " + search.getQuery()
+                        + " desks = " + search.getNewsDesk()
+                        + " beginDate = " + search.getBeginDate()
+                        + " endDate = " + search.getEndDate());
 
         // Create intent for DisplaySearchActivity
         Intent intent = new Intent(getContext(), DisplaySearchActivity.class);

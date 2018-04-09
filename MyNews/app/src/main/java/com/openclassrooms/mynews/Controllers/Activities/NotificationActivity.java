@@ -2,6 +2,7 @@ package com.openclassrooms.mynews.Controllers.Activities;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -34,13 +35,15 @@ public class NotificationActivity extends BaseSearchActivity {
     private SharedPreferences prefs;
     private boolean switchEnabled = false;
     private Search search;
-    private SearchMgr searchMgr;
+    private SearchMgr searchMgr = SearchMgr.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
         ButterKnife.bind(this);
+
+        prefs = getSharedPreferences("notification", MODE_PRIVATE);
 
         checkBoxes[0] = checkboxArts;
         checkBoxes[1] = checkboxBusiness;
@@ -49,24 +52,28 @@ public class NotificationActivity extends BaseSearchActivity {
         checkBoxes[4] = checkboxSports;
         checkBoxes[5] = checkboxTravel;
 
-        //Retrieve saved search from Preferences
-        prefs = getSharedPreferences("notification", MODE_PRIVATE);
-        searchMgr = SearchMgr.getInstance();
-
         this.getAndShowSavedNotification();
         this.configureSwitch();
     }
 
     private void getAndShowSavedNotification(){
 
-        search = searchMgr.getSearchFromPrefs(prefs);
+        mQuery = prefs.getString("query", "");
 
         for(int i=0; i<newsDesksLength; i++){
             newsDesksSelected[i] = prefs.getBoolean("desk"+i, false);
             checkBoxes[i].setChecked(newsDesksSelected[i]);
         }
 
-        queryInput.setText(search.getQuery());
+        Log.e("NotifActiv onCreate()", "query = " + mQuery
+                + " desk0 = " + newsDesksSelected[0]
+                + " desk1 = " + newsDesksSelected[1]
+                + " desk2 = " + newsDesksSelected[2]
+                + " desk3 = " + newsDesksSelected[3]
+                + " desk4 = " + newsDesksSelected[4]
+                + " desk5 = " + newsDesksSelected[5]);
+
+        queryInput.setText(mQuery);
 
         switchEnabled = prefs.getBoolean("switchEnabled", false);
         if (switchEnabled) notificationSwitch.setChecked(true);
@@ -93,11 +100,22 @@ public class NotificationActivity extends BaseSearchActivity {
 
                         //0 - Save to prefs
                         searchMgr.setSearchToPrefs(prefs, mQuery, newsDesksSelected, true);
+                        Log.e("NotifAct switchOn Prefs", "query = " + mQuery
+                                + " desk0 = " + newsDesksSelected[0]
+                                + " desk1 = " + newsDesksSelected[1]
+                                + " desk2 = " + newsDesksSelected[2]
+                                + " desk3 = " + newsDesksSelected[3]
+                                + " desk4 = " + newsDesksSelected[4]
+                                + " desk5 = " + newsDesksSelected[5]);
 
                         //1 - Create Search Object
                         mNewsDesk = searchMgr.newsDesks(newsDesksSelected);
 
                         search = new Search("query", mQuery, mNewsDesk, 0, 0);
+                        Log.e("NotifAct switchOn Job", "query = " + search.getQuery()
+                                + " desks = " + search.getNewsDesk()
+                                + " beginDate = " + search.getBeginDate()
+                                + " endDate = " + search.getEndDate());
 
                         //2 - Create Job Manager
                         JobManager.create(getApplicationContext())
@@ -116,7 +134,16 @@ public class NotificationActivity extends BaseSearchActivity {
 
                     searchMgr.setSearchToPrefs(prefs, "", newsDesksSelected, false);
 
-                    JobManager.instance().cancel(1234);
+                    Log.e("NotifAct switchOf Prefs", "query = " + mQuery
+                            + " desk0 = " + newsDesksSelected[0]
+                            + " desk1 = " + newsDesksSelected[1]
+                            + " desk2 = " + newsDesksSelected[2]
+                            + " desk3 = " + newsDesksSelected[3]
+                            + " desk4 = " + newsDesksSelected[4]
+                            + " desk5 = " + newsDesksSelected[5]);
+
+                    if(JobManager.instance() != null)
+                        JobManager.instance().cancel(1234);
                 }
             }
         });
