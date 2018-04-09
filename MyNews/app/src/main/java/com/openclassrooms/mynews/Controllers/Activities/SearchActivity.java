@@ -3,7 +3,6 @@ package com.openclassrooms.mynews.Controllers.Activities;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -12,7 +11,6 @@ import android.widget.Toast;
 
 import com.openclassrooms.mynews.Models.Search;
 import com.openclassrooms.mynews.R;
-import com.openclassrooms.mynews.Controllers.base.BaseSearchActivity;
 import com.openclassrooms.mynews.Utils.DateMgr;
 import com.openclassrooms.mynews.Utils.SearchMgr;
 

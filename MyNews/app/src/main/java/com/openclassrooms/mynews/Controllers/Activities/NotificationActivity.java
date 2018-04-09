@@ -13,7 +13,6 @@ import com.openclassrooms.mynews.Models.Search;
 import com.openclassrooms.mynews.R;
 import com.openclassrooms.mynews.Utils.Notifications.MyJobCreator;
 import com.openclassrooms.mynews.Utils.Notifications.NotificationJob;
-import com.openclassrooms.mynews.Controllers.base.BaseSearchActivity;
 import com.openclassrooms.mynews.Utils.SearchMgr;
 
 import butterknife.BindView;

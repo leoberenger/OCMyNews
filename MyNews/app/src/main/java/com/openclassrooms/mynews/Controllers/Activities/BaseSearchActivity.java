@@ -1,4 +1,4 @@
-package com.openclassrooms.mynews.Controllers.base;
+package com.openclassrooms.mynews.Controllers.Activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
