@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.RequestManager;
-import com.openclassrooms.mynews.Models.Response;
+import com.openclassrooms.mynews.Models.API.Response;
 import com.openclassrooms.mynews.R;
 
 import java.util.List;

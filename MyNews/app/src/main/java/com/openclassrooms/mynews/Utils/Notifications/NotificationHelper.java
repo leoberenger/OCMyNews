@@ -1,4 +1,4 @@
-package com.openclassrooms.mynews.Utils;
+package com.openclassrooms.mynews.Utils.Notifications;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;

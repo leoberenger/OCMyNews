@@ -1,7 +1,7 @@
-package com.openclassrooms.mynews.Utils;
+package com.openclassrooms.mynews.Utils.APIRequests;
 
 
-import com.openclassrooms.mynews.Models.NYTimesAPI;
+import com.openclassrooms.mynews.Models.API.NYTimesAPI;
 import com.openclassrooms.mynews.Models.Search;
 
 import java.util.concurrent.TimeUnit;

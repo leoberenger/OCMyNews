@@ -1,4 +1,4 @@
-package com.openclassrooms.mynews.Utils;
+package com.openclassrooms.mynews.Utils.Notifications;
 
 import android.app.PendingIntent;
 import android.content.Intent;
@@ -10,8 +10,10 @@ import com.evernote.android.job.Job;
 import com.evernote.android.job.JobRequest;
 import com.evernote.android.job.util.support.PersistableBundleCompat;
 import com.openclassrooms.mynews.Controllers.Activities.DisplaySearchActivity;
-import com.openclassrooms.mynews.Models.NYTimesAPI;
+import com.openclassrooms.mynews.Models.API.NYTimesAPI;
 import com.openclassrooms.mynews.Models.Search;
+import com.openclassrooms.mynews.Utils.APIRequests.NYTStreams;
+import com.openclassrooms.mynews.Utils.SearchMgr;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;

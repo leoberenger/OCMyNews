@@ -2,7 +2,6 @@ package com.openclassrooms.mynews.Controllers.Activities;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -12,8 +11,8 @@ import android.widget.Toast;
 import com.evernote.android.job.JobManager;
 import com.openclassrooms.mynews.Models.Search;
 import com.openclassrooms.mynews.R;
-import com.openclassrooms.mynews.Utils.MyJobCreator;
-import com.openclassrooms.mynews.Utils.NotificationJob;
+import com.openclassrooms.mynews.Utils.Notifications.MyJobCreator;
+import com.openclassrooms.mynews.Utils.Notifications.NotificationJob;
 import com.openclassrooms.mynews.Controllers.base.BaseSearchActivity;
 import com.openclassrooms.mynews.Utils.SearchMgr;
 

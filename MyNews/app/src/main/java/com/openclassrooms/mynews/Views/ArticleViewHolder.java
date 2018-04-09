@@ -6,8 +6,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.RequestManager;
-import com.openclassrooms.mynews.Models.Response;
-import com.openclassrooms.mynews.Models.Result;
+import com.openclassrooms.mynews.Models.API.Response;
+import com.openclassrooms.mynews.Models.API.Result;
 import com.openclassrooms.mynews.R;
 
 import butterknife.BindView;

@@ -1,10 +1,9 @@
-package com.openclassrooms.mynews.Utils;
+package com.openclassrooms.mynews.Utils.APIRequests;
 
 
-import com.openclassrooms.mynews.Models.NYTimesAPI;
+import com.openclassrooms.mynews.Models.API.NYTimesAPI;
 
 import io.reactivex.Observable;
-import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;

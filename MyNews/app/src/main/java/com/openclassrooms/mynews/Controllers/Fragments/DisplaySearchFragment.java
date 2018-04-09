@@ -7,19 +7,16 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
 import com.openclassrooms.mynews.Controllers.Activities.DetailActivity;
 import com.openclassrooms.mynews.Controllers.Activities.SearchActivity;
-import com.openclassrooms.mynews.Models.NYTimesAPI;
-import com.openclassrooms.mynews.Models.Response;
-import com.openclassrooms.mynews.Models.Search;
+import com.openclassrooms.mynews.Models.API.NYTimesAPI;
+import com.openclassrooms.mynews.Models.API.Response;
 import com.openclassrooms.mynews.R;
 import com.openclassrooms.mynews.Utils.ItemClickSupport;
-import com.openclassrooms.mynews.Utils.NYTStreams;
-import com.openclassrooms.mynews.Utils.SearchMgr;
+import com.openclassrooms.mynews.Utils.APIRequests.NYTStreams;
 import com.openclassrooms.mynews.Views.DisplaySearchAdapter;
 
 import java.util.ArrayList;
