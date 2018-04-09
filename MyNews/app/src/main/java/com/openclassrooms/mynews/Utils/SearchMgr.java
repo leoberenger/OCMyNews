@@ -77,18 +77,17 @@ public class SearchMgr {
     // SET METHODS
     //-------------------------------------
 
-    public void setSearchToPrefs(SharedPreferences prefs, Search search){
+    public void setSearchToPrefs(SharedPreferences prefs, String query, boolean [] newsDesksSelected, boolean switchEnabled){
 
-        String query = search.getQuery();
-        String desk = search.getNewsDesk();
-        int begD = search.getBeginDate();
-        int endD = search.getEndDate();
+        //Save NewsDesksArray
+        for(int i = 0; i<newsDesksSelected.length; i++)
+            prefs.edit().putBoolean("desk"+i, newsDesksSelected[i]).apply();
 
-        prefs.edit().putString(SEARCH_TYPE_KEY, QUERY_KEY);
+        //Save switch
+        prefs.edit().putBoolean("switchEnabled", switchEnabled).apply();
+
+        //Save query
         prefs.edit().putString(QUERY_KEY, query).apply();
-        prefs.edit().putString(NEWS_DESK_KEY, desk).apply();
-        prefs.edit().putInt(BEGIN_DATE_KEY, begD).apply();
-        prefs.edit().putInt(END_DATE_KEY, endD).apply();
     }
 
     public void setSearchToIntent(Intent i, Search search){

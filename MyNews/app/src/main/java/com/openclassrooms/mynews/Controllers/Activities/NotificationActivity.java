@@ -36,6 +36,7 @@ public class NotificationActivity extends BaseSearchActivity {
     private SharedPreferences prefs;
     private boolean switchEnabled = false;
     private Search search;
+    private SearchMgr searchMgr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,72 +53,56 @@ public class NotificationActivity extends BaseSearchActivity {
 
         //Retrieve saved search from Preferences
         prefs = getSharedPreferences("notification", MODE_PRIVATE);
+        searchMgr = SearchMgr.getInstance();
 
         this.getAndShowSavedNotification();
         this.configureSwitch();
     }
 
     private void getAndShowSavedNotification(){
-        SearchMgr searchMgr = SearchMgr.getInstance();
+
         search = searchMgr.getSearchFromPrefs(prefs);
 
-        mQuery = search.getQuery();
-        switchEnabled = prefs.getBoolean("switch", false);
-
-        for(int i=0; i<newsDesksLength; i++)
+        for(int i=0; i<newsDesksLength; i++){
             newsDesksSelected[i] = prefs.getBoolean("desk"+i, false);
-
-        queryInput.setText(mQuery);
-
-        for(int i = 0; i <newsDesksLength; i++){
-            if(newsDesksSelected[i])
-                checkBoxes[i].setChecked(true);
-            else
-                checkBoxes[i].setChecked(false);
+            checkBoxes[i].setChecked(newsDesksSelected[i]);
         }
 
-        if (switchEnabled) notificationSwitch.setChecked(true);
+        queryInput.setText(search.getQuery());
 
+        switchEnabled = prefs.getBoolean("switchEnabled", false);
+        if (switchEnabled) notificationSwitch.setChecked(true);
     }
 
     private void configureSwitch(){
-
-        final SearchMgr searchMgr = SearchMgr.getInstance();
 
         notificationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean switchIsChecked) {
 
                 mQuery = queryInput.getText().toString();
-                boolean oneTopicSelected = searchMgr.noDeskSelected(newsDesksSelected);
+
+                boolean emptyQuery = searchMgr.emptyQuery(mQuery);
+                boolean noDeskSelected = searchMgr.noDeskSelected(newsDesksSelected);
 
                 if(switchIsChecked){
-                    if( mQuery.equals("")) {
-                        showToast("SearchManager required");
+                    if(emptyQuery) {
+                        showToast("Search required");
                         notificationSwitch.setChecked(false);
-                    }else if( !oneTopicSelected) {
+                    }else if(noDeskSelected) {
                         showToast("Pick at least one topic");
                         notificationSwitch.setChecked(false);
                     }else{
 
-                        //0 - Create Search Object
+                        //0 - Save to prefs
+                        searchMgr.setSearchToPrefs(prefs, mQuery, newsDesksSelected, true);
 
-                        for(int i = 0; i<newsDesksLength; i++){
-                            prefs.edit().putBoolean("desk"+i, newsDesksSelected[i]).apply();
-                        }
+                        //1 - Create Search Object
                         mNewsDesk = searchMgr.newsDesks(newsDesksSelected);
-
                         //GET CURRENT DATE
-
                         mBeginDate = 20180407;
                         mEndDate = 20180407;
 
                         search = new Search("query", mQuery, mNewsDesk, mBeginDate, mEndDate);
-
-                        //1 - Save SearchManager elements to Preferences
-                        prefs.edit().putBoolean("switch", true).apply();
-                        searchMgr.setSearchToPrefs(prefs, search);
-
-                        Log.e("NotifActivity", "mQuery="+mQuery+", mNewsDesk = " + mNewsDesk);
 
                         //2 - Create Job Manager
                         JobManager.create(getApplicationContext())
@@ -129,17 +114,13 @@ public class NotificationActivity extends BaseSearchActivity {
                     }
                 }else{
                     queryInput.setText("");
-                    for(int i = 0; i <newsDesksLength; i++)
+                    for(int i = 0; i <newsDesksLength; i++){
                         checkBoxes[i].setChecked(false);
-
-                    prefs.edit().putBoolean("switch", false).apply();
-
-                    //ERASE PREFS QUERY = "" AND NEWSDESKS = "" AND BEGIN/END DATE = 0
-/*                    search.setQuery("");
-                    for(int i = 0; i<newsDesksLength; i++){
-                        prefs.edit().putBoolean("desk"+i, false).apply();
+                        newsDesksSelected[i] = false;
                     }
- */
+
+                    searchMgr.setSearchToPrefs(prefs, "", newsDesksSelected, false);
+
                     JobManager.instance().cancel(1234);
                 }
             }
