@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/activity_detail_frame_layout"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.openclassrooms.mynews.Controllers.Activities.DetailActivity"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"/>
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- Import main_toolbar -->
+    <include layout="@layout/main_toolbar"
+        android:id="@+id/activity_detail_toolbar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"/>
+
+    <FrameLayout
+        android:id="@+id/activity_detail_frame_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</LinearLayout>

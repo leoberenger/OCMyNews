@@ -165,10 +165,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         startActivity(intent2);
                         break;
                     case R.id.menu_more_help:
-                        Toast.makeText(getApplicationContext(), "No Help Will Come", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "no help to show", Toast.LENGTH_LONG).show();
                         break;
                     case R.id.menu_more_about:
-                        Toast.makeText(getApplicationContext(), "Nothing to talk about", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "no about to show", Toast.LENGTH_LONG).show();
                         break;
                 }
                 return true;

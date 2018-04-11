@@ -1,36 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:id="@+id/activity_notification_layout"
+
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.openclassrooms.mynews.Controllers.Activities.NotificationActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="30dp"
-    android:theme="@style/SearchTheme">
+    android:orientation="vertical">
 
-        <!-- Import SearchManager SearchManager -->
-        <include layout="@layout/search_query"
-            android:id="@+id/activity_notification_query"/>
-
-        <!-- Import SearchManager Desk -->
-        <include
-            android:id="@+id/activity_notification_desk"
-            layout="@layout/search_desk"
-            android:layout_width="match_parent"
+        <!-- Import main_toolbar -->
+        <include layout="@layout/main_toolbar"
+            android:id="@+id/activity_notification_toolbar"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/activity_notification_query" />
+            android:layout_width="match_parent"/>
 
-        <View style="@style/Divider"
-            android:layout_below="@+id/activity_notification_desk"
-            android:id="@+id/activity_notification_divider"/>
-
-        <Switch
-            android:id="@+id/activity_notification_switch"
+                <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/activity_notification_divider"
-            android:text="Enable notifications (once per day)" />
+            android:layout_height="match_parent"
+            android:layout_margin="30dp"
+            android:theme="@style/SearchTheme">
 
-</RelativeLayout>
+
+                <!-- Import SearchManager SearchManager -->
+                <include layout="@layout/search_query"
+                    android:id="@+id/activity_notification_query"/>
+
+                <!-- Import SearchManager Desk -->
+                <include
+                    android:id="@+id/activity_notification_desk"
+                    layout="@layout/search_desk"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/activity_notification_query" />
+
+                <View style="@style/Divider"
+                    android:layout_below="@+id/activity_notification_desk"
+                    android:id="@+id/activity_notification_divider"/>
+
+                <Switch
+                    android:id="@+id/activity_notification_switch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/activity_notification_divider"
+                    android:text="Enable notifications (once per day)" />
+
+        </RelativeLayout>
+</LinearLayout>
 

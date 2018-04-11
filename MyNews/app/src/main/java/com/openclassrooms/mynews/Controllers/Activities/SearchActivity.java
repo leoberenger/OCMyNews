@@ -3,6 +3,7 @@ package com.openclassrooms.mynews.Controllers.Activities;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -26,6 +27,8 @@ public class SearchActivity extends BaseSearchActivity {
     @BindView(R.id.search_end_date) EditText endDatePicker;
     @BindView(R.id.activity_search_button) Button searchBtn;
     @BindView(R.id.activity_search_query_input)EditText queryInput;
+    @BindView(R.id.activity_search_toolbar)
+    Toolbar mToolbar;
 
     private final String searchType = "query";
     private Search mSearch;
@@ -41,6 +44,7 @@ public class SearchActivity extends BaseSearchActivity {
         searchMgr = SearchMgr.getInstance();
         dateMgr = DateMgr.getInstance();
 
+        this.configureToolbar();
         configureDatePicker(beginDatePicker);
         configureDatePicker(endDatePicker);
         this.configureSearch();
@@ -128,5 +132,10 @@ public class SearchActivity extends BaseSearchActivity {
 
     private void showToast(String toastTxt){
         Toast.makeText(getApplicationContext(), toastTxt, Toast.LENGTH_LONG).show();
+    }
+
+    private void configureToolbar(){
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 }

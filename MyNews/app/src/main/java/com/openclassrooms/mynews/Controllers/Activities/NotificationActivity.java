@@ -2,6 +2,7 @@ package com.openclassrooms.mynews.Controllers.Activities;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -29,6 +30,8 @@ public class NotificationActivity extends BaseSearchActivity {
     @BindView(R.id.checkbox_politics) CheckBox checkboxPolitics;
     @BindView(R.id.checkbox_sports) CheckBox checkboxSports;
     @BindView(R.id.checkbox_travel) CheckBox checkboxTravel;
+    @BindView(R.id.activity_notification_toolbar)
+    Toolbar mToolbar;
 
     private final CheckBox [] checkBoxes = new CheckBox [newsDesksLength];
 
@@ -42,6 +45,8 @@ public class NotificationActivity extends BaseSearchActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
         ButterKnife.bind(this);
+
+        this.configureToolbar();
 
         prefs = getSharedPreferences("notification", MODE_PRIVATE);
 
@@ -151,6 +156,11 @@ public class NotificationActivity extends BaseSearchActivity {
 
     private void showToast(String toastTxt){
         Toast.makeText(getApplicationContext(), toastTxt, Toast.LENGTH_LONG).show();
+    }
+
+    private void configureToolbar(){
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 }
 
