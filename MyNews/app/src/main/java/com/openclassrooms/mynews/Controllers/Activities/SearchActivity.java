@@ -64,7 +64,6 @@ public class SearchActivity extends BaseSearchActivity {
                 boolean invalidBeginDateFormat = dateMgr.invalidDateFormat(beginDatePicker);
                 boolean invalidEndDateFormat = dateMgr.invalidDateFormat(endDatePicker);
 
-
                 if(queryIsEmpty) {
                     showToast("Query required");
                 }else if(noDesksAreSelected) {
@@ -79,11 +78,6 @@ public class SearchActivity extends BaseSearchActivity {
                     mEndDate = (!noEndDate) ? dateMgr.transformDateFormat(endDatePicker) : 0;
 
                     mSearch = new Search(searchType, mQuery, mNewsDesk, mBeginDate, mEndDate);
-
-                    Log.e("SearchActivity", "query = " + mSearch.getQuery()
-                            + " desks = " + mSearch.getNewsDesk()
-                            + " beginDate = " + mSearch.getBeginDate()
-                            + " endDate = " + mSearch.getEndDate());
 
                     Intent intent = new Intent(SearchActivity.this, DisplaySearchActivity.class);
                     searchMgr.setSearchToIntent(intent, mSearch);

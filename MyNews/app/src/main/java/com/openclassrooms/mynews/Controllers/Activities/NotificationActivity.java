@@ -70,14 +70,6 @@ public class NotificationActivity extends BaseSearchActivity {
             checkBoxes[i].setChecked(newsDesksSelected[i]);
         }
 
-        Log.e("NotifActiv onCreate()", "query = " + mQuery
-                + " desk0 = " + newsDesksSelected[0]
-                + " desk1 = " + newsDesksSelected[1]
-                + " desk2 = " + newsDesksSelected[2]
-                + " desk3 = " + newsDesksSelected[3]
-                + " desk4 = " + newsDesksSelected[4]
-                + " desk5 = " + newsDesksSelected[5]);
-
         queryInput.setText(mQuery);
 
         switchEnabled = prefs.getBoolean("switchEnabled", false);
@@ -105,22 +97,11 @@ public class NotificationActivity extends BaseSearchActivity {
 
                         //0 - Save to prefs
                         searchMgr.setSearchToPrefs(prefs, mQuery, newsDesksSelected, true);
-                        Log.e("NotifAct switchOn Prefs", "query = " + mQuery
-                                + " desk0 = " + newsDesksSelected[0]
-                                + " desk1 = " + newsDesksSelected[1]
-                                + " desk2 = " + newsDesksSelected[2]
-                                + " desk3 = " + newsDesksSelected[3]
-                                + " desk4 = " + newsDesksSelected[4]
-                                + " desk5 = " + newsDesksSelected[5]);
 
                         //1 - Create Search Object
                         mNewsDesk = searchMgr.newsDesks(newsDesksSelected);
 
                         search = new Search("query", mQuery, mNewsDesk, 0, 0);
-                        Log.e("NotifAct switchOn Job", "query = " + search.getQuery()
-                                + " desks = " + search.getNewsDesk()
-                                + " beginDate = " + search.getBeginDate()
-                                + " endDate = " + search.getEndDate());
 
                         //2 - Create Job Manager
                         JobManager.create(getApplicationContext())
@@ -138,14 +119,6 @@ public class NotificationActivity extends BaseSearchActivity {
                     }
 
                     searchMgr.setSearchToPrefs(prefs, "", newsDesksSelected, false);
-
-                    Log.e("NotifAct switchOf Prefs", "query = " + mQuery
-                            + " desk0 = " + newsDesksSelected[0]
-                            + " desk1 = " + newsDesksSelected[1]
-                            + " desk2 = " + newsDesksSelected[2]
-                            + " desk3 = " + newsDesksSelected[3]
-                            + " desk4 = " + newsDesksSelected[4]
-                            + " desk5 = " + newsDesksSelected[5]);
 
                     if(JobManager.instance() != null)
                         JobManager.instance().cancel(1234);

@@ -143,18 +143,18 @@ public class DisplayFragment extends android.support.v4.app.Fragment {
                 .subscribeWith(new DisposableObserver<NYTimesAPI>(){
                     @Override
                     public void onNext(NYTimesAPI articles) {
-                        Log.e("TopStoriesFragment", "On Next");
+                        Log.e("DisplayFragment", "On Next");
                         updateUI(articles);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e("TopStoriesFragment", "On Error"+Log.getStackTraceString(e));
+                        Log.e("DisplayFragment", "On Error"+Log.getStackTraceString(e));
                     }
 
                     @Override
                     public void onComplete() {
-                        Log.e("TopStoriesFragment", "On Complete");
+                        Log.e("DisplayFragment", "On Complete");
                     }
                 });
     }

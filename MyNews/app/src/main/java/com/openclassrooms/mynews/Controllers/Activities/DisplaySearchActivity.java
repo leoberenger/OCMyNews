@@ -39,11 +39,6 @@ public class DisplaySearchActivity extends AppCompatActivity {
         Intent intent = getIntent();
         mSearch = searchMgr.getSearchFromIntent(intent);
 
-        Log.e("DisplaySearchActivity", "query = " + mSearch.getQuery()
-                + " desks = " + mSearch.getNewsDesk()
-                + " beginDate = " + mSearch.getBeginDate()
-                + " endDate = " + mSearch.getEndDate());
-
         DisplaySearchFragment mDisplaySearchFragment = new DisplaySearchFragment();
         Bundle args = new Bundle();
         searchMgr.setSearchToBundle(args, mSearch);
