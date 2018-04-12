@@ -32,8 +32,6 @@ public class DisplaySearchFragment extends DisplayFragment {
     private final String SEARCH_TYPE_KEY = "searchType";
     private final String SEARCH_TYPE_TOPIC = "topic";
 
-
-
     public DisplaySearchFragment() { }
 
     @Override
@@ -46,6 +44,8 @@ public class DisplaySearchFragment extends DisplayFragment {
 
         switch (searchType) {
 
+            //Retrieve stream from calling Activity
+
             case "topic":
                 String topic = args.getString(SEARCH_TYPE_TOPIC);
                 stream = NYTStreams.streamFetchTopic("news_desk:(%22" + topic + "%22)");
@@ -54,11 +54,7 @@ public class DisplaySearchFragment extends DisplayFragment {
             case "query":
                 mSearch = searchMgr.getSearchFromBundle(args);
 
-                Log.e("DisplaySearchFragment", "query = " + mSearch.getQuery()
-                        + " desks = " + mSearch.getNewsDesk()
-                        + " beginDate = " + mSearch.getBeginDate()
-                        + " endDate = " + mSearch.getEndDate());
-
+                //If stream has no defined begin/end dates
                 stream = (mSearch.getBeginDate() == 0 || mSearch.getEndDate() == 0) ?
                         NYTStreams.streamFetchSearchArticles(mSearch.getQuery(), mSearch.getNewsDesk()):
                         NYTStreams.streamFetchSearchArticles(mSearch);
@@ -98,19 +94,23 @@ public class DisplaySearchFragment extends DisplayFragment {
 
         //no article to show -> alertDialog
         if(responses.getResponse().getDocs().isEmpty()) {
-            AlertDialog.Builder builder;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                builder = new AlertDialog.Builder(getContext(), android.R.style.Theme_Material_Dialog_Alert);
-            } else {
-                builder = new AlertDialog.Builder(getContext());
-            }
-            builder.setMessage("No Articles for this search")
-                    .setPositiveButton("New Search", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            Intent intent = new Intent(getActivity(), SearchActivity.class);
-                            startActivity(intent);
-                        }})
-                    .show();
+            showNoArticlesAlertDialog();
         }
+    }
+
+    private void showNoArticlesAlertDialog(){
+        AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(getContext(), android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(getContext());
+        }
+        builder.setMessage("No Articles for this search")
+                .setPositiveButton("New Search", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent intent = new Intent(getActivity(), SearchActivity.class);
+                        startActivity(intent);
+                    }})
+                .show();
     }
 }

@@ -29,24 +29,26 @@ interface NYTService {
     //TOPIC
     @GET("search/v2/articlesearch.json?" + apiKeyQuery)
     Observable<NYTimesAPI> getTopic(
-            @Query("fq") String desk                //&fq=news_desk:(%22Travel%22)"
+            @Query("fq") String desk
     );
 
-    //SEARCH ARTICLE
+    //SEARCH ARTICLE WITHOUT BEGIN/END DATE
     @GET("search/v2/articlesearch.json?" + apiKeyQuery)
     Observable<NYTimesAPI> getSearchArticles(
             @Query("query") String query,
-            @Query("fq") String desk               //&fq=news_desk:(%22Travel%22)" +
+            @Query("fq") String desk
     );
 
+    //SEARCH ARTICLE WITH BEGIN/END DATE
     @GET("search/v2/articlesearch.json?" + apiKeyQuery)
     Observable<NYTimesAPI> getSearchArticles(
             @Query("query") String query,
-            @Query("fq") String desk,               //&fq=news_desk:(%22Travel%22)" +
-            @Query("begin_date") int beginDate,     //"&begin_date=20170910" +
-            @Query("end_date") int endDate          //"&end_date=20171001"
+            @Query("fq") String desk,
+            @Query("begin_date") int beginDate,
+            @Query("end_date") int endDate
     );
 
+    //GLOBAL RETROFIT BUILDER
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl("https://api.nytimes.com/svc/")
             .addConverterFactory(GsonConverterFactory.create())

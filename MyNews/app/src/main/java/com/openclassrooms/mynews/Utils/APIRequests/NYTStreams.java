@@ -33,7 +33,7 @@ public class NYTStreams {
                 .timeout(10, TimeUnit.SECONDS);
     }
 
-    //TOPIC
+    // TOPIC
     public static Observable<NYTimesAPI> streamFetchTopic(String desk){
         NYTService nYTService = NYTService.retrofit.create(NYTService.class);
         return nYTService.getTopic(desk)
@@ -42,8 +42,7 @@ public class NYTStreams {
                 .timeout(10, TimeUnit.SECONDS);
     }
 
-    //SEARCH ARTICLE
-
+    // SEARCH ARTICLE WITHOUT BEGIN/END DATE
     public static Observable<NYTimesAPI> streamFetchSearchArticles(String query, String desk){
         NYTService nYTService = NYTService.retrofit.create(NYTService.class);
         return nYTService.getSearchArticles(query, desk)
@@ -52,6 +51,7 @@ public class NYTStreams {
                 .timeout(10, TimeUnit.SECONDS);
     }
 
+    // SEARCH ARTICLE WITH BEGIN/END DATE
     public static Observable<NYTimesAPI> streamFetchSearchArticles(Search search){
         NYTService nYTService = NYTService.retrofit.create(NYTService.class);
         return nYTService.getSearchArticles(search.getQuery(), search.getNewsDesk(), search.getBeginDate(), search.getEndDate())

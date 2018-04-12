@@ -45,12 +45,11 @@ public class DisplayFragment extends android.support.v4.app.Fragment {
 
     //FOR DATA
     private Disposable mDisposable;
-
     private List<Result> articles;
     private DisplayStoriesAdapter adapter;
 
     final String EXTRA_ARTICLE_URL = "EXTRA_ARTICLE_URL";
-    SearchMgr searchMgr;
+    SearchMgr searchMgr = SearchMgr.getInstance();
     Search mSearch;
 
     public DisplayFragment() { }
@@ -81,8 +80,7 @@ public class DisplayFragment extends android.support.v4.app.Fragment {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, view);
 
-        searchMgr = SearchMgr.getInstance();
-
+        //Retrieve stream from calling activity
         Observable<NYTimesAPI> mStream = getStream();
 
         this.configureRecyclerView();
@@ -131,8 +129,6 @@ public class DisplayFragment extends android.support.v4.app.Fragment {
                     }
                 });
     }
-
-
 
     // -----------------
     // HTTP REQUEST (RxJava)
