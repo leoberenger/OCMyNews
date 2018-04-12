@@ -70,7 +70,7 @@ public class DisplayFragmentInstrumentedTest {
         // 5 - Verify if TopStories n°0 has a title
         assertThat("Articles are returned", !articles.get(0).getTitle().equals(""));
     }
-
+/*
     @Test
     public void searchReturnsResponsesTest() throws Exception {
 
@@ -91,7 +91,7 @@ public class DisplayFragmentInstrumentedTest {
 
         assertThat("Articles are returned", !articles.get(0).getHeadline().getMain().equals(""));
     }
-
+*/
     @Test
     public void searchReturns10ArticlesTest() throws Exception {
 

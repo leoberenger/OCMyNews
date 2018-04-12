@@ -39,12 +39,16 @@ public class DisplaySearchActivity extends AppCompatActivity {
         Intent intent = getIntent();
         //Get Search From Intent
         mSearch = searchMgr.getSearchFromIntent(intent);
+        int lastReadPubDate = intent.getIntExtra("lastReadPubDate", 0);
+
 
         DisplaySearchFragment mDisplaySearchFragment = new DisplaySearchFragment();
         Bundle args = new Bundle();
 
         //Save Search to Bundle
         searchMgr.setSearchToBundle(args, mSearch);
+
+        args.putInt("lastReadPubDate", lastReadPubDate);
 
         mDisplaySearchFragment.setArguments(args);
 

@@ -89,7 +89,21 @@ public class DisplaySearchFragment extends DisplayFragment {
     protected void updateUI(NYTimesAPI responses){
         mSwipeRefreshLayout.setRefreshing(false);
         searchArticles.clear();
-        searchArticles.addAll(responses.getResponse().getDocs());
+        List<Response.Doc> articles = responses.getResponse().getDocs();
+
+        int lastReadPubDate = getArguments().getInt("lastReadPubDate",0);
+        Log.e("DisplaySearchFragment", "lastReadPubDate = " + lastReadPubDate);
+
+        if(lastReadPubDate!=0){
+            for(int i = 0; i<articles.size(); i++){
+                if(transformPublishedDate(articles.get(i).getPubDate()) < lastReadPubDate){
+                    searchArticles.add(articles.get(i));
+                }
+            }
+        }else {
+            searchArticles.addAll(responses.getResponse().getDocs());
+        }
+
         searchAdapter.notifyDataSetChanged();
 
         //no article to show -> alertDialog
@@ -112,5 +126,17 @@ public class DisplaySearchFragment extends DisplayFragment {
                         startActivity(intent);
                     }})
                 .show();
+    }
+
+    private int transformPublishedDate(String pubDate){
+        //(Ex: 2018-03-08T05:44:00-05:00)
+        String date =
+                pubDate.substring(0,4)      //YYYY
+                        + pubDate.substring(8,10)   //MM
+                        + pubDate.substring(5,7)    //DD
+                        + pubDate.substring(11,13); //HH
+
+        return Integer.valueOf(date);
+
     }
 }

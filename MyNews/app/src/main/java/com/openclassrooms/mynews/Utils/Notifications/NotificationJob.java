@@ -10,11 +10,14 @@ import com.evernote.android.job.Job;
 import com.evernote.android.job.JobRequest;
 import com.evernote.android.job.util.support.PersistableBundleCompat;
 import com.openclassrooms.mynews.Controllers.Activities.DisplaySearchActivity;
+import com.openclassrooms.mynews.Controllers.Activities.MainActivity;
 import com.openclassrooms.mynews.Models.API.NYTimesAPI;
 import com.openclassrooms.mynews.Models.Search;
 import com.openclassrooms.mynews.Utils.APIRequests.NYTStreams;
 import com.openclassrooms.mynews.Utils.DateMgr;
 import com.openclassrooms.mynews.Utils.SearchMgr;
+
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
@@ -27,6 +30,9 @@ public class NotificationJob extends Job {
     private Observable<NYTimesAPI> stream;
     private final static SearchMgr searchMgr = SearchMgr.getInstance();
     private static final int notificationID = 1234;
+    private int lastReadPubDate;
+    private int nextPubDate;
+    private DateMgr dateMgr = DateMgr.getInstance();
 
     @NonNull
     @Override
@@ -35,12 +41,12 @@ public class NotificationJob extends Job {
         PersistableBundleCompat extras = params.getExtras();
         final Search search = searchMgr.getSearchFromPersistBundle(extras);
 
-       /* //Set Begin Date = YESTERDAY and End Date = TODAY
+       //Set Begin Date = YESTERDAY and End Date = TODAY
         int beginDate = dateMgr.getDate(1);
         int endDate = dateMgr.getDate(0);
-        */
-        search.setBeginDate(20180201);
-        search.setEndDate(20180412);
+
+        search.setBeginDate(beginDate);
+        search.setEndDate(endDate);
         stream = NYTStreams.streamFetchSearchArticles(search);
         executeHttpRequest(stream, search);
 
@@ -53,21 +59,22 @@ public class NotificationJob extends Job {
         searchMgr.setSearchToPersistBundle(bundleCompat, search);
 
         new JobRequest.Builder(NotificationJob.TAG)
-                //.setPeriodic(TimeUnit.MINUTES.toMillis(15), TimeUnit.MINUTES.toMillis(5))
-                //.setUpdateCurrent(true)
-                //.setRequiredNetworkType(JobRequest.NetworkType.CONNECTED)
-                //.setRequirementsEnforced(true)
+                .setPeriodic(TimeUnit.MINUTES.toMillis(15), TimeUnit.MINUTES.toMillis(5))
+                .setUpdateCurrent(true)
+                .setRequiredNetworkType(JobRequest.NetworkType.CONNECTED)
+                .setRequirementsEnforced(true)
                 .setExtras(bundleCompat)
-                .startNow()
                 .build()
                 .schedule();
     }
 
-    private void sendNotification(Search search){
+    private void sendNotification(Search search, int lastReadPubDate){
 
         // Create intent for DisplaySearchActivity
         Intent intent = new Intent(getContext(), DisplaySearchActivity.class);
         searchMgr.setSearchToIntent(intent, search);
+        intent.putExtra("lastReadPubDate", lastReadPubDate);
+
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(
@@ -86,6 +93,28 @@ public class NotificationJob extends Job {
 
     }
 
+    private void sendEmptyNotification(){
+
+        // Create intent for DisplaySearchActivity
+        Intent intent = new Intent(getContext(), MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                getContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        //Create Notification
+        NotificationHelper notificationHelper =
+                new NotificationHelper(getContext());
+        NotificationCompat.Builder builder =
+                notificationHelper.getNotificationBuilder(
+                        "No new Articles",
+                        "No New articles",
+                        pendingIntent);
+        notificationHelper.getNotificationManager().notify(notificationID, builder.build());
+
+
+    }
+
     private void executeHttpRequest(Observable<NYTimesAPI> stream, final Search search){
         this.mDisposable = stream
                 .subscribeWith(new DisposableObserver<NYTimesAPI>(){
@@ -93,12 +122,17 @@ public class NotificationJob extends Job {
                     public void onNext(NYTimesAPI articles) {
                         Log.e("NotificationJob", "On Next");
 
-                        int lastPubDate = 2018041000;
-                        int nextPubDate = transformPublishedDate(articles.getResponse().getDocs().get(0).getPubDate());
-                        search.setBeginDate(20180411);
-                        search.setEndDate(20180412);
-                        if (nextPubDate > lastPubDate)
-                            sendNotification(search);
+                        nextPubDate = transformPublishedDate(articles.getResponse().getDocs().get(0).getPubDate());
+
+                        Log.e("NotifJob", "lastreadPubDate = " + lastReadPubDate + ", nextPubDate = " + nextPubDate);
+                        if (nextPubDate > lastReadPubDate) {
+                            sendNotification(search, lastReadPubDate);
+                            lastReadPubDate = nextPubDate;
+                        }else{
+                            sendEmptyNotification();
+                        }
+
+                        Log.e("NotifJob", "lastReadPubDate = "+ lastReadPubDate);
                     }
 
                     @Override
