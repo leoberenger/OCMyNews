@@ -15,7 +15,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Begin Date"/>
+            android:text="@string/begin_date"/>
 
         <EditText
             android:id="@+id/search_begin_date"
@@ -36,7 +36,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="End Date"/>
+            android:text="@string/end_date"/>
 
         <EditText
             android:id="@+id/search_end_date"

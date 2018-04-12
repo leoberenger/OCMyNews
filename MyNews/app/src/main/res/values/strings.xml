@@ -15,23 +15,24 @@
     <string name="nav_drawer_mostpopular">Most Popular</string>
     <string name="nav_drawer_categories">Categories</string>
 
-    <string name="nav_drawer_sports">Sports</string>
-    <string name="nav_drawer_business">Business</string>
-    <string name="nav_drawer_arts">Arts</string>
-    <string name="nav_drawer_travel">Travel</string>
-    <string name="nav_drawer_politics">Politics</string>
-    <string name="nav_drawer_entrepreneur">Entrepreneur</string>
-
     <!-- Used in NavigationDrawer -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <!-- TOPICS -->
+    <string name="sports">Sports</string>
+    <string name="business">Business</string>
+    <string name="arts">Arts</string>
+    <string name="travel">Travel</string>
+    <string name="politics">Politics</string>
+    <string name="entrepreneur">Entrepreneur</string>
+
     <!-- KEYS FOR BUNDLE ARGS -->
-    <string name="bundle_search_type">"searchType"</string>
-    <string name="bundle_search_type_query">"query"</string>
-    <string name="bundle_search_type_topic">"topic"</string>
-    <string name="bundle_search_type_top_stories">"topStories"</string>
-    <string name="bundle_search_type_most_popular">"mostPopular"</string>
+    <string name="bundle_search_type">searchType</string>
+    <string name="bundle_search_type_query">query</string>
+    <string name="bundle_search_type_topic">topic</string>
+    <string name="bundle_search_type_top_stories">topStories</string>
+    <string name="bundle_search_type_most_popular">mostPopular</string>
 
     <string-array name="news_desks">
         <item>"Arts"</item>
@@ -41,5 +42,14 @@
         <item>"Sports"</item>
         <item>"Travel"</item>
     </string-array>
+
+    <!-- Notifications -->
+    <string name="notifications">Enable notifications (once per day)</string>
+
+    <!--Search-->
+    <string name="search">Search</string>
+    <string name="begin_date">Begin Date</string>
+    <string name="end_date">End Date</string>
+    <string name="hint">Search query term</string>
 
 </resources>

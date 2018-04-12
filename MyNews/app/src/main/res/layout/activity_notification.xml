@@ -44,7 +44,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_below="@+id/activity_notification_divider"
-                    android:text="Enable notifications (once per day)" />
+                    android:text="@string/notifications" />
 
         </RelativeLayout>
 </LinearLayout>

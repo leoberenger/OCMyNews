@@ -14,18 +14,18 @@
         <CheckBox android:id="@+id/checkbox_arts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Arts"
+            android:text="@string/arts"
             android:onClick="onCheckboxClicked"/>
 
         <CheckBox android:id="@+id/checkbox_business"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Business"
+            android:text="@string/business"
             android:onClick="onCheckboxClicked"/>
         <CheckBox android:id="@+id/checkbox_entrepreneur"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Entrepreneur"
+            android:text="@string/entrepreneur"
             android:onClick="onCheckboxClicked"/>
 
     </LinearLayout>
@@ -40,17 +40,17 @@
             android:id="@+id/checkbox_politics"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Politics"
+            android:text="@string/politics"
             android:onClick="onCheckboxClicked"/>
         <CheckBox android:id="@+id/checkbox_sports"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sports"
+            android:text="@string/sports"
             android:onClick="onCheckboxClicked"/>
         <CheckBox android:id="@+id/checkbox_travel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Travel"
+            android:text="@string/travel"
             android:onClick="onCheckboxClicked"/>
 
     </LinearLayout>
