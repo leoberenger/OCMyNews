@@ -5,6 +5,7 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.openclassrooms.mynews.Models.API.NYTimesAPI;
+import com.openclassrooms.mynews.Models.API.Response;
 import com.openclassrooms.mynews.Models.API.Result;
 import com.openclassrooms.mynews.Utils.APIRequests.NYTStreams;
 
@@ -27,7 +28,7 @@ import static org.junit.Assert.assertEquals;
 @RunWith(AndroidJUnit4.class)
 public class DisplayFragmentInstrumentedTest {
     @Test
-    public void fetchTopStoriesNumberTest() throws Exception {
+    public void topStoriesReturnResultsTest() throws Exception {
 
         //1 - Get the stream
         Observable<NYTimesAPI> observableTopStories = NYTStreams.streamFetchTopStories();
@@ -44,29 +45,71 @@ public class DisplayFragmentInstrumentedTest {
         // 4 - Get list of articles
         List<Result> articles = testObserver.values().get(0).getResults();
 
-        // 5 - Verify if TopStories return 44 articles
-        assertThat("44 articles received",articles.size() == 44);
+        // 5 - Verify if TopStories n°0 has a title
+        assertThat("Articles are returned", !articles.get(0).getTitle().equals(""));
+        }
 
+    @Test
+    public void mostPopularReturnResultsTest() throws Exception {
+
+        //1 - Get the stream
+        Observable<NYTimesAPI> observableMostPopular = NYTStreams.streamFetchMostPopular();
+
+        //2 - Create a new TestObserver
+        TestObserver<NYTimesAPI> testObserver = new TestObserver<>();
+
+        //3 - Launch observable
+        observableMostPopular.subscribeWith(testObserver)
+                .assertNoErrors() // 3.1 - Check if no errors
+                .assertNoTimeout() // 3.2 - Check if no Timeout
+                .awaitTerminalEvent(); // 3.3 - Await the stream terminated before continue
+
+        // 4 - Get list of articles
+        List<Result> articles = testObserver.values().get(0).getResults();
+
+        // 5 - Verify if TopStories n°0 has a title
+        assertThat("Articles are returned", !articles.get(0).getTitle().equals(""));
     }
 
     @Test
-    public void fetchArticleInfosTest() throws Exception {
+    public void searchReturnsResponsesTest() throws Exception {
 
         //1 - Get the stream
-        Observable<NYTimesAPI> observableTopStories = NYTStreams.streamFetchTopStories();
+        Observable<NYTimesAPI> observableSearch = NYTStreams.streamFetchSearchArticles("trump", "Business");
 
         //2 - Create a new TestObserver
         TestObserver<NYTimesAPI> testObserver = new TestObserver<>();
 
         //3 - Launch observable
-        observableTopStories.subscribeWith(testObserver)
+        observableSearch.subscribeWith(testObserver)
                 .assertNoErrors() // 3.1 - Check if no errors
                 .assertNoTimeout() // 3.2 - Check if no Timeout
                 .awaitTerminalEvent(); // 3.3 - Await the stream terminated before continue
 
         // 4 - Get list of articles
-        List<Result> articles = testObserver.values().get(0).getResults();
+        List<Response.Doc> articles = testObserver.values().get(0).getResponse().getDocs();
 
-        assertThat("First Article Title is Paul Ryan, the House Spe…Re-election in November",articles.get(0).getTitle().equals("Paul Ryan, the House Speaker, Will Not Seek Re-election in November"));
+        assertThat("Articles are returned", !articles.get(0).getHeadline().getMain().equals(""));
+    }
+
+    @Test
+    public void searchReturns10ArticlesTest() throws Exception {
+
+        //1 - Get the stream
+        Observable<NYTimesAPI> observableSearch = NYTStreams.streamFetchSearchArticles("trump", "Business");
+
+        //2 - Create a new TestObserver
+        TestObserver<NYTimesAPI> testObserver = new TestObserver<>();
+
+        //3 - Launch observable
+        observableSearch.subscribeWith(testObserver)
+                .assertNoErrors() // 3.1 - Check if no errors
+                .assertNoTimeout() // 3.2 - Check if no Timeout
+                .awaitTerminalEvent(); // 3.3 - Await the stream terminated before continue
+
+        // 4 - Get list of articles
+        List<Response.Doc> articles = testObserver.values().get(0).getResponse().getDocs();
+
+        assertThat("10 Articles are returned", articles.size() == 10);
     }
 }

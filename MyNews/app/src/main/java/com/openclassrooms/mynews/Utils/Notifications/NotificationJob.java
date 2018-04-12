@@ -26,7 +26,6 @@ public class NotificationJob extends Job {
     static final String TAG = "notification_job_tag";
     private Observable<NYTimesAPI> stream;
     private final static SearchMgr searchMgr = SearchMgr.getInstance();
-    private final static DateMgr dateMgr = DateMgr.getInstance();
     private static final int notificationID = 1234;
 
     @NonNull
@@ -36,12 +35,12 @@ public class NotificationJob extends Job {
         PersistableBundleCompat extras = params.getExtras();
         final Search search = searchMgr.getSearchFromPersistBundle(extras);
 
-        //Set Begin Date = YESTERDAY and End Date = TODAY
+       /* //Set Begin Date = YESTERDAY and End Date = TODAY
         int beginDate = dateMgr.getDate(1);
         int endDate = dateMgr.getDate(0);
-        search.setBeginDate(beginDate);
-        search.setEndDate(endDate);
-
+        */
+        search.setBeginDate(20180201);
+        search.setEndDate(20180412);
         stream = NYTStreams.streamFetchSearchArticles(search);
         executeHttpRequest(stream, search);
 
@@ -94,7 +93,11 @@ public class NotificationJob extends Job {
                     public void onNext(NYTimesAPI articles) {
                         Log.e("NotificationJob", "On Next");
 
-                        if (!articles.getResponse().getDocs().isEmpty())
+                        int lastPubDate = 2018041000;
+                        int nextPubDate = transformPublishedDate(articles.getResponse().getDocs().get(0).getPubDate());
+                        search.setBeginDate(20180411);
+                        search.setEndDate(20180412);
+                        if (nextPubDate > lastPubDate)
                             sendNotification(search);
                     }
 
@@ -110,5 +113,17 @@ public class NotificationJob extends Job {
                             mDisposable.dispose();
                     }
                 });
+    }
+
+    private int transformPublishedDate(String pubDate){
+        //(Ex: 2018-03-08T05:44:00-05:00)
+        String date =
+        pubDate.substring(0,4)      //YYYY
+        + pubDate.substring(8,10)   //MM
+        + pubDate.substring(5,7)    //DD
+        + pubDate.substring(11,13); //HH
+
+        return Integer.valueOf(date);
+
     }
 }
