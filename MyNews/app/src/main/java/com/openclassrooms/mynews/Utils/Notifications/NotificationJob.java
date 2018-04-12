@@ -27,6 +27,7 @@ public class NotificationJob extends Job {
     private Observable<NYTimesAPI> stream;
     private final static SearchMgr searchMgr = SearchMgr.getInstance();
     private final static DateMgr dateMgr = DateMgr.getInstance();
+    private static final int notificationID = 1234;
 
     @NonNull
     @Override
@@ -35,62 +36,22 @@ public class NotificationJob extends Job {
         PersistableBundleCompat extras = params.getExtras();
         final Search search = searchMgr.getSearchFromPersistBundle(extras);
 
-        Log.e("NotifJob onRunJob pre",
-                "query = " + search.getQuery()
-                        + " desks = " + search.getNewsDesk()
-                        + " beginDate = " + search.getBeginDate()
-                        + " endDate = " + search.getEndDate());
-
         //Set Begin Date = YESTERDAY and End Date = TODAY
         int beginDate = dateMgr.getDate(1);
         int endDate = dateMgr.getDate(0);
         search.setBeginDate(beginDate);
         search.setEndDate(endDate);
 
-        Log.e("NotifJob onRunJob post",
-                "query = " + search.getQuery()
-                        + " desks = " + search.getNewsDesk()
-                        + " beginDate = " + search.getBeginDate()
-                        + " endDate = " + search.getEndDate());
-
         stream = NYTStreams.streamFetchSearchArticles(search);
-
-        this.mDisposable = stream
-                .subscribeWith(new DisposableObserver<NYTimesAPI>(){
-                    @Override
-                    public void onNext(NYTimesAPI articles) {
-                        Log.e("TopStoriesFragment", "On Next");
-                        if (!articles.getResponse().getDocs().isEmpty())
-                            sendNotification(search);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e("TopStoriesFragment", "On Error"+Log.getStackTraceString(e));
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        Log.e("TopStoriesFragment", "On Complete");
-                        if(mDisposable != null && mDisposable.isDisposed())
-                            mDisposable.dispose();
-                    }
-                });
+        executeHttpRequest(stream, search);
 
         return Result.SUCCESS;
     }
 
     public static void schedulePeriodic(Search search) {
 
-        Log.e("NotifJob shedPeriodic",
-                        "query = " + search.getQuery()
-                        + " desks = " + search.getNewsDesk()
-                        + " beginDate = " + search.getBeginDate()
-                        + " endDate = " + search.getEndDate());
-
         PersistableBundleCompat bundleCompat = new PersistableBundleCompat();
         searchMgr.setSearchToPersistBundle(bundleCompat, search);
-
 
         new JobRequest.Builder(NotificationJob.TAG)
                 //.setPeriodic(TimeUnit.MINUTES.toMillis(15), TimeUnit.MINUTES.toMillis(5))
@@ -105,32 +66,49 @@ public class NotificationJob extends Job {
 
     private void sendNotification(Search search){
 
-        Log.e("sendNotif",
-                "query = " + search.getQuery()
-                        + " desks = " + search.getNewsDesk()
-                        + " beginDate = " + search.getBeginDate()
-                        + " endDate = " + search.getEndDate());
-
         // Create intent for DisplaySearchActivity
         Intent intent = new Intent(getContext(), DisplaySearchActivity.class);
         searchMgr.setSearchToIntent(intent, search);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-        PendingIntent pendingIntent =
-                PendingIntent.getActivity(
+        PendingIntent pendingIntent = PendingIntent.getActivity(
                         getContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         //Create Notification
-        int notificationID = 1234;
         NotificationHelper notificationHelper =
                 new NotificationHelper(getContext());
         NotificationCompat.Builder builder =
                 notificationHelper.getNotificationBuilder(
-                        "New New York Times Articles",
-                        "New articles correspond to : " +search.getQuery(),
+                        "New Articles",
+                        "New articles corresponding to your query : " +search.getQuery(),
                         pendingIntent);
         notificationHelper.getNotificationManager().notify(notificationID, builder.build());
 
 
+    }
+
+    private void executeHttpRequest(Observable<NYTimesAPI> stream, final Search search){
+        this.mDisposable = stream
+                .subscribeWith(new DisposableObserver<NYTimesAPI>(){
+                    @Override
+                    public void onNext(NYTimesAPI articles) {
+                        Log.e("NotificationJob", "On Next");
+
+                        if (!articles.getResponse().getDocs().isEmpty())
+                            sendNotification(search);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e("NotificationJob", "On Error"+Log.getStackTraceString(e));
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.e("NotificationJob", "On Complete");
+                        if(mDisposable != null && mDisposable.isDisposed())
+                            mDisposable.dispose();
+                    }
+                });
     }
 }

@@ -27,20 +27,20 @@ interface NYTService {
     Observable<NYTimesAPI> getMostPopular();
 
     //TOPIC
-    @GET("search/v2/articlesearch.json?" + apiKeyQuery)
+    @GET("search/v2/articlesearch.json?sort=newest&" + apiKeyQuery)
     Observable<NYTimesAPI> getTopic(
             @Query("fq") String desk
     );
 
     //SEARCH ARTICLE WITHOUT BEGIN/END DATE
-    @GET("search/v2/articlesearch.json?" + apiKeyQuery)
+    @GET("search/v2/articlesearch.json?sort=newest&" + apiKeyQuery)
     Observable<NYTimesAPI> getSearchArticles(
             @Query("query") String query,
             @Query("fq") String desk
     );
 
     //SEARCH ARTICLE WITH BEGIN/END DATE
-    @GET("search/v2/articlesearch.json?" + apiKeyQuery)
+    @GET("search/v2/articlesearch.json?sort=newest&" + apiKeyQuery)
     Observable<NYTimesAPI> getSearchArticles(
             @Query("query") String query,
             @Query("fq") String desk,
