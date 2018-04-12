@@ -37,11 +37,15 @@ public class DisplaySearchActivity extends AppCompatActivity {
     private void configureAndShowSearchFragment() {
 
         Intent intent = getIntent();
+        //Get Search From Intent
         mSearch = searchMgr.getSearchFromIntent(intent);
 
         DisplaySearchFragment mDisplaySearchFragment = new DisplaySearchFragment();
         Bundle args = new Bundle();
+
+        //Save Search to Bundle
         searchMgr.setSearchToBundle(args, mSearch);
+
         mDisplaySearchFragment.setArguments(args);
 
         getSupportFragmentManager().beginTransaction()

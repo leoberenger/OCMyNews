@@ -24,7 +24,6 @@ public class DetailActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         this.configureToolbar();
-
         this.configureAndShowDetailFragment();
     }
 

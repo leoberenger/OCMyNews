@@ -32,17 +32,14 @@ public class SearchActivity extends BaseSearchActivity {
 
     private final String searchType = "query";
     private Search mSearch;
-    private SearchMgr searchMgr;
-    private DateMgr dateMgr;
+    private SearchMgr searchMgr  = SearchMgr.getInstance();
+    private DateMgr dateMgr  = DateMgr.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         ButterKnife.bind(this);
-
-        searchMgr = SearchMgr.getInstance();
-        dateMgr = DateMgr.getInstance();
 
         this.configureToolbar();
         configureDatePicker(beginDatePicker);
@@ -73,13 +70,14 @@ public class SearchActivity extends BaseSearchActivity {
                 }else if(!noEndDate && invalidEndDateFormat){
                     showToast("Invalid End Date format");
                 }else {
-
+                    //Transform Begin and End dates format to Search Date Format
                     mBeginDate = (!noBeginDate) ? dateMgr.transformDateFormat(beginDatePicker) : 0 ;
                     mEndDate = (!noEndDate) ? dateMgr.transformDateFormat(endDatePicker) : 0;
 
                     mSearch = new Search(searchType, mQuery, mNewsDesk, mBeginDate, mEndDate);
 
                     Intent intent = new Intent(SearchActivity.this, DisplaySearchActivity.class);
+                    //Save search to Intent
                     searchMgr.setSearchToIntent(intent, mSearch);
                     startActivity(intent);
                 }

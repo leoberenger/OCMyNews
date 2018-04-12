@@ -9,7 +9,6 @@ import com.openclassrooms.mynews.R;
 public abstract class BaseSearchActivity extends AppCompatActivity{
 
     final boolean [] newsDesksSelected = {false, false, false, false, false, false};
-    final int newsDesksLength = newsDesksSelected.length;
 
     String mQuery = "";
     String mNewsDesk;
