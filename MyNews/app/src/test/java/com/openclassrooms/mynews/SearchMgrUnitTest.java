@@ -1,8 +1,6 @@
 package com.openclassrooms.mynews;
 
-import com.openclassrooms.mynews.Models.Search;
-import com.openclassrooms.mynews.Utils.DateMgr;
-import com.openclassrooms.mynews.Utils.SearchMgr;
+import com.openclassrooms.mynews.utils.SearchMgr;
 
 import org.junit.Test;
 

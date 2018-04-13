@@ -11,7 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Controllers.Activities.MainActivity">
+        <activity android:name=".controllers.activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -19,40 +19,40 @@
         </activity>
 
         <activity
-            android:name=".Controllers.Activities.DetailActivity"
-            android:parentActivityName=".Controllers.Activities.MainActivity">
+            android:name=".controllers.activities.DetailActivity"
+            android:parentActivityName=".controllers.activities.MainActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.openclassrooms.mynews.Controllers.Activities.MainActivity" />
+                android:value="com.openclassrooms.mynews.controllers.activities.MainActivity" />
         </activity>
 
-        <activity android:name=".Controllers.Activities.SearchActivity"
-            android:parentActivityName=".Controllers.Activities.MainActivity">
+        <activity android:name=".controllers.activities.SearchActivity"
+            android:parentActivityName=".controllers.activities.MainActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.openclassrooms.mynews.Controllers.Activities.MainActivity" />
+                android:value="com.openclassrooms.mynews.controllers.activities.MainActivity" />
         </activity>
 
-        <activity android:name=".Controllers.Activities.NotificationActivity"
-            android:parentActivityName=".Controllers.Activities.MainActivity">
+        <activity android:name=".controllers.activities.NotificationActivity"
+            android:parentActivityName=".controllers.activities.MainActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.openclassrooms.mynews.Controllers.Activities.MainActivity" />
+                android:value="com.openclassrooms.mynews.controllers.activities.MainActivity" />
         </activity>
 
-        <activity android:name=".Controllers.Activities.DisplaySearchActivity"
-            android:parentActivityName=".Controllers.Activities.MainActivity">
+        <activity android:name=".controllers.activities.DisplaySearchActivity"
+            android:parentActivityName=".controllers.activities.MainActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.openclassrooms.mynews.Controllers.Activities.MainActivity" />
+                android:value="com.openclassrooms.mynews.controllers.activities.MainActivity" />
             </activity>
 
     </application>

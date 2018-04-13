@@ -1,6 +1,6 @@
 package com.openclassrooms.mynews;
 
-import com.openclassrooms.mynews.Utils.DateMgr;
+import com.openclassrooms.mynews.utils.DateMgr;
 import org.junit.Test;
 
 import java.text.SimpleDateFormat;

@@ -1,13 +1,11 @@
 package com.openclassrooms.mynews;
 
-import android.content.Context;
-import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.openclassrooms.mynews.Models.API.NYTimesAPI;
-import com.openclassrooms.mynews.Models.API.Response;
-import com.openclassrooms.mynews.Models.API.Result;
-import com.openclassrooms.mynews.Utils.APIRequests.NYTStreams;
+import com.openclassrooms.mynews.models.API.NYTimesAPI;
+import com.openclassrooms.mynews.models.API.Response;
+import com.openclassrooms.mynews.models.API.Result;
+import com.openclassrooms.mynews.api.NYTStreams;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
