@@ -146,7 +146,7 @@ public class SearchMgr {
         boolean noDeskSelected = true;
 
         for(boolean desk:desks) {
-            noDeskSelected = !desk;
+            if(desk) noDeskSelected = false;
         }
 
         return noDeskSelected;

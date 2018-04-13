@@ -3,6 +3,7 @@ package com.openclassrooms.mynews.controllers.activities;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;

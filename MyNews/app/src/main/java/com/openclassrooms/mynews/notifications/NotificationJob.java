@@ -2,6 +2,8 @@ package com.openclassrooms.mynews.notifications;
 
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -23,6 +25,8 @@ import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class NotificationJob extends Job {
 
     private Disposable mDisposable;
@@ -33,6 +37,7 @@ public class NotificationJob extends Job {
     private int lastReadPubDate;
     private int nextPubDate;
     private DateMgr dateMgr = DateMgr.getInstance();
+    private SharedPreferences prefs;
 
     @NonNull
     @Override
@@ -48,7 +53,12 @@ public class NotificationJob extends Job {
         search.setBeginDate(yesterday);
         search.setEndDate(today);
         stream = NYTStreams.streamFetchSearchArticles(search);
-        executeHttpRequestToSeeIfNewArticles(stream, search);
+
+        prefs =  PreferenceManager.getDefaultSharedPreferences(getContext());
+        lastReadPubDate = prefs.getInt("lastReadPubDate", 0);
+        Log.e("OnRunJob", "lastReadPubDate = " + lastReadPubDate);
+
+        executeHttpRequestToSeeIfNewArticles(stream, search, lastReadPubDate);
 
         return Result.SUCCESS;
     }
@@ -79,7 +89,7 @@ public class NotificationJob extends Job {
                 .schedule();
     }
 
-    private void executeHttpRequestToSeeIfNewArticles(Observable<NYTimesAPI> stream, final Search search){
+    private void executeHttpRequestToSeeIfNewArticles(Observable<NYTimesAPI> stream, final Search search, final int lastReadPubDate){
         this.mDisposable = stream
                 .subscribeWith(new DisposableObserver<NYTimesAPI>(){
                     @Override
@@ -92,7 +102,7 @@ public class NotificationJob extends Job {
                             Log.e("NotifJob", "lastreadPubDatePRE = " + lastReadPubDate + ", nextPubDate = " + nextPubDate);
                             if (nextPubDate > lastReadPubDate) {
                                 sendNotification(search, lastReadPubDate);
-                                lastReadPubDate = nextPubDate;
+                                prefs.edit().putInt("lastReadPubDate", nextPubDate).apply();
                             }else{
                                 sendEmptyNotification("no new articles");
                             }
@@ -100,7 +110,7 @@ public class NotificationJob extends Job {
                             sendEmptyNotification("no articles");
                         }
 
-                        Log.e("NotifJobPOST", "lastReadPubDate = "+ lastReadPubDate);
+                        Log.e("NotifJobPOST", "lastReadPubDate = "+ prefs.getInt("lastReadPubDate", 0));
                     }
 
                     @Override

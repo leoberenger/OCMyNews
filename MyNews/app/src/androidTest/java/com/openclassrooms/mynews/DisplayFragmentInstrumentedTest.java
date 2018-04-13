@@ -68,28 +68,7 @@ public class DisplayFragmentInstrumentedTest {
         // 5 - Verify if TopStories n°0 has a title
         assertThat("Articles are returned", !articles.get(0).getTitle().equals(""));
     }
-/*
-    @Test
-    public void searchReturnsResponsesTest() throws Exception {
 
-        //1 - Get the stream
-        Observable<NYTimesAPI> observableSearch = NYTStreams.streamFetchSearchArticles("trump", "Business");
-
-        //2 - Create a new TestObserver
-        TestObserver<NYTimesAPI> testObserver = new TestObserver<>();
-
-        //3 - Launch observable
-        observableSearch.subscribeWith(testObserver)
-                .assertNoErrors() // 3.1 - Check if no errors
-                .assertNoTimeout() // 3.2 - Check if no Timeout
-                .awaitTerminalEvent(); // 3.3 - Await the stream terminated before continue
-
-        // 4 - Get list of articles
-        List<Response.Doc> articles = testObserver.values().get(0).getResponse().getDocs();
-
-        assertThat("Articles are returned", !articles.get(0).getHeadline().getMain().equals(""));
-    }
-*/
     @Test
     public void searchReturns10ArticlesTest() throws Exception {
 
