@@ -123,9 +123,10 @@ public class SearchMgr {
 
 
     //-------------------------------------
-    // NEWS DESK
+    // OTHER METHODS
     //-------------------------------------
 
+    //Retrieve desks selected from boolean array
     public String newsDesks(boolean [] desksArray){
 
         String [] newsDesksName = {"Arts", "Business", "Entrepreneur", "Politics", "Sports", "Travel"};
@@ -142,6 +143,7 @@ public class SearchMgr {
         return str.toString();
     }
 
+    //Check if all desks are set to false
     public boolean noDeskSelected(boolean [] desks){
         boolean noDeskSelected = true;
 
@@ -150,13 +152,5 @@ public class SearchMgr {
         }
 
         return noDeskSelected;
-    }
-
-    public boolean emptyQuery(String query){
-        return (query.isEmpty());
-    }
-
-    public boolean emptyDateInput (String dateInput){
-        return (dateInput.isEmpty());
     }
 }

@@ -63,9 +63,13 @@ public class NotificationActivity extends BaseSearchActivity {
         this.configureSwitch();
     }
 
-    private void getAndShowSavedNotification(){
+    private void configureToolbar(){
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
 
-        //Get query, desk and switch status from Preferences and show them
+    //Get query, desk and switch status from Preferences and show them
+    private void getAndShowSavedNotification(){
 
         mQuery = prefs.getString("query", "");
         queryInput.setText(mQuery);
@@ -85,18 +89,19 @@ public class NotificationActivity extends BaseSearchActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean switchIsChecked) {
 
                 mQuery = queryInput.getText().toString();
-
-                boolean emptyQuery = searchMgr.emptyQuery(mQuery);
                 boolean noDeskSelected = searchMgr.noDeskSelected(newsDesksSelected);
 
                 if(switchIsChecked){
+
                     //When user switches on
-                    if(emptyQuery) {
-                        showToast("Search required");
+                    if(mQuery.isEmpty()) {
+                        Toast.makeText(getApplicationContext(), "Search required", Toast.LENGTH_LONG).show();
                         notificationSwitch.setChecked(false);
+
                     }else if(noDeskSelected) {
-                        showToast("Pick at least one topic");
+                        Toast.makeText(getApplicationContext(), "Pick at least one topic", Toast.LENGTH_LONG).show();
                         notificationSwitch.setChecked(false);
+
                     }else{
                         //Create Search Object
                         mNewsDesk = searchMgr.newsDesks(newsDesksSelected);
@@ -109,11 +114,11 @@ public class NotificationActivity extends BaseSearchActivity {
                         createJob(search);
 
                         //Show Toast message
-                        showToast("Notification saved");
+                        Toast.makeText(getApplicationContext(), "Notification saved", Toast.LENGTH_LONG).show();
                     }
+
                 }else{
                     //When user switches off
-
                     queryInput.setText("");
 
                     for(int i = 0; i <newsDesksSelected.length; i++){
@@ -129,15 +134,6 @@ public class NotificationActivity extends BaseSearchActivity {
                 }
             }
         });
-    }
-
-    private void showToast(String toastTxt){
-        Toast.makeText(getApplicationContext(), toastTxt, Toast.LENGTH_LONG).show();
-    }
-
-    private void configureToolbar(){
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void createJob(Search s){

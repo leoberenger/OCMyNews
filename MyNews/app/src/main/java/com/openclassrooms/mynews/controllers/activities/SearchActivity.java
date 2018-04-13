@@ -53,20 +53,20 @@ public class SearchActivity extends BaseSearchActivity {
 
                 mQuery = queryInput.getText().toString();
                 mNewsDesk = searchMgr.newsDesks(newsDesksSelected);
-
                 boolean noDesksAreSelected = searchMgr.noDeskSelected(newsDesksSelected);
-                boolean queryIsEmpty = searchMgr.emptyQuery(mQuery);
-                boolean noBeginDate = searchMgr.emptyDateInput(beginDatePicker.getText().toString());
-                boolean noEndDate = searchMgr.emptyDateInput(endDatePicker.getText().toString());
 
-                if(queryIsEmpty) {
+                if(mQuery.isEmpty()) {
                     showToast("Query required");
                 }else if(noDesksAreSelected) {
                     showToast("Pick at least one topic");
                 }else {
                     //Transform Begin and End dates format to Search Date Format
-                    mBeginDate = (!noBeginDate) ? dateMgr.transformDateFormat(beginDatePicker) : 0 ;
-                    mEndDate = (!noEndDate) ? dateMgr.transformDateFormat(endDatePicker) : 0;
+                    mBeginDate = (!beginDatePicker.getText().toString().isEmpty()) ?
+                            dateMgr.transformDateFormat(beginDatePicker) :
+                            0 ;
+                    mEndDate = (!endDatePicker.getText().toString().isEmpty()) ?
+                            dateMgr.transformDateFormat(endDatePicker) :
+                            0;
 
                     mSearch = new Search(searchType, mQuery, mNewsDesk, mBeginDate, mEndDate);
 
