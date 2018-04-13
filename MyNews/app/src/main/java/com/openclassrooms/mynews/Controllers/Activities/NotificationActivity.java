@@ -84,8 +84,6 @@ public class NotificationActivity extends BaseSearchActivity {
         notificationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean switchIsChecked) {
 
-
-
                 mQuery = queryInput.getText().toString();
 
                 boolean emptyQuery = searchMgr.emptyQuery(mQuery);

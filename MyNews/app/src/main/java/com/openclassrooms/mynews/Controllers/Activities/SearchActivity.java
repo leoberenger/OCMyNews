@@ -58,17 +58,11 @@ public class SearchActivity extends BaseSearchActivity {
                 boolean queryIsEmpty = searchMgr.emptyQuery(mQuery);
                 boolean noBeginDate = searchMgr.emptyDateInput(beginDatePicker.getText().toString());
                 boolean noEndDate = searchMgr.emptyDateInput(endDatePicker.getText().toString());
-                boolean invalidBeginDateFormat = dateMgr.invalidDateFormat(beginDatePicker);
-                boolean invalidEndDateFormat = dateMgr.invalidDateFormat(endDatePicker);
 
                 if(queryIsEmpty) {
                     showToast("Query required");
                 }else if(noDesksAreSelected) {
                     showToast("Pick at least one topic");
-                }else if(!noBeginDate && invalidBeginDateFormat){
-                    showToast("Invalid Begin Date format");
-                }else if(!noEndDate && invalidEndDateFormat){
-                    showToast("Invalid End Date format");
                 }else {
                     //Transform Begin and End dates format to Search Date Format
                     mBeginDate = (!noBeginDate) ? dateMgr.transformDateFormat(beginDatePicker) : 0 ;

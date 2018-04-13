@@ -16,6 +16,7 @@ import com.openclassrooms.mynews.Controllers.Activities.SearchActivity;
 import com.openclassrooms.mynews.Models.API.NYTimesAPI;
 import com.openclassrooms.mynews.Models.API.Response;
 import com.openclassrooms.mynews.R;
+import com.openclassrooms.mynews.Utils.DateMgr;
 import com.openclassrooms.mynews.Utils.ItemClickSupport;
 import com.openclassrooms.mynews.Utils.APIRequests.NYTStreams;
 import com.openclassrooms.mynews.Views.DisplaySearchAdapter;
@@ -31,6 +32,7 @@ public class DisplaySearchFragment extends DisplayFragment {
     private DisplaySearchAdapter searchAdapter;
     private final String SEARCH_TYPE_KEY = "searchType";
     private final String SEARCH_TYPE_TOPIC = "topic";
+    private DateMgr dateMgr = DateMgr.getInstance();
 
     public DisplaySearchFragment() { }
 
@@ -96,7 +98,7 @@ public class DisplaySearchFragment extends DisplayFragment {
 
         if(lastReadPubDate!=0){
             for(int i = 0; i<articles.size(); i++){
-                if(transformPublishedDate(articles.get(i).getPubDate()) < lastReadPubDate){
+                if(dateMgr.transformPublishedDate(articles.get(i).getPubDate()) < lastReadPubDate){
                     searchArticles.add(articles.get(i));
                 }
             }
@@ -128,15 +130,5 @@ public class DisplaySearchFragment extends DisplayFragment {
                 .show();
     }
 
-    private int transformPublishedDate(String pubDate){
-        //(Ex: 2018-03-08T05:44:00-05:00)
-        String date =
-                pubDate.substring(0,4)      //YYYY
-                        + pubDate.substring(8,10)   //MM
-                        + pubDate.substring(5,7)    //DD
-                        + pubDate.substring(11,13); //HH
 
-        return Integer.valueOf(date);
-
-    }
 }

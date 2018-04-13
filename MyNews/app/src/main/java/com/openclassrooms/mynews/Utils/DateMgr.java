@@ -16,14 +16,6 @@ public class DateMgr {
     private DateMgr() {
     }
 
-    public boolean invalidDateFormat(EditText datePicker){
-        //Regular Expression Testing dd-MM-YYYY
-        String regexp = "(0?[1-9]|[12][0-9]|3[01])/(0?[1-9]|1[012])/((18|19|20|21)\\d\\d)";
-        String date = datePicker.getText().toString();
-
-        return (!date.matches(regexp));
-    }
-
     public int transformDateFormat(EditText datePicker){ //transforms 10/01/2018 to 20180110
         String date = datePicker.getText().toString();
         String orderedDate = date.substring(6,10) + date.substring(3,5) + date.substring(0,2);
@@ -31,19 +23,24 @@ public class DateMgr {
         return Integer.valueOf(orderedDate);
     }
 
-    public int getDate(int nbDayBefore){
-        int date = 0;
+    public int transformPublishedDate(String pubDate){
+        //(Ex: 2018-03-08T05:44:00-05:00 to 2018080305)
+        String date =
+                pubDate.substring(0,4)      //YYYY
+                + pubDate.substring(8,10)   //MM
+                + pubDate.substring(5,7)    //DD
+                + pubDate.substring(11,13); //HH
 
+        return Integer.valueOf(date);
+
+    }
+
+    public int getDate(int nbDayBefore){
         Calendar c = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", Locale.FRANCE);
 
-        if(nbDayBefore == 0 ) {
-            date = Integer.valueOf(sdf.format(c.getTime()));
-        }else if(nbDayBefore == 1){
-            c.add(Calendar.DATE, -1);
-            date = Integer.valueOf(sdf.format(c.getTime()));
-        }
+        c.add(Calendar.DATE, -(nbDayBefore));
 
-        return date;
+        return Integer.valueOf(sdf.format(c.getTime()));
     }
 }

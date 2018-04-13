@@ -145,14 +145,10 @@ public class SearchMgr {
     public boolean noDeskSelected(boolean [] desks){
         boolean noDeskSelected = true;
 
-        for (int i = 0 ; i< desks.length; i++){
-            if (desks[i] == true) noDeskSelected = false;
-        }
-        /*
-        for(boolean desk : desks){
+        for(boolean desk:desks) {
             noDeskSelected = !desk;
         }
-*/
+
         return noDeskSelected;
     }
 

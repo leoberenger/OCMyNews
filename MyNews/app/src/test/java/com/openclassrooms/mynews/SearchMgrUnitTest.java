@@ -15,10 +15,22 @@ import static org.junit.Assert.*;
  */
 public class SearchMgrUnitTest {
 
-    Search mSearch = new Search("query", "", "Politics", 20180401, 20180411);
-    SearchMgr mSearchMgr = SearchMgr.getInstance();
+    boolean [] newsDesksArray = {false, true, true, false, false, true};
+    boolean [] emptyNewsDesksArray = {false,false,false,false,false,false};
+    SearchMgr searchMgr = SearchMgr.getInstance();
+
     @Test
-    public void emptyQuery() {
-        assertEquals("", mSearch.getQuery());
+    public void getNewsDesksString() {
+        assertEquals("news_desk:( %22Business%22 %22Entrepreneur%22 %22Travel%22)", searchMgr.newsDesks(newsDesksArray));
+    }
+
+    @Test
+    public void noDeskSelected(){
+        assertEquals(true, searchMgr.noDeskSelected(emptyNewsDesksArray));
+    }
+
+    @Test
+    public void min1DeskSelected(){
+        assertEquals(false, searchMgr.noDeskSelected(newsDesksArray));
     }
 }

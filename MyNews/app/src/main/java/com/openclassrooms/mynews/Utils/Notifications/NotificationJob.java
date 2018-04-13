@@ -42,13 +42,13 @@ public class NotificationJob extends Job {
         final Search search = searchMgr.getSearchFromPersistBundle(extras);
 
        //Set Begin Date = YESTERDAY and End Date = TODAY
-        int beginDate = dateMgr.getDate(1);
-        int endDate = dateMgr.getDate(0);
+        int yesterday = dateMgr.getDate(1);
+        int today = dateMgr.getDate(0);
 
-        search.setBeginDate(beginDate);
-        search.setEndDate(endDate);
+        search.setBeginDate(yesterday);
+        search.setEndDate(today);
         stream = NYTStreams.streamFetchSearchArticles(search);
-        executeHttpRequest(stream, search);
+        executeHttpRequestToSeeIfNewArticles(stream, search);
 
         return Result.SUCCESS;
     }
@@ -62,13 +62,64 @@ public class NotificationJob extends Job {
                 .setPeriodic(TimeUnit.MINUTES.toMillis(15), TimeUnit.MINUTES.toMillis(5))
                 .setUpdateCurrent(true)
                 .setRequiredNetworkType(JobRequest.NetworkType.CONNECTED)
-                .setRequirementsEnforced(true)
                 .setExtras(bundleCompat)
                 .build()
                 .schedule();
     }
 
+    public static void startNow(Search search) {
+
+        PersistableBundleCompat bundleCompat = new PersistableBundleCompat();
+        searchMgr.setSearchToPersistBundle(bundleCompat, search);
+
+        new JobRequest.Builder(NotificationJob.TAG)
+                .setExtras(bundleCompat)
+                .startNow()
+                .build()
+                .schedule();
+    }
+
+    private void executeHttpRequestToSeeIfNewArticles(Observable<NYTimesAPI> stream, final Search search){
+        this.mDisposable = stream
+                .subscribeWith(new DisposableObserver<NYTimesAPI>(){
+                    @Override
+                    public void onNext(NYTimesAPI articles) {
+                        Log.e("NotificationJob", "On Next");
+
+                        if(!articles.getResponse().getDocs().isEmpty()){
+                            nextPubDate = dateMgr.transformPublishedDate(articles.getResponse().getDocs().get(0).getPubDate());
+
+                            Log.e("NotifJob", "lastreadPubDatePRE = " + lastReadPubDate + ", nextPubDate = " + nextPubDate);
+                            if (nextPubDate > lastReadPubDate) {
+                                sendNotification(search, lastReadPubDate);
+                                lastReadPubDate = nextPubDate;
+                            }else{
+                                sendEmptyNotification("no new articles");
+                            }
+                        }else{
+                            sendEmptyNotification("no articles");
+                        }
+
+                        Log.e("NotifJobPOST", "lastReadPubDate = "+ lastReadPubDate);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e("NotificationJob", "On Error"+Log.getStackTraceString(e));
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.e("NotificationJob", "On Complete");
+                        if(mDisposable != null && mDisposable.isDisposed())
+                            mDisposable.dispose();
+                    }
+                });
+    }
+
     private void sendNotification(Search search, int lastReadPubDate){
+
+        Log.e("send Notif", "lPB = " + lastReadPubDate);
 
         // Create intent for DisplaySearchActivity
         Intent intent = new Intent(getContext(), DisplaySearchActivity.class);
@@ -93,7 +144,7 @@ public class NotificationJob extends Job {
 
     }
 
-    private void sendEmptyNotification(){
+    private void sendEmptyNotification(String s){
 
         // Create intent for DisplaySearchActivity
         Intent intent = new Intent(getContext(), MainActivity.class);
@@ -107,57 +158,9 @@ public class NotificationJob extends Job {
                 new NotificationHelper(getContext());
         NotificationCompat.Builder builder =
                 notificationHelper.getNotificationBuilder(
-                        "No new Articles",
+                        ""+ s,
                         "No New articles",
                         pendingIntent);
         notificationHelper.getNotificationManager().notify(notificationID, builder.build());
-
-
-    }
-
-    private void executeHttpRequest(Observable<NYTimesAPI> stream, final Search search){
-        this.mDisposable = stream
-                .subscribeWith(new DisposableObserver<NYTimesAPI>(){
-                    @Override
-                    public void onNext(NYTimesAPI articles) {
-                        Log.e("NotificationJob", "On Next");
-
-                        nextPubDate = transformPublishedDate(articles.getResponse().getDocs().get(0).getPubDate());
-
-                        Log.e("NotifJob", "lastreadPubDate = " + lastReadPubDate + ", nextPubDate = " + nextPubDate);
-                        if (nextPubDate > lastReadPubDate) {
-                            sendNotification(search, lastReadPubDate);
-                            lastReadPubDate = nextPubDate;
-                        }else{
-                            sendEmptyNotification();
-                        }
-
-                        Log.e("NotifJob", "lastReadPubDate = "+ lastReadPubDate);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e("NotificationJob", "On Error"+Log.getStackTraceString(e));
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        Log.e("NotificationJob", "On Complete");
-                        if(mDisposable != null && mDisposable.isDisposed())
-                            mDisposable.dispose();
-                    }
-                });
-    }
-
-    private int transformPublishedDate(String pubDate){
-        //(Ex: 2018-03-08T05:44:00-05:00)
-        String date =
-        pubDate.substring(0,4)      //YYYY
-        + pubDate.substring(8,10)   //MM
-        + pubDate.substring(5,7)    //DD
-        + pubDate.substring(11,13); //HH
-
-        return Integer.valueOf(date);
-
     }
 }
