@@ -51,7 +51,7 @@ public class NotificationActivity extends BaseSearchActivity {
 
         prefs = getSharedPreferences("notification", MODE_PRIVATE);
 
-        //Instanciate checkboxes
+        //Instantiate checkboxes
         checkBoxes[0] = checkboxArts;
         checkBoxes[1] = checkboxBusiness;
         checkBoxes[2] = checkboxEntrepreneur;
@@ -139,12 +139,11 @@ public class NotificationActivity extends BaseSearchActivity {
     private void createJob(Search s){
         JobManager.create(getApplicationContext())
                 .addJobCreator(new MyJobCreator());
-        NotificationJob.schedulePeriodic(s);
+        NotificationJob.startNow(s);
     }
 
     private void cancelJob(int jobId){
-        if(JobManager.instance() != null)
-            JobManager.instance().cancel(jobId);
+        JobManager.instance().cancel(jobId);
     }
 }
 

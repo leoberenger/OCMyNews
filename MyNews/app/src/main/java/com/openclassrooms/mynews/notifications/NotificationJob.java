@@ -56,7 +56,6 @@ public class NotificationJob extends Job {
 
         prefs =  PreferenceManager.getDefaultSharedPreferences(getContext());
         lastReadPubDate = prefs.getInt("lastReadPubDate", 0);
-        Log.e("OnRunJob", "lastReadPubDate = " + lastReadPubDate);
 
         executeHttpRequestToSeeIfNewArticles(stream, search, lastReadPubDate);
 
@@ -69,7 +68,7 @@ public class NotificationJob extends Job {
         searchMgr.setSearchToPersistBundle(bundleCompat, search);
 
         new JobRequest.Builder(NotificationJob.TAG)
-                .setPeriodic(TimeUnit.MINUTES.toMillis(15), TimeUnit.MINUTES.toMillis(5))
+                .setPeriodic(TimeUnit.DAYS.toDays(1), TimeUnit.DAYS.toDays(1))
                 .setUpdateCurrent(true)
                 .setRequiredNetworkType(JobRequest.NetworkType.CONNECTED)
                 .setExtras(bundleCompat)
@@ -94,23 +93,15 @@ public class NotificationJob extends Job {
                 .subscribeWith(new DisposableObserver<NYTimesAPI>(){
                     @Override
                     public void onNext(NYTimesAPI articles) {
-                        Log.e("NotificationJob", "On Next");
 
                         if(!articles.getResponse().getDocs().isEmpty()){
                             nextPubDate = dateMgr.transformPublishedDate(articles.getResponse().getDocs().get(0).getPubDate());
 
-                            Log.e("NotifJob", "lastreadPubDatePRE = " + lastReadPubDate + ", nextPubDate = " + nextPubDate);
                             if (nextPubDate > lastReadPubDate) {
                                 sendNotification(search, lastReadPubDate);
                                 prefs.edit().putInt("lastReadPubDate", nextPubDate).apply();
-                            }else{
-                                sendEmptyNotification("no new articles");
                             }
-                        }else{
-                            sendEmptyNotification("no articles");
                         }
-
-                        Log.e("NotifJobPOST", "lastReadPubDate = "+ prefs.getInt("lastReadPubDate", 0));
                     }
 
                     @Override
@@ -128,8 +119,6 @@ public class NotificationJob extends Job {
     }
 
     private void sendNotification(Search search, int lastReadPubDate){
-
-        Log.e("send Notif", "lPB = " + lastReadPubDate);
 
         // Create intent for DisplaySearchActivity
         Intent intent = new Intent(getContext(), DisplaySearchActivity.class);
@@ -152,25 +141,5 @@ public class NotificationJob extends Job {
         notificationHelper.getNotificationManager().notify(notificationID, builder.build());
 
 
-    }
-
-    private void sendEmptyNotification(String s){
-
-        // Create intent for DisplaySearchActivity
-        Intent intent = new Intent(getContext(), MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-        PendingIntent pendingIntent = PendingIntent.getActivity(
-                getContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        //Create Notification
-        NotificationHelper notificationHelper =
-                new NotificationHelper(getContext());
-        NotificationCompat.Builder builder =
-                notificationHelper.getNotificationBuilder(
-                        ""+ s,
-                        "No New articles",
-                        pendingIntent);
-        notificationHelper.getNotificationManager().notify(notificationID, builder.build());
     }
 }
